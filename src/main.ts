@@ -162,7 +162,14 @@ async function iniciar() {
   guitarra.rotation.y = 0.28;
   escena.add(guitarra);
 
-  const mesa = mesaTocadiscos(maderaClara, datosDiscos.discos.map((d) => d.portadaChica));
+  // Lo que va en el cajón: un separador al empezar cada género y las fundas
+  const itemsCajon: { portada?: string | null; separador?: string }[] = [];
+  datosDiscos.discos.forEach((d, i) => {
+    // Como en los cajones reales, adelante va un disco (no un separador)
+    if (i > 0 && d.genero && d.genero !== datosDiscos.discos[i - 1]?.genero) itemsCajon.push({ separador: d.genero });
+    itemsCajon.push({ portada: d.portadaChica });
+  });
+  const mesa = mesaTocadiscos(maderaClara, itemsCajon);
   mesa.grupo.position.set(W / 2 + 0.85, 0, 0.3);
   mesa.grupo.rotation.y = -0.1;
   marcarObjetos(mesa);
@@ -179,18 +186,21 @@ async function iniciar() {
   // Se detecta con una "zona" invisible fija por disco, así el disco que sube no tapa a los demás.
   const zonasDiscos: THREE.Mesh[] = [];
   const invisible = new THREE.MeshBasicMaterial({ visible: false });
-  const geoZona = new THREE.PlaneGeometry(0.31, 0.44);
+  // Zonas hasta el borde de las fundas: así el disco que sube se puede tocar sin "saltar" al de adelante
+  const geoZona = new THREE.PlaneGeometry(0.31, 0.36);
+  let discoSenalado: number | null = null;
+  const ultimoValor: number[] = [];
   mesa.fundas.forEach((funda, i) => {
     const disco = datosDiscos.discos[i];
     if (!disco) return;
     const base = (funda.userData.base as THREE.Vector3).clone();
     const inclinacion = funda.rotation.x;
     const zona = new THREE.Mesh(geoZona, invisible);
-    zona.position.set(0, 0.22, base.z);
+    zona.position.set(0, 0.18, base.z);
     zona.rotation.x = inclinacion;
     mesa.cajon.add(zona);
     zonasDiscos.push(zona);
-    marcar(zona, {
+    const datosDisco: Interactivo = {
       tipo: 'disco',
       id: disco.id,
       titulo: disco.nombre,
@@ -203,11 +213,18 @@ async function iniciar() {
           datosCajon.resaltar(v);
           return;
         }
+        // El disco que va subiendo queda "elegido" hasta que se señala otro
+        if (v > (ultimoValor[i] ?? 0)) discoSenalado = i;
+        else if (discoSenalado === i && v < 0.02) discoSenalado = null;
+        ultimoValor[i] = v;
         funda.position.y = base.y + v * 0.18;
         funda.position.z = base.z + v * 0.012;
         funda.rotation.x = inclinacion - v * 0.08;
       },
-    });
+    };
+    // La zona y la funda comparten los mismos datos: pasar de una a otra no cambia la selección
+    marcar(zona, datosDisco);
+    marcar(funda, datosDisco);
   });
 
   const elCuadro = cuadroColgado(datos.cuadro);
@@ -362,7 +379,7 @@ async function iniciar() {
   interaccion = new Interaccion(
     canvas,
     camara,
-    () => enCajon ? zonasDiscos : [...estanteria.objetivos(), pila.grupo, mesa.tocadiscos, mesa.cajon, mesa.agenda, relojPared.grupo, ...(leyendo ? [leyendo.mesh] : [])],
+    () => enCajon ? [...zonasDiscos, ...(discoSenalado !== null ? [mesa.fundas[discoSenalado]] : [])] : [...estanteria.objetivos(), pila.grupo, mesa.tocadiscos, mesa.cajon, mesa.agenda, relojPared.grupo, ...(leyendo ? [leyendo.mesh] : [])],
     {
       alSenalar: (i, p) => {
         const e = i && !enCajon && i.tipo === 'disco' ? datosCajon : i;

@@ -17,6 +17,7 @@ export interface Disco {
   url: string;
   temas: string[];
   puntos: number;
+  genero?: string;
 }
 
 export interface DatosDiscos {

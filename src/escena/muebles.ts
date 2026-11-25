@@ -197,9 +197,9 @@ const COLORES_DISCOS = ['#d94f3d', '#2f4f8f', '#e8c547', '#1d1d1f', '#f2efe6', '
 
 /**
  * Mesa con tocadiscos, agenda y caja de vinilos.
- * `portadas`: URLs de las tapas (de Spotify) para las fundas del cajón, en orden.
+ * `items`: lo que va en el cajón, en orden: fundas (con la URL de su tapa) y separadores de género.
  */
-export function mesaTocadiscos(madera: THREE.Texture, portadas: (string | null)[]) {
+export function mesaTocadiscos(madera: THREE.Texture, items: { portada?: string | null; separador?: string }[]) {
   const g = new THREE.Group();
   const mat = maderaMaterial(madera, [1.4, 1], 0xc79b70, 0.45);
   const alto = 0.62;
@@ -296,9 +296,34 @@ export function mesaTocadiscos(madera: THREE.Texture, portadas: (string | null)[
   const cargador = new THREE.TextureLoader();
   cargador.setCrossOrigin('anonymous');
   const fundas: THREE.Mesh[] = [];
-  const cantidad = Math.min(40, Math.max(portadas.length, 14));
-  const paso = (D - 0.05) / cantidad;
+  const cantidad = Math.min(40, items.length);
+  const paso = (D - 0.05) / Math.max(cantidad, 12);
+  const carton = new THREE.MeshStandardMaterial({ color: 0xe6d6b8, roughness: 0.9 });
+  let separadores = 0;
   for (let i = 0; i < cantidad; i++) {
+    const item = items[i];
+    if (item.separador) {
+      // Separador de cartón con una pestaña escrita a mano
+      const sep = new THREE.Group();
+      sep.add(caja(0.33, 0.29, 0.003, carton, 0, 0.162, 0));
+      const { c, ctx } = lienzo(256, 96);
+      ctx.fillStyle = '#ead9b8';
+      ctx.fillRect(0, 0, 256, 96);
+      ctx.fillStyle = '#2c3550';
+      ctx.font = '700 44px Caveat, cursive';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(item.separador, 128, 50, 240);
+      const texto = new THREE.MeshStandardMaterial({ map: aTextura(c), roughness: 0.9 });
+      const pestana = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.05, 0.003), [carton, carton, carton, carton, texto, carton]);
+      pestana.position.set(separadores % 2 ? 0.085 : -0.085, 0.33, 0);
+      sep.add(pestana);
+      sep.position.set(0, 0, D / 2 - 0.03 - i * paso);
+      sep.rotation.x = -0.06;
+      cajon.add(sep);
+      separadores++;
+      continue;
+    }
     const color = new THREE.Color(COLORES_DISCOS[Math.floor(r() * COLORES_DISCOS.length)]);
     const lado = new THREE.MeshStandardMaterial({ color, roughness: 0.75 });
     const tapa = new THREE.MeshStandardMaterial({ color, roughness: 0.6 });
@@ -306,7 +331,7 @@ export function mesaTocadiscos(madera: THREE.Texture, portadas: (string | null)[
     funda.position.set((r() - 0.5) * 0.008, 0.172, D / 2 - 0.03 - i * paso);
     funda.rotation.set(-0.06 - (i === 0 ? 0.06 : 0), (r() - 0.5) * 0.02, (r() - 0.5) * 0.02);
     funda.userData.base = funda.position.clone();
-    const url = portadas[i];
+    const url = item.portada;
     if (url) {
       cargador.load(url, (t) => {
         t.colorSpace = THREE.SRGBColorSpace;

@@ -14,6 +14,7 @@ import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { curar } from './curar-discos.mjs';
 
 const CLIENT_ID = process.argv[2] || process.env.SPOTIFY_CLIENT_ID;
 if (!CLIENT_ID) {
@@ -117,12 +118,12 @@ async function procesar(codigo) {
     porArtista.set(d.artistaPrincipal, n + 1);
     delete d.artistaPrincipal;
     lista.push(d);
-    if (lista.length >= 40) break;
+    if (lista.length >= 90) break;
   }
   const datos = {
     actualizado: new Date().toISOString().slice(0, 10),
     periodo: 'Lo más escuchado últimamente',
-    discos: lista,
+    discos: curar(lista),
   };
   fs.writeFileSync(salida, JSON.stringify(datos, null, 2) + '\n');
   console.log(`Listo: ${lista.length} discos (de ${totalTemas} temas) guardados en src/datos/discos.json`);

@@ -36,7 +36,9 @@ node scripts/spotify-top.mjs <CLIENT_ID>             # últimas 4 semanas
 node scripts/spotify-top.mjs <CLIENT_ID> medium_term # últimos 6 meses
 ```
 
-Abre la autorización de Spotify (flujo PKCE, sin client secret), trae los temas más escuchados, los agrupa por disco y guarda solo la lista en `src/datos/discos.json`. La app de Spotify necesita la Redirect URI `http://127.0.0.1:8888/callback`.
+Abre la autorización de Spotify (flujo PKCE, sin client secret), trae los temas más escuchados de las últimas semanas y meses, los agrupa por disco y guarda solo la lista en `src/datos/discos.json`. La app de Spotify necesita la Redirect URI `http://127.0.0.1:8888/callback`.
+
+La selección del cajón la arma [`scripts/curar-discos.mjs`](scripts/curar-discos.mjs): 20 discos repartidos por género (cupos en `CUPOS`, género de cada artista en `GENEROS`), uno por artista. En el cajón van agrupados con separadores de cartón.
 
 ## Correrlo en la compu
 
