@@ -47,7 +47,7 @@ npm run dev
 
 ## Publicarlo
 
-El sitio es estático. En Cloudflare Pages: comando de build `npm run build`, carpeta de salida `dist`.
+El sitio es estático y está en Cloudflare Workers (ver `wrangler.jsonc`), conectado a este repo: cada push a `main` se publica solo en [biblioteca.angeloperrotta.com.ar](https://biblioteca.angeloperrotta.com.ar). Build: `npm run build` · Deploy: `npx wrangler deploy`.
 
 ## Créditos
 

@@ -1,0 +1,11 @@
+{
+  // Sitio estático servido por Cloudflare Workers (assets).
+  // Build: npm run build  ·  Deploy: npx wrangler deploy
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "biblioteca",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
