@@ -10,7 +10,7 @@ Hecha con [Three.js](https://threejs.org) y Vite. Todo (libros, lomos, alfombra,
 - **Hacer clic**: el libro sale del estante y viene hacia vos; se puede girar arrastrando.
 - **Libros**: lista con buscador, filtros (leídos, empezados, sin leer, prestados) y orden de la biblioteca (como en las fotos, por color, por autor o por título), con animación.
 - **Wishlist**: la agenda bordó sobre la mesa del tocadiscos.
-- **¿Qué leo?**: un post-it pegado en el cajón de la mesa de luz (o «¿No sabés qué leer?» en el panel de libros). Le contás cómo venís con tus palabras («cansado, algo liviano para el bondi», «nada muy triste») y elige un libro de la biblioteca, teniendo en cuenta la hora y si llueve. Funciona sin internet ni API: cruza lo que escribís con un perfil de ánimo de cada libro.
+- **¿Qué leo?**: un post-it en el cajón de la mesa de luz que cada tanto titila con un brillito (o «¿No sabés qué leer?» en el panel de libros). Le contás a la biblioteca cómo te sentís, en qué momento de tu vida estás o qué tenés ganas de leer («me siento sin rumbo», «corté con alguien y quiero algo que me abrace», «cabeza a mil», «algo corto para el bondi»), elegís si buscar entre todos, los que no leíste, los empezados o los que ya leíste, y una ola de luz recorre los estantes hasta que el libro elegido asoma rodeado de brillitos. Tiene en cuenta la hora y si llueve. Funciona sin internet ni API.
 - **La luz sigue la hora real de Buenos Aires**: de día entra sol por la ventana, en la hora dorada se dibujan las sombras de las hojas, de noche queda la lámpara de pie. Para probar otra hora: `?hora=19.5`.
 - **El clima también es real** (Open-Meteo, sin clave): si está nublado se apaga el sol y se prende la lámpara; si llueve se ven gotas afuera y en el vidrio; si hay tormenta, relámpagos. Para probar: `?clima=lluvia`, `torrencial`, `tormenta`, `nublado`, `niebla` o `llovizna`.
 - **Discos**: el cajón bajo la mesa tiene mis discos más escuchados en Spotify. Al elegir uno, el vinilo cambia de etiqueta, el brazo se apoya, el plato gira y aparece el reproductor de Spotify.
@@ -30,7 +30,7 @@ Todo está en [`src/datos/biblioteca.json`](src/datos/biblioteca.json):
 - `tapa`: ruta a una foto real de la tapa dentro de `public/` (opcional).
 - `cuadro`: ruta a una imagen para el cuadro (opcional).
 
-El perfil de cada libro para el «¿Qué leo?» está en `src/datos/perfiles.json` (tonos como `intriga`, `liviano`, `pensar`, temas y una frase). Al sumar un libro, pedile a Claude que le arme el perfil.
+El perfil de cada libro para el «¿Qué leo?» está en `src/datos/perfiles.json` (tonos como `intriga`, `liviano`, `pensar`, temas, momentos de la vida para los que es especialmente bueno —`perdido`, `ruptura`, `duelo`, `empezar`…— y una frase). Al sumar un libro, pedile a Claude que le arme el perfil.
 
 ## Actualizar los discos de Spotify
 

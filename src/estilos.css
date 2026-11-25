@@ -878,6 +878,118 @@ button {
   }
 }
 
+/* Entre qué libros busco */
+.quelee__cuales {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: rgba(40, 54, 98, 0.65);
+}
+
+.quelee__cuales span {
+  margin-right: 2px;
+}
+
+.quelee__cuales button {
+  padding: 3px 9px 4px;
+  border: 1px solid rgba(40, 54, 98, 0.2);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(40, 54, 98, 0.8);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.quelee__cuales button:hover {
+  border-color: rgba(40, 54, 98, 0.45);
+}
+
+.quelee__cuales button[aria-checked='true'] {
+  border-color: #283662;
+  background: #283662;
+  color: #f5ecd8;
+}
+
+/* El momento en que la biblioteca busca */
+.quelee__buscando {
+  margin: 18px 0 2px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(40, 54, 98, 0.15);
+  font-family: Caveat, cursive;
+  font-size: 23px;
+  font-weight: 700;
+  color: transparent;
+  background: linear-gradient(100deg, #b5523b 0%, #b5523b 35%, #f0b54e 50%, #b5523b 65%, #b5523b 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: quelee-brillo 1.1s linear infinite;
+}
+
+.quelee__buscando[hidden] {
+  display: none;
+}
+
+.quelee__buscando span {
+  display: inline-block;
+  animation: quelee-estrella 1.1s ease-in-out infinite;
+}
+
+@keyframes quelee-brillo {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+@keyframes quelee-estrella {
+  50% {
+    transform: scale(1.35) rotate(45deg);
+  }
+}
+
+/* La frase de la biblioteca se escribe sola, como a mano */
+.quelee__resultado.nuevo .quelee__intro {
+  animation: quelee-escribir 0.9s steps(28, end) both;
+}
+
+@keyframes quelee-escribir {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.quelee__donde {
+  margin: 10px 0 0;
+  font-family: Caveat, cursive;
+  font-size: 19px;
+  font-weight: 500;
+  color: rgba(40, 54, 98, 0.85);
+}
+
+.quelee__donde:empty {
+  display: none;
+}
+
+.quelee__donde::before {
+  content: '✦ ';
+  color: #e0a33c;
+}
+
+.quelee__resultado.vacio .quelee__acciones {
+  display: none;
+}
+
 .quelee__intro {
   margin: 0;
   font-family: Caveat, cursive;

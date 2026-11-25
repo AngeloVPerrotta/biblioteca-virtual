@@ -31,6 +31,8 @@ export interface Perfil {
   pesado?: number;
   /** Libro de consulta o estudio: solo aparece si se lo pide por tema o por nombre. */
   referencia?: boolean;
+  /** Momentos de la vida o sentimientos para los que este libro es especialmente bueno. */
+  momentos?: string[];
   frase: string;
 }
 
@@ -50,9 +52,14 @@ export interface Recomendacion {
 
 type Estado = 'releer' | 'nuevo' | 'retomar';
 
+/** Qué libros considerar según si ya los leí. */
+export type Cuales = 'todos' | 'sin-leer' | 'empezado' | 'leido';
+
 interface Efecto {
   t?: Tonos;
   tema?: string;
+  /** Un momento de la vida o un sentimiento («sin rumbo», «corazón roto», «etapa nueva»…). */
+  momento?: string;
   largo?: 'corto' | 'largo';
   estado?: Estado;
   /** Positivo: quiere algo intenso; negativo: mejor nada muy duro. */
@@ -61,21 +68,48 @@ interface Efecto {
 }
 
 /**
+ * Momentos de la vida y sentimientos: además de mover los tonos, cada uno tiene libros que
+ * «saben» de eso (campo `momentos` en perfiles.json) y una frase con la que la biblioteca responde.
+ */
+const INTRO_MOMENTO: Record<string, string> = {
+  perdido: 'Para cuando uno se siente sin rumbo',
+  empezar: 'Para una etapa que empieza',
+  ruptura: 'Para curar el corazón',
+  enamorado: 'Para cuando hay mariposas',
+  duelo: 'Para acompañar una pérdida',
+  cabeza: 'Para calmar la cabeza',
+  estancado: 'Para salir del pozo y moverse',
+  soledad: 'Para que la soledad pese menos',
+  nostalgia: 'Para mirar atrás con cariño',
+  existencial: 'Para las preguntas grandes',
+  camino: 'Para buscar tu propio camino',
+  agotado: 'Para descansar el alma',
+  feliz: 'Para acompañar la buena racha',
+  bronca: 'Para canalizar la bronca',
+  examenes: 'Para un recreo entre apuntes',
+  viaje: 'Para llevar de viaje',
+  trabajo: 'Para olvidarte del laburo un rato',
+  familia: 'Para pensar en los tuyos',
+  raro: 'Para los días raros',
+  envion: 'Para aprovechar el envión',
+  bajon: 'Para acompañar el bajón',
+};
+
+/**
  * Vocabulario: cada entrada tiene raíces (el texto ya va sin tildes y en minúscula).
  * - `=palabra` tiene que coincidir entera.
  * - Con espacios es una frase y se busca tal cual.
  * - El resto es el comienzo de una palabra («trist» sirve para triste, tristeza…).
+ * Las frases se buscan primero; después, palabra por palabra gana la primera entrada que coincide.
  */
 const VOCABULARIO: [string[], Efecto][] = [
-  // Frases primero (se consumen antes de mirar palabra por palabra)
+  // Frases
   [['no se', 'ni idea', 'lo que sea', 'elegi vos', 'elegime', 'decidi vos'], { azar: 1 }],
   [['no puedo dormir', 'antes de dormir', 'para dormir'], { t: { calma: 0.8, liviano: 0.5 }, pesado: -0.4 }],
   [['sin pensar', 'cortar la cabeza', 'apagar la cabeza', 'no pensar'], { t: { liviano: 1, humor: 0.3, pensar: -0.6 }, pesado: -0.3 }],
   [['bajar un cambio'], { t: { calma: 1, liviano: 0.4 }, pesado: -0.4 }],
-  [['sin animo', 'sin ganas', 'sin pilas'], { t: { liviano: 0.8, calma: 0.5, impulso: 0.4, melancolia: 0.3 }, pesado: -0.5 }],
   [['que me atrape', 'no poder soltar', 'no pueda soltar', 'que no pueda parar', 'de un tiron'], { t: { intriga: 1, aventura: 0.3 } }],
-  [['que me toque', 'me haga llorar', 'que me emocione'], { t: { emocion: 1, melancolia: 0.3 } }],
-  [['corazon roto', 'rompieron el corazon', 'me rompieron', 'me dejaron', 'me dejo', 'me corto', 'me corte con'], { t: { amor: 0.6, melancolia: 0.7, emocion: 0.5, impulso: 0.3 }, pesado: -0.3 }],
+  [['que me toque', 'me haga llorar', 'que me emocione', 'que me abrace', 'me abrace'], { t: { emocion: 1, melancolia: 0.3, calma: 0.2 } }],
   [['de nuevo', 'otra vez', 'volver a leer', 'ya lei'], { estado: 'releer' }],
   [['nunca lei', 'no lei', 'sin leer', 'algo nuevo'], { estado: 'nuevo' }],
   [['a medias', 'a mitad', 'que deje', 'que empece', 'seguir con'], { estado: 'retomar' }],
@@ -87,13 +121,53 @@ const VOCABULARIO: [string[], Efecto][] = [
   [['cultura general', 'que me deje algo'], { t: { aprender: 1, pensar: 0.3 } }],
   [['marco aurelio'], { tema: 'filosofia' }],
 
+  // Momentos de la vida y sentimientos (frases)
+  [['me siento perdido', 'me siento perdida', 'sin rumbo', 'no se que hacer con mi vida', 'no se que quiero', 'no encuentro mi lugar', 'fuera de lugar', 'no se quien soy', 'no se a donde voy'], { momento: 'perdido', t: { pensar: 0.6, impulso: 0.5, emocion: 0.4, calma: 0.3 } }],
+  [['etapa nueva', 'nueva etapa', 'me mude', 'me estoy mudando', 'cambio de vida', 'nuevo trabajo', 'trabajo nuevo', 'empezar de cero', 'de cero', 'primer ano', 'empiezo la facu', 'empece la facu', 'me recibi', 'nuevo comienzo'], { momento: 'empezar', t: { impulso: 0.8, pensar: 0.3, aventura: 0.3 } }],
+  [['corazon roto', 'rompieron el corazon', 'me rompieron', 'me dejaron', 'me dejo', 'me corto', 'corte con', 'termine con', 'mi ex', 'me separe'], { momento: 'ruptura', t: { amor: 0.5, melancolia: 0.6, emocion: 0.5, impulso: 0.3 }, pesado: -0.2 }],
+  [['me gusta alguien', 'conoci a alguien', 'estoy saliendo con', 'hay alguien'], { momento: 'enamorado', t: { amor: 1, poesia: 0.4, emocion: 0.3, liviano: 0.2 } }],
+  [['perdi a', 'se murio', 'se fue mi', 'extrano a alguien', 'perdida de'], { momento: 'duelo', t: { emocion: 0.8, melancolia: 0.6, calma: 0.5, pensar: 0.4 }, pesado: -0.3 }],
+  [['cabeza a mil', 'mil pensamientos', 'miedo al futuro', 'no se que va a pasar', 'mucha presion'], { momento: 'cabeza', t: { calma: 1, pensar: 0.3, liviano: 0.4 }, pesado: -0.5 }],
+  [['no avanzo', 'sin motivacion', 'la rutina', 'aburrido de', 'aburrida de', 'quiero cambiar', 'quiero mejorar', 'ponerme las pilas'], { momento: 'estancado', t: { impulso: 1, pensar: 0.3 } }],
+  [['me siento solo', 'me siento sola', 'estoy solo', 'estoy sola', 'nadie me entiende', 'sin amigos'], { momento: 'soledad', t: { emocion: 0.7, melancolia: 0.4, calma: 0.3, humor: 0.2 }, pesado: -0.6 }],
+  [['mi infancia', 'cuando era chico', 'cuando era chica', 'de chico', 'de chica', 'me estoy haciendo grande', 'cumpli anos'], { momento: 'nostalgia', t: { melancolia: 0.7, emocion: 0.5, poesia: 0.4 } }],
+  [['sentido de la vida', 'para que estamos', 'la muerte', 'la felicidad', 'el sentido', 'el tiempo pasa'], { momento: 'existencial', t: { pensar: 1, emocion: 0.3 } }],
+  [['mis suenos', 'cumplir mis', 'mi proposito', 'mi camino', 'que quiero ser', 'que estudiar', 'mi lugar en el mundo', 'encontrarme'], { momento: 'camino', t: { impulso: 0.8, aventura: 0.4, pensar: 0.4 } }],
+  [['no doy mas', 'necesito un descanso', 'sin energia', 'sin pilas', 'sin animo', 'sin ganas'], { momento: 'agotado', t: { liviano: 0.9, calma: 0.7, humor: 0.4 }, pesado: -0.7 }],
+  [['buena racha', 'todo bien', 're bien', 'de buen humor', 'muy bien'], { momento: 'feliz', t: { aventura: 0.6, humor: 0.5, liviano: 0.4, amor: 0.3 } }],
+  [['estoy estudiando', 'tengo que rendir', 'estoy rindiendo'], { momento: 'examenes', t: { liviano: 0.7, humor: 0.3, calma: 0.3 }, pesado: -0.4 }],
+  [['me voy de viaje', 'de vacaciones', 'la costa', 'en el avion'], { momento: 'viaje', t: { aventura: 0.8, liviano: 0.6, intriga: 0.5 } }],
+  [['mi jefe', 'el laburo', 'del laburo', 'el trabajo', 'del trabajo'], { momento: 'trabajo', t: { liviano: 0.6, humor: 0.5, calma: 0.4 } }],
+  [['mi viejo', 'mi vieja', 'mis viejos', 'mi familia', 'mi papa', 'mi mama', 'mi hermano', 'mi hermana', 'mis abuelos', 'mi abuelo', 'mi abuela'], { momento: 'familia', tema: 'familia', t: { emocion: 0.6, pensar: 0.3 } }],
+  [['dia raro', 'me siento raro', 'me siento rara', 'todo raro'], { momento: 'raro', t: { poesia: 0.7, pensar: 0.4, humor: 0.3 } }],
+  [['con todo', 'me siento fuerte', 'con energia', 'con ganas', 'a full'], { momento: 'envion', t: { impulso: 0.7, aventura: 0.6, intriga: 0.3 } }],
+
+  // Momentos y sentimientos (palabras)
+  [['perdid', 'desorientad', 'confundid', 'crisis'], { momento: 'perdido', t: { pensar: 0.6, impulso: 0.5, emocion: 0.4, calma: 0.3 } }],
+  [['empiezo', 'empezando', 'arranco', 'arrancando', 'mudanza', 'mudarme'], { momento: 'empezar', t: { impulso: 0.8, pensar: 0.3, aventura: 0.3 } }],
+  [['ruptura', 'separacion', 'separe', 'cortamos', 'terminamos', 'desamor', 'despecho', 'tusa', '=ex'], { momento: 'ruptura', t: { amor: 0.5, melancolia: 0.6, emocion: 0.5, impulso: 0.3 }, pesado: -0.2 }],
+  [['enamor', 'mariposas', 'crush'], { momento: 'enamorado', t: { amor: 1, poesia: 0.4, emocion: 0.3, liviano: 0.2 } }],
+  [['=duelo', 'fallec', 'murio', 'muerte'], { momento: 'duelo', t: { emocion: 0.8, melancolia: 0.6, calma: 0.5, pensar: 0.4 }, pesado: -0.3 }],
+  [['ansie', 'ansios', 'estres', 'abrum', 'agobi', 'sobrepens', 'overthink', 'incertidumbre', 'preocupad', 'presion'], { momento: 'cabeza', t: { calma: 1, pensar: 0.3, liviano: 0.4 }, pesado: -0.5 }],
+  [['estancad', 'procrastin', 'desmotivad', 'aburrid'], { momento: 'estancado', t: { impulso: 1, pensar: 0.3 } }],
+  [['soledad', 'aislad', 'incomprendid'], { momento: 'soledad', t: { emocion: 0.7, melancolia: 0.4, calma: 0.3, humor: 0.2 }, pesado: -0.6 }],
+  [['nostalg', 'infancia', 'recuerd', 'extran'], { momento: 'nostalgia', t: { melancolia: 0.7, emocion: 0.5, poesia: 0.4 } }],
+  [['existencial', 'existenc'], { momento: 'existencial', t: { pensar: 1, emocion: 0.3 } }],
+  [['proposito', 'vocacion', 'suenos'], { momento: 'camino', t: { impulso: 0.8, aventura: 0.4, pensar: 0.4 } }],
+  [['cansad', 'agotad', 'fundid', 'quemad', 'reventad', 'burnout', 'exhaust'], { momento: 'agotado', t: { liviano: 0.9, calma: 0.7, humor: 0.4 }, pesado: -0.7 }],
+  [['feliz', 'contento', 'contenta', 'festej', 'celebr', 'alegr'], { momento: 'feliz', t: { aventura: 0.6, humor: 0.5, liviano: 0.4, amor: 0.3 } }],
+  [['enojad', 'bronca', 'injust', 'calient', '=harto', '=harta', 'podrid', 'furi', 'rabia'], { momento: 'bronca', t: { pensar: 0.5, intriga: 0.5, oscuro: 0.3 } }],
+  [['parcial', 'examen', 'rendir', '=rindo', '=final', '=finales', 'apuntes'], { momento: 'examenes', t: { liviano: 0.7, humor: 0.3, calma: 0.3 }, pesado: -0.4 }],
+  [['vacacion', '=avion', '=playa', 'mochila'], { momento: 'viaje', t: { aventura: 0.8, liviano: 0.6, intriga: 0.5 } }],
+  [['laburo', 'trabajo', 'oficina', 'reunion'], { momento: 'trabajo', t: { liviano: 0.6, humor: 0.5, calma: 0.4 } }],
+  [['=raro', '=rara'], { momento: 'raro', t: { poesia: 0.7, pensar: 0.4, humor: 0.3 } }],
+  [['imparable', 'motivad', 'enchufad'], { momento: 'envion', t: { impulso: 0.7, aventura: 0.6, intriga: 0.3 } }],
+  [['trist', 'bajon', 'melancol', 'deprim', 'angust', 'desanim', 'apagad', '=mal', 'vacio', 'desilusion', 'decaid', 'lloro', 'llorando'], { momento: 'bajon', t: { melancolia: 0.6, emocion: 0.5, impulso: 0.3, calma: 0.3 }, pesado: -0.5 }],
+
   // Ánimos
-  [['trist', 'bajon', 'melancol', 'deprim', 'angust', 'desanim', 'apagad', '=mal', 'soledad', 'vacio', 'desilusion', 'decaid'], { t: { melancolia: 0.6, emocion: 0.5, impulso: 0.3, calma: 0.3 }, pesado: -0.5 }],
-  [['nostalg', 'recuerd', 'extran'], { t: { melancolia: 0.8, poesia: 0.3, emocion: 0.3 } }],
   [['llor', 'emocion', 'conmov', 'sensibl', 'tiern', 'ternura', '=sentir', 'sentimient'], { t: { emocion: 1, melancolia: 0.3 } }],
-  [['pens', 'reflex', 'profund', 'existenc', 'pregunta', 'cuestion', 'sentido'], { t: { pensar: 1, aprender: 0.2 } }],
+  [['pens', 'reflex', 'profund', 'pregunta', 'cuestion', 'sentido'], { t: { pensar: 1, aprender: 0.2 } }],
   [['livian', 'ligero', 'ligerit', 'facil', 'simple', 'tranqui', 'relaj', 'descans', 'desconect', '=light', 'pavada', 'entreten', 'pasatiempo', '=leve'], { t: { liviano: 1, humor: 0.3, calma: 0.2 }, pesado: -0.3 }],
-  [['cansad', 'agotad', 'fundid', 'quemad', 'reventad', 'sin energia'], { t: { liviano: 0.9, calma: 0.6, humor: 0.3 }, pesado: -0.6 }],
   [['=reir', 'reirme', '=risa', 'risas', 'gracios', 'divert', 'humor', 'chiste', '=joda', 'carcaj', 'comedi', 'absurd'], { t: { humor: 1, liviano: 0.5 } }],
   [['suspens', 'misteri', 'intriga', 'atrap', 'engan', 'adict', 'devor', '=giros', 'enigm'], { t: { intriga: 1, aventura: 0.2 } }],
   [['policial', 'detectiv', 'crimen', 'asesin', 'thriller', 'investig'], { t: { intriga: 1 }, tema: 'policial' }],
@@ -101,19 +175,18 @@ const VOCABULARIO: [string[], Efecto][] = [
   [['ladron', '=robo', '=robos', '=golpe', 'lupin', 'arsene'], { t: { aventura: 0.8, intriga: 0.5 }, tema: 'lupin' }],
   [['miedo', 'terror', 'horror', 'fantasm', 'sobrenatural', 'escalofr'], { t: { oscuro: 1, intriga: 0.4 }, tema: 'terror' }],
   [['oscur', 'inquiet', 'perturb', 'macabr', 'sinies', '=sangre', 'tenebr', '=dark', 'retorcid'], { t: { oscuro: 1, intriga: 0.3 } }],
-  [['amor', 'enamor', 'romant', 'romance', '=pareja', 'vincul', 'relacion', '=beso', '=besos', '=ex', 'corazon'], { t: { amor: 1, emocion: 0.3 } }],
-  [['desamor', 'despecho'], { t: { amor: 0.7, melancolia: 0.6, emocion: 0.4 } }],
+  [['amor', 'romant', 'romance', '=pareja', 'vincul', 'relacion', '=beso', '=besos', 'corazon'], { t: { amor: 1, emocion: 0.3 } }],
   [['aprend', 'estudi', 'conocimient', 'entend', 'curios', '=dato', '=datos', '=saber', 'informar', 'ensayo'], { t: { aprender: 1, pensar: 0.3 } }],
   [['motiv', 'inspir', '=animo', 'animarme', 'energi', '=fuerza', 'cambiar', 'crecer', 'mejorar', 'disciplin', 'empuj', 'objetivo', '=meta', '=metas', 'exito', 'emprend', 'arrancar', 'levantar', 'enfoc', 'superar'], { t: { impulso: 1, liviano: 0.2 } }],
   [['poesi', 'poet', '=verso', 'versos', '=bello', 'bella', 'belleza', 'prosa', 'lenguaje', 'literari'], { t: { poesia: 1 } }],
   [['=lindo', '=linda', 'algo lindo'], { t: { poesia: 0.5, emocion: 0.4, liviano: 0.3 } }],
-  [['calma', '=paz', 'seren', 'ansie', 'ansios', 'estres', 'abrum', 'agobi', 'nervi', 'medit', 'respir', 'silenci', 'paciencia'], { t: { calma: 1, liviano: 0.4 }, pesado: -0.5 }],
+  [['calma', '=paz', 'seren', 'nervi', 'medit', 'respir', 'silenci', 'paciencia'], { t: { calma: 1, liviano: 0.4 }, pesado: -0.5 }],
   [['dormir', '=sueno', '=cama', 'insomni'], { t: { calma: 0.7, liviano: 0.5 }, pesado: -0.3 }],
   [['intens', '=fuerte', '=duro', '=dura', 'impact', 'removed'], { t: { emocion: 0.4 }, pesado: 0.7 }],
 
   // Largo
   [['=corto', '=corta', 'cortit', '=rapido', 'rapidit', '=breve', '=bondi', 'colectivo', '=subte', '=tren', '=ratito'], { largo: 'corto' }],
-  [['=largo', '=larga', 'vacacion', 'finde', 'atrapante largo'], { largo: 'largo' }],
+  [['=largo', '=larga', 'finde', 'atrapante largo'], { largo: 'largo' }],
 
   // Qué tipo de lectura
   [['releer', 'favorit'], { estado: 'releer' }],
@@ -136,7 +209,7 @@ const VOCABULARIO: [string[], Efecto][] = [
   [['distop', '=futuro', 'tecnolog', '=ia', 'robot'], { tema: 'futuro', t: { pensar: 0.3 } }],
   [['politic', '=poder', 'estrateg', 'liderazg', '=lider', 'negocio', 'gobiern'], { tema: 'poder' }],
   [['=salud', 'entren', 'gimnas', '=gym', '=comida', 'nutri', '=dieta', 'rutina', 'habito', 'productiv', 'organiz'], { tema: 'habitos', t: { impulso: 0.4 } }],
-  [['=facu', 'facultad', '=cbc', '=uba', 'universidad', 'examen', 'parcial', '=carrera'], { tema: 'facultad', t: { aprender: 0.4 } }],
+  [['=facu', 'facultad', '=cbc', '=uba', 'universidad', '=carrera'], { tema: 'facultad', t: { aprender: 0.4 } }],
   [['cuento', 'relato'], { tema: 'cuentos', largo: 'corto' }],
   [['clasic'], { tema: 'clasico' }],
   [['juvenil', 'adolesc'], { tema: 'juvenil' }],
@@ -222,6 +295,7 @@ const normalizar = (t: string) =>
 interface Pedido {
   tonos: Record<Tono, number>;
   temas: Map<string, number>;
+  momentos: Map<string, number>;
   largo: 'corto' | 'largo' | null;
   estado: Estado | null;
   pesado: number;
@@ -259,6 +333,7 @@ export class Recomendador {
     const pedido: Pedido = {
       tonos: Object.fromEntries(TONOS.map((t) => [t, 0])) as Record<Tono, number>,
       temas: new Map(),
+      momentos: new Map(),
       largo: null,
       estado: null,
       pesado: 0,
@@ -271,6 +346,7 @@ export class Recomendador {
       const signo = negado ? -0.7 : 1;
       if (e.t) for (const [t, v] of Object.entries(e.t) as [Tono, number][]) pedido.tonos[t] += v * signo;
       if (e.tema) pedido.temas.set(e.tema, (pedido.temas.get(e.tema) ?? 0) + (negado ? -1 : 1));
+      if (e.momento) pedido.momentos.set(e.momento, (pedido.momentos.get(e.momento) ?? 0) + (negado ? -1 : 1));
       if (e.largo) pedido.largo = negado ? (e.largo === 'corto' ? 'largo' : 'corto') : e.largo;
       if (e.estado) pedido.estado = negado ? (e.estado === 'releer' ? 'nuevo' : null) : e.estado;
       if (e.azar) pedido.azar = Math.max(pedido.azar, negado ? 0 : e.azar);
@@ -336,7 +412,7 @@ export class Recomendador {
    * Devuelve los libros ordenados del más indicado al menos indicado (hasta 8),
    * cada uno con una frase de por qué. `vuelta` cambia un poco el azar para «otro».
    */
-  recomendar(texto: string, ctx: ContextoLectura, vuelta = 0): Recomendacion[] {
+  recomendar(texto: string, ctx: ContextoLectura, vuelta = 0, cuales: Cuales = 'todos'): Recomendacion[] {
     const pedido = this.interpretar(texto);
     const azar = rng(hash(`${normalizar(texto)}#${vuelta}#${Math.floor(Date.now() / 3.6e6)}`));
     const noche = ctx.hora >= 22 || ctx.hora < 6;
@@ -353,12 +429,14 @@ export class Recomendador {
     else if (ctx.hora >= 6 && ctx.hora < 12) sumar({ impulso: 0.5, aprender: 0.4, pensar: 0.2 });
     else sumar({ liviano: 0.2, aventura: 0.2, intriga: 0.2 });
     const tieneTono = TONOS.some((t) => pedido.tonos[t] !== 0);
-    const especifico = tieneTono || pedido.temas.size > 0 || pedido.nombres.size > 0;
+    const especifico = tieneTono || pedido.temas.size > 0 || pedido.nombres.size > 0 || pedido.momentos.size > 0;
+    // El sentimiento más fuerte que se entendió, para responderle
+    const momentoPrincipal = [...pedido.momentos].filter(([, w]) => w > 0).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
     const pesoAmbiente = tieneTono ? 0.08 : 0.3;
 
     const norma = Math.hypot(...TONOS.map((t) => pedido.tonos[t])) || 1;
     const puntuados = this.candidatos
-      .filter(({ libro }) => !libro.prestado)
+      .filter(({ libro }) => !libro.prestado && (cuales === 'todos' || libro.estado === cuales))
       .map(({ libro, perfil }) => {
         let tono = 0;
         let mejor: Tono | null = null;
@@ -378,8 +456,10 @@ export class Recomendador {
           tema += w;
           if (w > 0 && !temaPrincipal) temaPrincipal = k;
         }
+        let momento = 0;
+        for (const [m, w] of pedido.momentos) if (perfil.momentos?.includes(m)) momento += w;
         const porNombre = pedido.nombres.has(libro.id);
-        let total = tono + tema * 0.9 + (porNombre ? 1.6 : 0);
+        let total = tono + tema * 0.9 + momento * 0.9 + (porNombre ? 1.6 : 0);
         if (perfil.referencia && tema <= 0 && !porNombre) total -= 3;
 
         const g = libro.grosor;
@@ -389,7 +469,8 @@ export class Recomendador {
         total += pedido.pesado * (perfil.pesado ?? 0) * 0.8;
 
         const e = libro.estado ?? null;
-        total += e === 'leido' ? -0.35 : e === 'empezado' ? 0.2 : e === 'sin-leer' ? 0.25 : 0;
+        // Con «Cualquiera» la biblioteca prefiere lo empezado y lo no leído
+        if (cuales === 'todos') total += e === 'leido' ? -0.35 : e === 'empezado' ? 0.2 : e === 'sin-leer' ? 0.25 : 0;
         if (pedido.estado === 'releer') total += e === 'leido' ? 0.5 : -0.1;
         if (pedido.estado === 'nuevo') total += e === 'sin-leer' ? 0.35 : e === 'leido' ? -0.3 : 0;
         if (pedido.estado === 'retomar') total += e === 'empezado' ? 0.7 : 0;
@@ -421,6 +502,7 @@ export class Recomendador {
     return elegidos.map((c) => {
       let intro: string;
       if (c.porNombre) intro = 'Como lo pediste';
+      else if (momentoPrincipal) intro = INTRO_MOMENTO[momentoPrincipal] ?? 'Para este momento';
       else if (c.temaPrincipal && c.tema * 0.9 >= c.tono) intro = INTRO_TEMA[c.temaPrincipal] ?? 'Para vos';
       else if (c.mejor) intro = INTRO_TONO[c.mejor]({ lluvia, noche });
       else if (pedido.azar > 0) intro = 'A la suerte';
@@ -436,7 +518,7 @@ export class Recomendador {
       const e = c.libro.estado;
       if (e === 'empezado') partes.push('Lo dejaste por la mitad: buen momento para retomarlo.');
       else if (e === 'sin-leer') partes.push('Todavía no lo leíste.');
-      else if (e === 'leido') partes.push(pedido.estado === 'releer' ? 'Ya lo leíste: ideal para volver.' : 'Ya lo leíste, pero da para volver.');
+      else if (e === 'leido') partes.push(pedido.estado === 'releer' || cuales === 'leido' ? 'Ya lo leíste: ideal para volver.' : 'Ya lo leíste, pero da para volver.');
       if (pedido.largo === 'corto' && c.libro.grosor <= 1.5) partes.push('Es cortito.');
       if (pedido.largo === 'largo' && c.libro.grosor >= 2.4) partes.push('Da para rato.');
       return { libro: c.libro, intro, porque: partes.join(' ') };

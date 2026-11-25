@@ -6,7 +6,7 @@ import perfilesJson from './datos/perfiles.json';
 import type { DatosBiblioteca, EstadoLectura, Libro } from './datos/tipos';
 import type { Orden } from './escena/estanteria';
 import type { Disco } from './escena/tocadiscos';
-import { Recomendador, type ContextoLectura, type Perfil, type Recomendacion } from './recomendador';
+import { Recomendador, type ContextoLectura, type Cuales, type Perfil, type Recomendacion } from './recomendador';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -37,7 +37,19 @@ interface Acciones {
   alCambiarPaneles: (abiertos: boolean) => void;
   /** Hora y clima de ahora, para que el «¿Qué leo?» los tenga en cuenta. */
   contextoLectura: () => ContextoLectura;
+  /** La biblioteca señala (o deja de señalar) un libro; devuelve dónde está. */
+  senalarLibro: (id: string | null, opciones?: { ola?: boolean; inmediato?: boolean }) => Promise<string | null>;
 }
+
+const EJEMPLOS = [
+  'cansado, algo liviano para el bondi…',
+  'me siento sin rumbo, en una etapa de cambios…',
+  'corté con alguien y quiero algo que me abrace…',
+  'tengo la cabeza a mil, necesito calma…',
+  'algo que me atrape hasta tarde…',
+  'me pregunto por el sentido de todo…',
+  'empiezo la facu y estoy nervioso…',
+];
 
 type Filtro = 'todos' | EstadoLectura | 'prestado';
 
@@ -57,6 +69,8 @@ export class Interfaz {
   private readonly recomendador: Recomendador;
   private recomendaciones: Recomendacion[] = [];
   private recomendacionActual = 0;
+  private ubicacion: string | null = null;
+  private cuales: Cuales = 'todos';
   private pedidos = 0;
   private filtro: Filtro = 'todos';
   private temporizadorAviso = 0;
@@ -244,31 +258,37 @@ export class Interfaz {
     const form = $<HTMLFormElement>('quelee-form');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      this.pedirRecomendacion();
+      void this.pedirRecomendacion();
     });
     for (const idea of this.quelee.querySelectorAll<HTMLButtonElement>('.idea')) {
       idea.addEventListener('click', () => {
         this.queleeTexto.value = idea.textContent ?? '';
-        this.pedirRecomendacion();
+        void this.pedirRecomendacion();
       });
     }
     this.quelee.querySelector('[data-cerrar]')!.addEventListener('click', () => this.cerrarQueLeo());
+    for (const opcion of this.quelee.querySelectorAll<HTMLButtonElement>('[data-cuales]')) {
+      opcion.addEventListener('click', () => {
+        this.cuales = opcion.dataset.cuales as Cuales;
+        for (const o of this.quelee.querySelectorAll('[data-cuales]')) o.setAttribute('aria-checked', String(o === opcion));
+        // Si ya había una recomendación, se vuelve a elegir con el filtro nuevo
+        if (this.recomendaciones.length || !this.queleeResultado.hidden) void this.pedirRecomendacion();
+      });
+    }
     this.quelee.querySelector('.quelee__otro')!.addEventListener('click', () => {
       if (!this.recomendaciones.length) return;
-      this.recomendacionActual = (this.recomendacionActual + 1) % this.recomendaciones.length;
-      this.renderRecomendacion();
+      void this.irA((this.recomendacionActual + 1) % this.recomendaciones.length);
     });
     this.quelee.querySelector('.quelee__mostrar')!.addEventListener('click', () => {
       const r = this.recomendaciones[this.recomendacionActual];
       if (!r) return;
-      this.cerrarQueLeo();
+      this.cerrarQueLeo(true);
       this.acciones.elegirLibro(r.libro.id);
     });
     this.quelee.querySelector('.quelee__tambien')!.addEventListener('click', (e) => {
       const boton = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-indice]');
       if (!boton) return;
-      this.recomendacionActual = Number(boton.dataset.indice);
-      this.renderRecomendacion();
+      void this.irA(Number(boton.dataset.indice));
     });
     $('hub-quelee').addEventListener('click', () => this.abrirQueLeo());
   }
@@ -276,33 +296,75 @@ export class Interfaz {
   abrirQueLeo() {
     this.cerrarHub();
     this.cerrarAgenda();
+    this.queleeTexto.placeholder = EJEMPLOS[Math.floor(Math.random() * EJEMPLOS.length)];
     this.quelee.classList.add('abierto');
     this.acciones.alCambiarPaneles(true);
     // En compu el cursor ya queda listo para escribir; en el celu no, para no tapar todo con el teclado
     if (matchMedia('(pointer: fine)').matches) setTimeout(() => this.queleeTexto.focus({ preventScroll: true }), 320);
   }
 
-  cerrarQueLeo() {
+  /** `inmediato`: el libro señalado vuelve a su lugar sin animación (cuando enseguida se lo abre). */
+  cerrarQueLeo(inmediato = false) {
     if (!this.quelee.classList.contains('abierto')) return;
     this.quelee.classList.remove('abierto');
+    this.pedidos++;
+    this.queleeBuscando(false);
+    void this.acciones.senalarLibro(null, { inmediato });
     if (this.quelee.contains(document.activeElement)) (document.activeElement as HTMLElement).blur();
     this.acciones.alCambiarPaneles(this.panelesAbiertos);
   }
 
-  private pedirRecomendacion() {
-    this.pedidos++;
-    this.recomendaciones = this.recomendador.recomendar(this.queleeTexto.value, this.acciones.contextoLectura(), this.pedidos);
-    this.recomendacionActual = 0;
-    this.renderRecomendacion();
+  private queleeBuscando(si: boolean) {
+    $('quelee-buscando').hidden = !si;
+    this.quelee.classList.toggle('buscando', si);
+  }
+
+  private async pedirRecomendacion() {
+    const pedido = ++this.pedidos;
     if (matchMedia('(pointer: coarse)').matches) this.queleeTexto.blur();
+    this.recomendaciones = this.recomendador.recomendar(this.queleeTexto.value, this.acciones.contextoLectura(), pedido, this.cuales);
+    this.recomendacionActual = 0;
+    this.queleeResultado.hidden = true;
+    const primero = this.recomendaciones[0];
+    if (!primero) {
+      void this.acciones.senalarLibro(null);
+      this.renderRecomendacion();
+      return;
+    }
+    // Un momento de magia: una ola de luz recorre los estantes antes de que aparezca el elegido
+    this.queleeBuscando(true);
+    const ubicacion = await this.acciones.senalarLibro(primero.libro.id, { ola: true });
+    if (pedido !== this.pedidos) return;
+    this.queleeBuscando(false);
+    this.ubicacion = ubicacion;
+    this.renderRecomendacion();
+  }
+
+  private async irA(indice: number) {
+    const pedido = ++this.pedidos;
+    this.recomendacionActual = indice;
+    const r = this.recomendaciones[indice];
+    this.ubicacion = r ? await this.acciones.senalarLibro(r.libro.id) : null;
+    if (pedido !== this.pedidos) return;
+    this.renderRecomendacion();
   }
 
   private renderRecomendacion() {
     const r = this.recomendaciones[this.recomendacionActual];
     const caja = this.queleeResultado;
-    caja.hidden = !r;
-    this.quelee.classList.toggle('con-resultado', !!r);
-    if (!r) return;
+    caja.hidden = false;
+    this.quelee.classList.add('con-resultado');
+    caja.classList.toggle('vacio', !r);
+    if (!r) {
+      caja.querySelector('.quelee__intro')!.textContent = 'Hmm…';
+      caja.querySelector('.quelee__titulo')!.textContent = 'No encontré ninguno así';
+      caja.querySelector('.quelee__autor')!.textContent = '';
+      caja.querySelector('.quelee__porque')!.textContent = 'Probá buscando entre todos los libros, o contame otra cosa.';
+      caja.querySelector('.quelee__donde')!.textContent = '';
+      caja.querySelector('.quelee__tambien')!.innerHTML = '';
+      return;
+    }
+    caja.querySelector('.quelee__donde')!.textContent = this.ubicacion ? `Te está esperando ${this.ubicacion}.` : '';
     caja.querySelector('.quelee__intro')!.textContent = `${r.intro}…`;
     caja.querySelector('.quelee__titulo')!.textContent = r.libro.titulo;
     caja.querySelector('.quelee__autor')!.textContent = r.libro.autor;

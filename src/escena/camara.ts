@@ -25,13 +25,31 @@ export class Camara {
   encuadrar(aspecto: number, anchoEstante: number) {
     this.vertical = aspecto < 0.9;
     const fov = this.vertical ? 50 : 36;
-    const mira = new THREE.Vector3(0, this.vertical ? 1.0 : 1.06, 0.2);
-    const medioAlto = this.vertical ? 1.2 : 1.12;
-    const medioAncho = this.vertical ? anchoEstante / 2 + 0.3 : 2.3;
     const tan = Math.tan((fov / 2) * RAD);
-    const d = Math.min(Math.max(medioAlto / tan, medioAncho / (tan * aspecto)), 4.6);
-    this.base.pos.set(0, this.vertical ? 1.45 : 1.56, mira.z + d);
-    this.base.mira.copy(mira);
+    if (this.vertical) {
+      const mira = new THREE.Vector3(0, 1.0, 0.2);
+      const d = Math.min(Math.max(1.2 / tan, (anchoEstante / 2 + 0.3) / (tan * aspecto)), 4.6);
+      this.base.pos.set(0, 1.45, mira.z + d);
+      this.base.mira.copy(mira);
+    } else {
+      // En compu: que entre de la planta (arriba de la biblioteca) hasta buena parte de la alfombra,
+      // y el ancho de la habitación. En pantallas anchas la cámara se aleja un poco para que el piso no quede cortado.
+      const altura = 1.56;
+      const arriba = { y: 2.32, z: 0.05 };
+      const abajo = { y: 0, z: 1.62 };
+      const angulos = (z: number) => ({
+        arriba: Math.atan2(arriba.y - altura, z - arriba.z),
+        abajo: Math.atan2(altura - abajo.y, z - abajo.z),
+      });
+      let z = 3.2;
+      while (z < 5 && angulos(z).arriba + angulos(z).abajo > fov * RAD) z += 0.02;
+      z = Math.min(Math.max(z, 0.2 + 2.3 / (tan * aspecto)), 5);
+      // Mirar al medio de ese rango
+      const a = angulos(z);
+      const inclinacion = (a.arriba - a.abajo) / 2;
+      this.base.pos.set(0, altura, z);
+      this.base.mira.set(0, altura + Math.tan(inclinacion) * (z - 0.2), 0.2);
+    }
     this.base.fov = fov;
     this.cam.aspect = aspecto;
     this.cam.fov = fov;

@@ -25,6 +25,7 @@ import { Camara } from './escena/camara';
 import { climaDePrueba, LluviaVisual, obtenerClima } from './escena/clima';
 import { HazDeSol, Polvo } from './escena/efectos';
 import { Estanteria, NIVELES, PROFUNDIDAD } from './escena/estanteria';
+import { Destellos } from './escena/destellos';
 import { fusionarEstaticos } from './escena/fusion';
 import { crearHabitacion, type Ventana } from './escena/habitacion';
 import { marcar, resaltadorDe, type Interactivo } from './escena/interactivos';
@@ -156,13 +157,25 @@ async function iniciar() {
   const papelito = papelitoQueLeo();
   papelito.mesh.position.copy(mesaLuz.grupo.position).add(new THREE.Vector3(0.12, 0.45, 0.1975));
   papelito.mesh.rotation.z = -0.07;
+  // Easter egg: de vez en cuando titila un brillito alrededor del post-it (y más al señalarlo)
+  const brilloPapelito = new Destellos({ cantidad: 4, tam: 0.1, visible: 0.3, periodo: [2.2, 4.2], brillo: 2.6 });
+  brilloPapelito.grupo.position.copy(papelito.mesh.position).add(new THREE.Vector3(0, 0, 0.035));
+  brilloPapelito.caja.set(0.058, 0.05, 0.004);
+  let papelitoSenalado = 0;
   marcar(papelito.mesh, {
     tipo: 'quelee',
     titulo: '¿Qué leo?',
-    subtitulo: 'Contame cómo venís y te elijo uno',
-    resaltar: papelito.resaltar,
+    subtitulo: 'Contale a la biblioteca cómo venís',
+    resaltar: (v) => {
+      papelitoSenalado = v;
+      brilloPapelito.meta = 1 + v * 1.4;
+    },
   });
-  escena.add(papelito.mesh);
+  escena.add(papelito.mesh, brilloPapelito.grupo);
+  // Brillitos dorados alrededor del libro que elige la biblioteca
+  const brilloElegido = new Destellos({ cantidad: 14, tam: 0.075, visible: 0.55, sube: 0.05, periodo: [1.3, 2.6], brillo: 2.6 });
+  brilloElegido.meta = 0;
+  escena.add(brilloElegido.grupo);
   if (leyendo) {
     leyendo.mesh.rotation.set(0, 0.35, Math.PI / 2);
     leyendo.mesh.position.set(-W / 2 - 0.36, sup + leyendo.grosor / 2, 0.3);
@@ -280,7 +293,7 @@ async function iniciar() {
 
   const camara = new Camara();
   camara.encuadrar(innerWidth / innerHeight, W);
-  const post = new Postproceso(renderer, escena, camara.cam, alta, [haz.grupo, polvo.puntos]);
+  const post = new Postproceso(renderer, escena, camara.cam, alta, [haz.grupo, polvo.puntos, brilloPapelito.grupo, brilloElegido.grupo]);
   const foco = new Foco(escena, camara, animador, ambiente, post);
 
   let ultimaElevacion = NaN;
@@ -311,6 +324,80 @@ async function iniciar() {
     await foco.abrir(lv, nota);
     ui.mostrarTarjeta(lv.libro);
   };
+  // «¿Qué leo?»: la biblioteca señala el libro que eligió. Primero pasa una ola de luz por los estantes,
+  // después el libro asoma unos centímetros, late suave y lo rodean brillitos dorados.
+  let elegido: { lv: LibroVisual; base: THREE.Vector3 } | null = null;
+  const basesAsomados = new Map<LibroVisual, THREE.Vector3>();
+  let turnoSenal = 0;
+  let pulso = 0;
+  let ola: { inicio: number; libros: LibroVisual[]; d: number[]; listo: () => void } | null = null;
+  const ubicacionDe = (lv: LibroVisual) => {
+    if (lv === leyendo) return 'en la mesa de luz, al lado del mate';
+    if (lv.libro.acostado) return 'arriba de todo, en la pila junto a la planta';
+    const p = estanteria.grupo.worldToLocal(lv.mesh.getWorldPosition(new THREE.Vector3()));
+    let nivel = 0;
+    NIVELES.forEach((n, i) => {
+      if (p.y >= n) nivel = i;
+    });
+    const estante = ['en el estante de abajo', 'en el tercer estante', 'en el segundo estante', 'en el estante de arriba'][Math.min(nivel, 3)];
+    const lado = p.x < -W / 6 ? ', a la izquierda' : p.x > W / 6 ? ', a la derecha' : ', en el medio';
+    return estante + lado;
+  };
+  const soltarElegido = (inmediato: boolean) => {
+    if (!elegido) return;
+    const { lv, base } = elegido;
+    elegido = null;
+    brilloElegido.meta = 0;
+    lv.resaltar(0);
+    animador.cancelar(`asomar:${lv.libro.id}`);
+    if (!basesAsomados.has(lv)) return;
+    if (inmediato) {
+      lv.mesh.position.copy(base);
+      basesAsomados.delete(lv);
+      return;
+    }
+    const desde = lv.mesh.position.clone();
+    void animador
+      .animar(380, (k) => lv.mesh.position.lerpVectors(desde, base, k), { clave: `asomar:${lv.libro.id}` })
+      .then(() => {
+        if (elegido?.lv !== lv) basesAsomados.delete(lv);
+      });
+  };
+  const olaMagica = () =>
+    new Promise<void>((listo) => {
+      ola?.listo();
+      const lista = libros.filter((l) => l.mesh.visible && l !== leyendo);
+      const d = lista.map((l) => {
+        const p = estanteria.grupo.worldToLocal(l.mesh.getWorldPosition(new THREE.Vector3()));
+        return (p.x / W + 0.5) * 0.75 + (NIVELES[4] + 0.2 - p.y) * 0.12;
+      });
+      ola = { inicio: performance.now(), libros: lista, d, listo };
+    });
+  const senalarLibro = async (id: string | null, opciones: { ola?: boolean; inmediato?: boolean } = {}) => {
+    const turno = ++turnoSenal;
+    const lv = id ? (libros.find((l) => l.libro.id === id) ?? null) : null;
+    if (lv && elegido?.lv === lv) return ubicacionDe(lv);
+    soltarElegido(!!opciones.inmediato);
+    if (!lv) return null;
+    if (opciones.ola) await olaMagica();
+    if (turno !== turnoSenal) return null;
+    const asoma = lv.mesh.visible && !lv.libro.acostado && lv !== leyendo;
+    const base = basesAsomados.get(lv) ?? lv.mesh.position.clone();
+    const destino = base.clone();
+    if (asoma) destino.z += 0.035;
+    elegido = { lv, base };
+    pulso = 0;
+    const caja = new THREE.Box3().setFromObject(lv.mesh).translate(new THREE.Vector3(0, 0, destino.z - lv.mesh.position.z));
+    brilloElegido.rodear(caja);
+    brilloElegido.meta = 1;
+    if (asoma) {
+      basesAsomados.set(lv, base);
+      const desde = lv.mesh.position.clone();
+      void animador.animar(520, (k) => lv.mesh.position.lerpVectors(desde, destino, k), { clave: `asomar:${lv.libro.id}`, curva: salidaSuave });
+    }
+    return ubicacionDe(lv);
+  };
+
   // Modo cajón: la cámara se acerca a los vinilos para elegir uno
   let enCajon = false;
   const tactil = matchMedia('(pointer: coarse)').matches;
@@ -364,6 +451,7 @@ async function iniciar() {
       void tocadiscos.detener();
     },
     contextoLectura: () => ({ hora: ambiente.hora, lluvia: ambiente.clima.lluvia }),
+    senalarLibro,
     alCambiarPaneles: (abiertos) => {
       interaccion.bloqueado = abiertos;
       if (abiertos) {
@@ -521,7 +609,7 @@ async function iniciar() {
   const reloj = new THREE.Timer();
   let primero = true;
   const bucle = (ahora: number) => {
-    const enReposo = !primero && ahora - ultimaActividad > 4000 && !animador.activo && !interaccion.animando && !foco.enUso;
+    const enReposo = !primero && ahora - ultimaActividad > 4000 && !animador.activo && !interaccion.animando && !foco.enUso && !ola;
     if (enReposo && ahora - ultimoCuadro < 29) {
       requestAnimationFrame(bucle);
       return;
@@ -542,6 +630,27 @@ async function iniciar() {
     ambiente.tick(dt);
     actualizarSol();
     polvo.tick(dt);
+    brilloPapelito.tick(dt);
+    // El post-it guiña: cada tanto se ilumina apenas, como si algo lo tocara
+    const guino = Math.pow(Math.max(0, Math.sin(ahora * 0.0011)), 14) * 0.5;
+    papelito.resaltar(Math.max(papelitoSenalado, guino));
+    brilloElegido.tick(dt);
+    if (ola) {
+      const o = ola;
+      const k = (performance.now() - o.inicio) / 1150;
+      o.libros.forEach((l, i) => {
+        if (elegido?.lv !== l) l.resaltar(Math.exp(-(((k * 1.25 - o.d[i]) / 0.09) ** 2)) * 0.6);
+      });
+      if (k >= 1) {
+        o.libros.forEach((l) => elegido?.lv !== l && l.resaltar(0));
+        ola = null;
+        o.listo();
+      }
+    }
+    if (elegido) {
+      pulso += dt;
+      elegido.lv.resaltar(0.3 + 0.15 * Math.sin(pulso * 2.6));
+    }
     // Las sombras se recalculan solo cuando algo se mueve: el brillo al señalar un libro no las cambia,
     // pero en el cajón el disco señalado sí sube
     if (animador.activo || foco.girando || (enCajon && interaccion.animando) || ambiente.consumirCambio()) renderer.shadowMap.needsUpdate = true;
@@ -578,6 +687,8 @@ async function iniciar() {
       polvo,
       abrirLibro,
       cerrarFoco,
+      senalarLibro,
+      destellos: { papelito: brilloPapelito, elegido: brilloElegido },
       probarHora: (h: number | null) => {
         ambiente.horaForzada = h;
         ambiente.actualizar(true);
