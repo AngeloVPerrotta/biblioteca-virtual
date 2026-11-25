@@ -75,6 +75,18 @@ async function iniciar() {
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   config.aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  // Si el navegador pierde el contexto gráfico (pasa a veces en celulares), ofrecer recargar
+  canvas.addEventListener(
+    'webglcontextlost',
+    (e) => {
+      e.preventDefault();
+      document.body.insertAdjacentHTML(
+        'beforeend',
+        '<div class="aviso visible" style="pointer-events:auto">Se reinició la parte gráfica. <a href="" style="color:#e8b46a">Recargar</a></div>',
+      );
+    },
+    { once: true },
+  );
   RectAreaLightUniformsLib.init();
 
   const escena = new THREE.Scene();
@@ -158,6 +170,45 @@ async function iniciar() {
   mesa.tocadiscos.userData.interactivo.subtitulo = 'Elegí un disco del cajón';
   const tocadiscos = new Tocadiscos({ giratorio: mesa.giratorio, brazo: mesa.brazo, vinilo: mesa.vinilo }, animador);
   escena.add(mesa.grupo);
+  // La caja de vinilos va en el piso, entre la biblioteca y la mesa
+  mesa.cajon.position.set(W / 2 + 0.235, 0, 0.3);
+  mesa.cajon.rotation.y = 0.1;
+  escena.add(mesa.cajon);
+  const datosCajon = mesa.cajon.userData.interactivo as Interactivo;
+  // Cada funda se puede señalar como un libro: sube y muestra su tapa.
+  // Se detecta con una "zona" invisible fija por disco, así el disco que sube no tapa a los demás.
+  const zonasDiscos: THREE.Mesh[] = [];
+  const invisible = new THREE.MeshBasicMaterial({ visible: false });
+  const geoZona = new THREE.PlaneGeometry(0.31, 0.44);
+  mesa.fundas.forEach((funda, i) => {
+    const disco = datosDiscos.discos[i];
+    if (!disco) return;
+    const base = (funda.userData.base as THREE.Vector3).clone();
+    const inclinacion = funda.rotation.x;
+    const zona = new THREE.Mesh(geoZona, invisible);
+    zona.position.set(0, 0.22, base.z);
+    zona.rotation.x = inclinacion;
+    mesa.cajon.add(zona);
+    zonasDiscos.push(zona);
+    marcar(zona, {
+      tipo: 'disco',
+      id: disco.id,
+      titulo: disco.nombre,
+      subtitulo: disco.anio ? `${disco.artista} · ${disco.anio}` : disco.artista,
+      resaltar: (v) => {
+        // Fuera del modo cajón, el cajón entero se comporta como un solo objeto
+        if (!enCajon) {
+          funda.position.y = base.y;
+          funda.rotation.x = inclinacion;
+          datosCajon.resaltar(v);
+          return;
+        }
+        funda.position.y = base.y + v * 0.18;
+        funda.position.z = base.z + v * 0.012;
+        funda.rotation.x = inclinacion - v * 0.08;
+      },
+    });
+  });
 
   const elCuadro = cuadroColgado(datos.cuadro);
   elCuadro.position.set(W / 2 + 0.85, 1.58, 0);
@@ -220,20 +271,48 @@ async function iniciar() {
     await foco.abrir(lv, nota);
     ui.mostrarTarjeta(lv.libro);
   };
-  const ui = new Interfaz(datos, datosDiscos, {
+  // Modo cajón: la cámara se acerca a los vinilos para elegir uno
+  let enCajon = false;
+  const tactil = matchMedia('(pointer: coarse)').matches;
+  const entrarCajon = async () => {
+    if (enCajon || foco.enUso) return;
+    enCajon = true;
+    ui.cerrarPaneles();
+    ui.ocultarEtiqueta();
+    interaccion.limpiar();
+    const p = mesa.cajon.getWorldPosition(new THREE.Vector3());
+    camara.vista = camara.vertical
+      ? { pos: p.clone().add(new THREE.Vector3(-0.05, 1.15, 0.95)), mira: p.clone().add(new THREE.Vector3(0, 0.16, -0.02)), fov: 50 }
+      : { pos: p.clone().add(new THREE.Vector3(-0.03, 0.98, 0.92)), mira: p.clone().add(new THREE.Vector3(0, 0.2, -0.03)), fov: 42 };
+    ui.mostrarAyudaCajon(true, tactil);
+    await animador.animar(1000, (k) => (camara.mezclaVista = k), { clave: 'vista' });
+  };
+  const salirCajon = async () => {
+    if (!enCajon) return;
+    enCajon = false;
+    interaccion.limpiar();
+    ui.ocultarEtiqueta();
+    ui.mostrarAyudaCajon(false);
+    const desde = camara.mezclaVista;
+    await animador.animar(900, (k) => (camara.mezclaVista = desde * (1 - k)), { clave: 'vista' });
+  };
+  const ponerDisco = (id: string) => {
+    const disco = datosDiscos.discos.find((d) => d.id === id);
+    if (!disco) return;
+    mesa.tocadiscos.userData.interactivo.subtitulo = `Sonando: ${disco.nombre}`;
+    ui.mostrarReproductor(disco);
+    void tocadiscos.poner(disco);
+  };
+
+  const ui = new Interfaz(datos, {
     elegirLibro: (id) => void abrirLibro(id),
     ordenar: (orden) => {
       if (foco.enUso) return;
       estanteria.distribuir(orden, true);
     },
-    cerrarFoco: () => void cerrarFoco(),
-    elegirDisco: (id) => {
-      const disco = datosDiscos.discos.find((d) => d.id === id);
-      if (!disco) return;
-      mesa.tocadiscos.userData.interactivo.subtitulo = `Sonando: ${disco.nombre}`;
-      ui.mostrarReproductor(disco);
-      void tocadiscos.poner(disco);
-    },
+    cerrarFoco: () => void (enCajon ? salirCajon() : cerrarFoco()),
+    abrirCajon: () => void (enCajon ? salirCajon() : entrarCajon()),
+    cerrarCajon: () => void salirCajon(),
     sacarDisco: () => {
       ui.ocultarReproductor();
       mesa.tocadiscos.userData.interactivo.subtitulo = 'Elegí un disco del cajón';
@@ -260,11 +339,19 @@ async function iniciar() {
         ui.abrirAgenda();
         break;
       case 'vinilos':
-        ui.abrirDiscos();
+        void entrarCajon();
         break;
       case 'tocadiscos':
         if (tocadiscos.sonando) ui.mostrarReproductor(tocadiscos.sonando.disco);
-        else ui.abrirDiscos();
+        else void entrarCajon();
+        break;
+      case 'disco':
+        if (!enCajon) {
+          void entrarCajon();
+          break;
+        }
+        ponerDisco(i.id!);
+        void salirCajon();
         break;
       case 'reloj':
         ui.mostrarAviso(`${datosReloj.titulo} · ${datosReloj.subtitulo}`);
@@ -275,11 +362,15 @@ async function iniciar() {
   interaccion = new Interaccion(
     canvas,
     camara,
-    () => [...estanteria.objetivos(), pila.grupo, mesa.tocadiscos, mesa.cajon, mesa.agenda, relojPared.grupo, ...(leyendo ? [leyendo.mesh] : [])],
+    () => enCajon ? zonasDiscos : [...estanteria.objetivos(), pila.grupo, mesa.tocadiscos, mesa.cajon, mesa.agenda, relojPared.grupo, ...(leyendo ? [leyendo.mesh] : [])],
     {
-      alSenalar: (i, p) => (i && p ? ui.mostrarEtiqueta(i.titulo, i.subtitulo ?? '', p.x, p.y) : ui.ocultarEtiqueta()),
+      alSenalar: (i, p) => {
+        const e = i && !enCajon && i.tipo === 'disco' ? datosCajon : i;
+        if (e && p) ui.mostrarEtiqueta(e.titulo, e.subtitulo ?? '', p.x, p.y);
+        else ui.ocultarEtiqueta();
+      },
       alSeleccionar: seleccionar,
-      alTocarVacio: () => void cerrarFoco(),
+      alTocarVacio: () => void (enCajon ? salirCajon() : cerrarFoco()),
       alArrastrar: (dx, dy) => foco.arrastrar(dx, dy),
     },
   );

@@ -4,7 +4,7 @@
  */
 import type { DatosBiblioteca, EstadoLectura, Libro } from './datos/tipos';
 import type { Orden } from './escena/estanteria';
-import type { DatosDiscos, Disco } from './escena/tocadiscos';
+import type { Disco } from './escena/tocadiscos';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -29,7 +29,8 @@ interface Acciones {
   elegirLibro: (id: string) => void;
   ordenar: (orden: Orden) => void;
   cerrarFoco: () => void;
-  elegirDisco: (id: string) => void;
+  abrirCajon: () => void;
+  cerrarCajon: () => void;
   sacarDisco: () => void;
   alCambiarPaneles: (abiertos: boolean) => void;
 }
@@ -44,33 +45,25 @@ export class Interfaz {
   private readonly tarjeta = $('tarjeta');
   private readonly agenda = $('agenda');
   private readonly aviso = $('aviso');
-  private readonly discos = $('discos');
+  private readonly ayudaCajon = $('ayuda-cajon');
   private readonly reproductor = $('reproductor');
   private filtro: Filtro = 'todos';
   private temporizadorAviso = 0;
 
   constructor(
     private datos: DatosBiblioteca,
-    private datosDiscos: DatosDiscos,
     private acciones: Acciones,
   ) {
     this.hub.hidden = false;
-    this.discos.hidden = false;
     this.reproductor.hidden = false;
     this.tarjeta.hidden = false;
     this.agenda.hidden = false;
 
     $('btn-libros').addEventListener('click', () => (this.hub.classList.contains('abierto') ? this.cerrarHub() : this.abrirHub()));
     $('btn-wishlist').addEventListener('click', () => (this.agenda.classList.contains('abierta') ? this.cerrarAgenda() : this.abrirAgenda()));
-    $('btn-discos').addEventListener('click', () => (this.discos.classList.contains('abierto') ? this.cerrarDiscos() : this.abrirDiscos()));
-    this.discos.querySelector('[data-cerrar]')!.addEventListener('click', () => this.cerrarDiscos());
+    $('btn-discos').addEventListener('click', () => this.acciones.abrirCajon());
+    $('ayuda-cajon-volver').addEventListener('click', () => this.acciones.cerrarCajon());
     this.reproductor.querySelector('[data-cerrar]')!.addEventListener('click', () => this.acciones.sacarDisco());
-    $('discos-lista').addEventListener('click', (e) => {
-      const boton = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-disco]');
-      if (!boton) return;
-      this.cerrarDiscos();
-      this.acciones.elegirDisco(boton.dataset.disco!);
-    });
     this.hub.querySelector('[data-cerrar]')!.addEventListener('click', () => this.cerrarHub());
     this.agenda.querySelector('[data-cerrar]')!.addEventListener('click', () => this.cerrarAgenda());
     this.tarjeta.querySelector('[data-cerrar]')!.addEventListener('click', () => this.acciones.cerrarFoco());
@@ -93,7 +86,6 @@ export class Interfaz {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (this.agenda.classList.contains('abierta')) this.cerrarAgenda();
-        else if (this.discos.classList.contains('abierto')) this.cerrarDiscos();
         else if (this.hub.classList.contains('abierto')) this.cerrarHub();
         else this.acciones.cerrarFoco();
       } else if (e.key === '/' && document.activeElement !== this.buscar) {
@@ -105,11 +97,10 @@ export class Interfaz {
 
     this.renderLista();
     this.renderAgenda();
-    this.renderDiscos();
   }
 
   get panelesAbiertos() {
-    return this.hub.classList.contains('abierto') || this.agenda.classList.contains('abierta') || this.discos.classList.contains('abierto');
+    return this.hub.classList.contains('abierto') || this.agenda.classList.contains('abierta');
   }
 
   /* ------------------------------------------------------------ etiqueta */
@@ -133,7 +124,6 @@ export class Interfaz {
 
   abrirHub() {
     this.cerrarAgenda();
-    this.cerrarDiscos();
     this.hub.classList.add('abierto');
     this.acciones.alCambiarPaneles(true);
   }
@@ -215,7 +205,6 @@ export class Interfaz {
 
   abrirAgenda() {
     this.cerrarHub();
-    this.cerrarDiscos();
     this.agenda.classList.add('abierta');
     this.acciones.alCambiarPaneles(true);
   }
@@ -229,35 +218,14 @@ export class Interfaz {
   cerrarPaneles() {
     this.cerrarHub();
     this.cerrarAgenda();
-    this.cerrarDiscos();
   }
 
   /* ------------------------------------------------------------ discos */
 
-  private renderDiscos() {
-    $('discos-periodo').textContent = `${this.datosDiscos.discos.length} discos · lo que más escuché en Spotify · ${this.datosDiscos.periodo.toLowerCase()}`;
-    $('discos-lista').innerHTML = this.datosDiscos.discos
-      .map(
-        (d) => `<li><button type="button" data-disco="${escapar(d.id)}">
-          <img src="${escapar(d.portadaChica ?? '')}" alt="" loading="lazy" />
-          <span class="discos__nombre">${escapar(d.nombre)}</span>
-          <span class="discos__artista">${escapar(d.artista)}${d.anio ? ` · ${escapar(d.anio)}` : ''}</span>
-        </button></li>`,
-      )
-      .join('');
-  }
-
-  abrirDiscos() {
-    this.cerrarHub();
-    this.cerrarAgenda();
-    this.discos.classList.add('abierto');
-    this.acciones.alCambiarPaneles(true);
-  }
-
-  cerrarDiscos() {
-    if (!this.discos.classList.contains('abierto')) return;
-    this.discos.classList.remove('abierto');
-    this.acciones.alCambiarPaneles(this.panelesAbiertos);
+  /** Cartelito de ayuda mientras se eligen discos en el cajón. */
+  mostrarAyudaCajon(visible: boolean, tactil = false) {
+    $('ayuda-cajon-texto').textContent = tactil ? 'Tocá un disco para verlo y otra vez para ponerlo' : 'Pasá por los discos y hacé clic en uno para ponerlo';
+    this.ayudaCajon.classList.toggle('visible', visible);
   }
 
   /** Muestra el reproductor de Spotify con el disco elegido. */

@@ -16,6 +16,9 @@ export class Camara {
   zoom = 0;
   /** 1..0, entrada a la habitación después de la pantalla de carga. */
   intro = 0;
+  /** Vista alternativa (por ejemplo, mirando el cajón de discos) y cuánto se mezcla con la base. */
+  vista: { pos: THREE.Vector3; mira: THREE.Vector3; fov: number } | null = null;
+  mezclaVista = 0;
   vertical = false;
   private giroscopioBase: { beta: number; gamma: number } | null = null;
 
@@ -58,16 +61,24 @@ export class Camara {
   }
 
   private aplicar() {
-    const libertad = 1 - this.zoom * 0.7;
+    const m = this.mezclaVista;
+    const libertad = (1 - this.zoom * 0.7) * (1 - m * 0.7);
     const i = this.intro;
-    this.cam.position.set(
+    const pos = new THREE.Vector3(
       this.base.pos.x + this.actual.x * 0.08 * libertad - i * 0.35,
       this.base.pos.y + this.actual.y * 0.04 * libertad + i * 0.3,
       this.base.pos.z - this.zoom * 0.12 - i * 1.4,
     );
-    this.cam.lookAt(this.base.mira.x + this.actual.x * 0.02, this.base.mira.y + this.actual.y * 0.012 + i * 0.2, this.base.mira.z);
+    const mira = new THREE.Vector3(this.base.mira.x + this.actual.x * 0.02, this.base.mira.y + this.actual.y * 0.012 + i * 0.2, this.base.mira.z);
+    let fov = this.base.fov - this.zoom * 3 - i * 6;
+    if (this.vista && m > 0) {
+      pos.lerp(this.vista.pos.clone().add(new THREE.Vector3(this.actual.x * 0.02, this.actual.y * 0.012, 0)), m);
+      mira.lerp(this.vista.mira, m);
+      fov += (this.vista.fov - fov) * m;
+    }
+    this.cam.position.copy(pos);
+    this.cam.lookAt(mira);
     this.cam.rotateZ(i * 0.18);
-    const fov = this.base.fov - this.zoom * 3 - i * 6;
     if (Math.abs(this.cam.fov - fov) > 1e-4) {
       this.cam.fov = fov;
       this.cam.updateProjectionMatrix();

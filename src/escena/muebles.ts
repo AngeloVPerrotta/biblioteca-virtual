@@ -262,7 +262,7 @@ export function mesaTocadiscos(madera: THREE.Texture, portadas: (string | null)[
   sombra(agenda);
   g.add(agenda);
 
-  // Caja de vinilos bajo la mesa: madera maciza, el frente más bajo deja ver la primera tapa
+  // Caja de vinilos (va en el piso, junto a la mesa): madera maciza, el frente más bajo deja ver la primera tapa
   const cajon = new THREE.Group();
   const maderaCaja = maderaMaterial(madera, [0.5, 0.4], 0xd8ae7c, 0.5);
   const W = 0.37;
@@ -296,14 +296,16 @@ export function mesaTocadiscos(madera: THREE.Texture, portadas: (string | null)[
   const cargador = new THREE.TextureLoader();
   cargador.setCrossOrigin('anonymous');
   const fundas: THREE.Mesh[] = [];
-  const cantidad = Math.min(22, Math.max(portadas.length, 14));
+  const cantidad = Math.min(40, Math.max(portadas.length, 14));
+  const paso = (D - 0.05) / cantidad;
   for (let i = 0; i < cantidad; i++) {
     const color = new THREE.Color(COLORES_DISCOS[Math.floor(r() * COLORES_DISCOS.length)]);
     const lado = new THREE.MeshStandardMaterial({ color, roughness: 0.75 });
     const tapa = new THREE.MeshStandardMaterial({ color, roughness: 0.6 });
     const funda = new THREE.Mesh(new THREE.BoxGeometry(0.31, 0.31, 0.0045), [lado, lado, lado, lado, tapa, lado]);
-    funda.position.set((r() - 0.5) * 0.008, 0.172, D / 2 - 0.035 - i * 0.0128);
-    funda.rotation.set(-0.1 - (i === 0 ? 0.08 : 0), (r() - 0.5) * 0.02, (r() - 0.5) * 0.02);
+    funda.position.set((r() - 0.5) * 0.008, 0.172, D / 2 - 0.03 - i * paso);
+    funda.rotation.set(-0.06 - (i === 0 ? 0.06 : 0), (r() - 0.5) * 0.02, (r() - 0.5) * 0.02);
+    funda.userData.base = funda.position.clone();
     const url = portadas[i];
     if (url) {
       cargador.load(url, (t) => {
@@ -317,9 +319,7 @@ export function mesaTocadiscos(madera: THREE.Texture, portadas: (string | null)[
     fundas.push(funda);
     cajon.add(funda);
   }
-  cajon.position.set(0, 0, 0.02);
   sombra(cajon);
-  g.add(cajon);
 
   sombra(g);
   return { grupo: g, tocadiscos: td, giratorio, brazo, vinilo: matVinilo, agenda, cajon, fundas, alto };

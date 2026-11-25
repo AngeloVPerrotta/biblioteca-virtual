@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * Trae los discos más escuchados de las últimas ~4 semanas desde la API de Spotify
+ * Trae los discos más escuchados desde la API de Spotify (mezcla las últimas ~4 semanas
+ * con los últimos ~6 meses, con un máximo de discos por artista para que haya variedad)
  * y los guarda en src/datos/discos.json (sin tokens ni datos privados).
  *
- * Uso:  node scripts/spotify-top.mjs <CLIENT_ID>
+ * Uso:  node scripts/spotify-top.mjs <CLIENT_ID> [maxPorArtista=2]
  *
  * Usa el flujo "Authorization Code con PKCE": no hace falta el client secret.
  * La app de Spotify tiene que tener como Redirect URI: http://127.0.0.1:8888/callback
@@ -21,7 +22,11 @@ if (!CLIENT_ID) {
 }
 const PUERTO = 8888;
 const REDIRECT = `http://127.0.0.1:${PUERTO}/callback`;
-const RANGO = process.argv[3] || 'short_term';
+const MAX_POR_ARTISTA = Number(process.argv[3] || 2);
+const RANGOS = [
+  ['short_term', 1],
+  ['medium_term', 0.6],
+];
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const salida = path.join(raiz, 'src', 'datos', 'discos.json');
 
@@ -63,15 +68,20 @@ async function procesar(codigo) {
   if (!r.ok) throw new Error(`No pude obtener el token: ${r.status} ${await r.text()}`);
   const { access_token: token } = await r.json();
 
-  const temas = [];
-  for (const offset of [0, 49]) {
-    const pagina = await api(token, `/me/top/tracks?time_range=${RANGO}&limit=50&offset=${offset}`);
-    for (const t of pagina.items) if (!temas.some((x) => x.id === t.id)) temas.push(t);
+  // Cada tema suma puntos a su disco según su posición en el ranking (y el peso del período)
+  const discos = new Map();
+  let totalTemas = 0;
+  for (const [rango, peso] of RANGOS) {
+    const temas = [];
+    for (const offset of [0, 49]) {
+      const pagina = await api(token, `/me/top/tracks?time_range=${rango}&limit=50&offset=${offset}`);
+      for (const t of pagina.items) if (!temas.some((x) => x.id === t.id)) temas.push(t);
+    }
+    totalTemas += temas.length;
+    temas.forEach((t, i) => sumar(t, (100 - i) * peso));
   }
 
-  // Cada tema suma puntos a su disco según su posición en el ranking
-  const discos = new Map();
-  temas.forEach((t, i) => {
+  function sumar(t, puntos) {
     const a = t.album;
     if (!a?.id) return;
     const d = discos.get(a.id) ?? {
@@ -86,19 +96,36 @@ async function procesar(codigo) {
       temas: [],
       puntos: 0,
     };
-    d.puntos += 100 - i;
-    if (d.temas.length < 5) d.temas.push(t.name);
+    d.puntos += puntos;
+    if (d.temas.length < 5 && !d.temas.includes(t.name)) d.temas.push(t.name);
+    d.artistaPrincipal = a.artists[0]?.name ?? d.artista;
     discos.set(a.id, d);
-  });
+  }
 
-  const lista = [...discos.values()].sort((a, b) => b.puntos - a.puntos).slice(0, 40);
+  // Variedad: como mucho MAX_POR_ARTISTA discos de cada artista
+  const porArtista = new Map();
+  const lista = [];
+  const ediciones = new Set();
+  const nombreBase = (n) => n.replace(/s*[([].*?[)]]s*/g, ' ').trim().toLowerCase();
+  for (const d of [...discos.values()].sort((a, b) => b.puntos - a.puntos)) {
+    // Misma obra en otra edición (deluxe, remaster…): una sola
+    const clave = `${d.artistaPrincipal}|${nombreBase(d.nombre)}`;
+    if (ediciones.has(clave)) continue;
+    ediciones.add(clave);
+    const n = porArtista.get(d.artistaPrincipal) ?? 0;
+    if (n >= MAX_POR_ARTISTA) continue;
+    porArtista.set(d.artistaPrincipal, n + 1);
+    delete d.artistaPrincipal;
+    lista.push(d);
+    if (lista.length >= 40) break;
+  }
   const datos = {
     actualizado: new Date().toISOString().slice(0, 10),
-    periodo: RANGO === 'short_term' ? 'Últimas 4 semanas' : RANGO === 'medium_term' ? 'Últimos 6 meses' : 'Último año',
+    periodo: 'Lo más escuchado últimamente',
     discos: lista,
   };
   fs.writeFileSync(salida, JSON.stringify(datos, null, 2) + '\n');
-  console.log(`Listo: ${lista.length} discos (de ${temas.length} temas) guardados en src/datos/discos.json`);
+  console.log(`Listo: ${lista.length} discos (de ${totalTemas} temas) guardados en src/datos/discos.json`);
 }
 
 const servidor = http.createServer(async (req, res) => {

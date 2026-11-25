@@ -442,70 +442,6 @@ button {
 
 /* ---------------------------------------------------------------- discos */
 
-.discos__periodo {
-  margin: -6px 0 12px;
-  font-size: 13px;
-  color: var(--texto-suave);
-}
-
-.discos__lista {
-  list-style: none;
-  margin: 0 -18px;
-  padding: 0 18px calc(24px + var(--seguro-abajo));
-  overflow-y: auto;
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  align-content: start;
-  overscroll-behavior: contain;
-}
-
-.discos__lista button {
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: none;
-  text-align: left;
-  cursor: pointer;
-}
-
-.discos__lista img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: 6px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.discos__lista button:hover img,
-.discos__lista button:focus-visible img {
-  transform: translateY(-3px) rotate(-1deg);
-  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.55);
-}
-
-.discos__lista button:focus-visible {
-  outline: none;
-}
-
-.discos__nombre {
-  display: block;
-  margin-top: 8px;
-  font-family: 'EB Garamond', Georgia, serif;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 1.15;
-}
-
-.discos__artista {
-  display: block;
-  font-size: 12px;
-  color: var(--texto-suave);
-  margin-top: 2px;
-}
-
 .reproductor {
   position: fixed;
   z-index: 16;
@@ -558,6 +494,52 @@ button {
   height: 152px;
   border: 0;
   border-radius: 12px;
+}
+
+.ayuda {
+  position: fixed;
+  left: 50%;
+  bottom: calc(22px + var(--seguro-abajo));
+  z-index: 14;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  background: var(--panel);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-size: 13px;
+  color: var(--texto-suave);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+}
+
+.ayuda.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.ayuda__volver {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(232, 180, 106, 0.5);
+  background: rgba(232, 180, 106, 0.14);
+  color: var(--texto);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+@media (max-width: 420px) {
+  .ayuda {
+    white-space: normal;
+    width: calc(100vw - 24px);
+  }
 }
 
 /* ---------------------------------------------------------------- tarjeta */

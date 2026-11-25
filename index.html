@@ -64,15 +64,10 @@
       <ul id="hub-lista" class="hub__lista"></ul>
     </aside>
 
-    <aside id="discos" class="hub" role="dialog" aria-modal="false" aria-labelledby="discos-titulo" hidden>
-      <div class="hub__asa" aria-hidden="true"></div>
-      <div class="hub__cabecera">
-        <h2 id="discos-titulo">Mis discos</h2>
-        <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
-      </div>
-      <p id="discos-periodo" class="discos__periodo"></p>
-      <ul id="discos-lista" class="discos__lista"></ul>
-    </aside>
+    <div id="ayuda-cajon" class="ayuda" role="status">
+      <span id="ayuda-cajon-texto">Pasá por los discos y elegí uno</span>
+      <button id="ayuda-cajon-volver" class="ayuda__volver" type="button">Volver</button>
+    </div>
 
     <section id="reproductor" class="reproductor" aria-label="Disco sonando" hidden>
       <div class="reproductor__cabecera">

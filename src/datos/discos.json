@@ -1,25 +1,7 @@
 {
   "actualizado": "2026-11-25",
-  "periodo": "Últimas 4 semanas",
+  "periodo": "Lo más escuchado últimamente",
   "discos": [
-    {
-      "id": "0HBXl0BoyqkfJmxjrLtnqL",
-      "nombre": "Los Fundamentalistas del Aire Acondicionado en Huracán (En Vivo)",
-      "artista": "Los Fundamentalistas del Aire Acondicionado",
-      "anio": "2023",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273ef8a92853feeb035732f5d55",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02ef8a92853feeb035732f5d55",
-      "url": "https://open.spotify.com/album/0HBXl0BoyqkfJmxjrLtnqL",
-      "temas": [
-        "Mi Genio Amor - En Vivo",
-        "Rock para el Negro Atila - En Vivo",
-        "Héroe del Whisky - En Vivo",
-        "Yo No Me Caí del Cielo - En Vivo",
-        "Nuestro Amo Juega al Esclavo - En Vivo"
-      ],
-      "puntos": 538
-    },
     {
       "id": "0TmPRZoau8M0QIfnMgwrlI",
       "nombre": "Oktubre",
@@ -36,7 +18,7 @@
         "Ji Ji Ji",
         "Motor Psico"
       ],
-      "puntos": 485
+      "puntos": 726.7999999999998
     },
     {
       "id": "3zUMPvVgeOb3Fx9SmTCU4m",
@@ -54,110 +36,68 @@
         "Caña Seca y un Membrillo",
         "Lavi-Rap"
       ],
-      "puntos": 433
+      "puntos": 637.6
     },
     {
-      "id": "0lafFIfGSFtYsXFIVoIyl5",
-      "nombre": "¡Bang! ¡Bang!... Estás Liquidado",
-      "artista": "Patricio Rey y sus Redonditos de Ricota",
-      "anio": "1989",
+      "id": "0HBXl0BoyqkfJmxjrLtnqL",
+      "nombre": "Los Fundamentalistas del Aire Acondicionado en Huracán (En Vivo)",
+      "artista": "Los Fundamentalistas del Aire Acondicionado",
+      "anio": "2023",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2736210748b94436cbc74962989",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e026210748b94436cbc74962989",
-      "url": "https://open.spotify.com/album/0lafFIfGSFtYsXFIVoIyl5",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273ef8a92853feeb035732f5d55",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02ef8a92853feeb035732f5d55",
+      "url": "https://open.spotify.com/album/0HBXl0BoyqkfJmxjrLtnqL",
       "temas": [
-        "Maldición Va a Ser un Día Hermoso",
-        "Ropa Sucia",
-        "Nuestro Amo Juega al Esclavo",
-        "Esa Estrella Era Mi Lujo",
-        "La Parabellum del Buen Psicópata"
+        "Mi Genio Amor - En Vivo",
+        "Rock para el Negro Atila - En Vivo",
+        "Héroe del Whisky - En Vivo",
+        "Yo No Me Caí del Cielo - En Vivo",
+        "Nuestro Amo Juega al Esclavo - En Vivo"
       ],
-      "puntos": 424
+      "puntos": 551.8
     },
     {
-      "id": "4AavSPysvEBXOr2Bipzi7q",
-      "nombre": "Último Bondi a Finisterre",
-      "artista": "Patricio Rey y sus Redonditos de Ricota",
-      "anio": "1998",
+      "id": "1u6H3heR03PvMNWvCnasex",
+      "nombre": "En Concierto (En Vivo)",
+      "artista": "Indio Solari, Los Fundamentalistas del Aire Acondicionado",
+      "anio": "2015",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2738c8a3bccc2387168c797e40a",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e028c8a3bccc2387168c797e40a",
-      "url": "https://open.spotify.com/album/4AavSPysvEBXOr2Bipzi7q",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27303060ada5eee108fb77f2ac9",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0203060ada5eee108fb77f2ac9",
+      "url": "https://open.spotify.com/album/1u6H3heR03PvMNWvCnasex",
       "temas": [
-        "Gualicho",
-        "Las Increíbles Andanzas del Capitán Buscapina en Cybersiberia",
-        "Esto Es To-To-Todo Amigos!",
-        "Estás Frito Angelito",
-        "Alien Duce"
+        "Nadie Es Perfecto / Ñam Fri Fruli Fali Fru - En Vivo"
       ],
-      "puntos": 339
+      "puntos": 156.2
     },
     {
-      "id": "1yfbnWxr2stypbpB3K0547",
-      "nombre": "Gulp!",
-      "artista": "Patricio Rey y sus Redonditos de Ricota",
-      "anio": "1985",
+      "id": "2xrUpeNv6iAQshTdsKk0xh",
+      "nombre": "Desde los Satélites (En Vivo)",
+      "artista": "Los Fundamentalistas del Aire Acondicionado",
+      "anio": "2020",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273ef27f03e0c59b668e4010d05",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02ef27f03e0c59b668e4010d05",
-      "url": "https://open.spotify.com/album/1yfbnWxr2stypbpB3K0547",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2736fc7123d17e0716dcd593e38",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e026fc7123d17e0716dcd593e38",
+      "url": "https://open.spotify.com/album/2xrUpeNv6iAQshTdsKk0xh",
       "temas": [
-        "Ñam Fri Fruli Fali Fru",
-        "Te Voy a Atornillar",
-        "El Infierno Está Encantador Esta Noche",
-        "Yo No Me Caí del Cielo",
-        "La Bestia Pop"
+        "Honolulu - En Vivo"
       ],
-      "puntos": 311
+      "puntos": 149.8
     },
     {
-      "id": "1cvN5QA28nC5QYpjoksMGe",
-      "nombre": "Lobo Suelto",
-      "artista": "Patricio Rey y sus Redonditos de Ricota",
+      "id": "4D1aIzUYKG6jytRjgT0QIx",
+      "nombre": "La Era De La Boludez",
+      "artista": "Divididos",
       "anio": "1993",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273af9e234f7bb89453544d6cb1",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02af9e234f7bb89453544d6cb1",
-      "url": "https://open.spotify.com/album/1cvN5QA28nC5QYpjoksMGe",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2737e09bfe5e78c7fb5cb3d9b68",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e027e09bfe5e78c7fb5cb3d9b68",
+      "url": "https://open.spotify.com/album/4D1aIzUYKG6jytRjgT0QIx",
       "temas": [
-        "Susanita",
-        "Rock para el Negro Atila",
-        "Un Ángel para Tu Soledad",
-        "La Hija del Fletero"
+        "Paisano De Hurlingham",
+        "Dame Un Limón"
       ],
-      "puntos": 225
-    },
-    {
-      "id": "1JZBc7tWO3m3ryyToiLTdj",
-      "nombre": "La Mosca y la Sopa",
-      "artista": "Patricio Rey y sus Redonditos de Ricota",
-      "anio": "1991",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2731c0740bf2b983943ca25a15d",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e021c0740bf2b983943ca25a15d",
-      "url": "https://open.spotify.com/album/1JZBc7tWO3m3ryyToiLTdj",
-      "temas": [
-        "Un Poco de Amor Francés",
-        "Queso Ruso",
-        "Fusilados por la Cruz Roja"
-      ],
-      "puntos": 204
-    },
-    {
-      "id": "5kk3PbroAezGBPucpoN4oC",
-      "nombre": "Luzbelito",
-      "artista": "Patricio Rey y sus Redonditos de Ricota",
-      "anio": "1996",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2735d519b476f0ce0ec63d1d0c9",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e025d519b476f0ce0ec63d1d0c9",
-      "url": "https://open.spotify.com/album/5kk3PbroAezGBPucpoN4oC",
-      "temas": [
-        "Juguetes Perdidos",
-        "Me Matan Limón!",
-        "Mariposa Pontiac - Rock del País"
-      ],
-      "puntos": 152
+      "puntos": 149.60000000000002
     },
     {
       "id": "2Vo0I6ocNBz16QklB1zVc3",
@@ -178,64 +118,6 @@
       "puntos": 147
     },
     {
-      "id": "4D1aIzUYKG6jytRjgT0QIx",
-      "nombre": "La Era De La Boludez",
-      "artista": "Divididos",
-      "anio": "1993",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2737e09bfe5e78c7fb5cb3d9b68",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e027e09bfe5e78c7fb5cb3d9b68",
-      "url": "https://open.spotify.com/album/4D1aIzUYKG6jytRjgT0QIx",
-      "temas": [
-        "Paisano De Hurlingham",
-        "Dame Un Limón"
-      ],
-      "puntos": 128
-    },
-    {
-      "id": "1u6H3heR03PvMNWvCnasex",
-      "nombre": "En Concierto (En Vivo)",
-      "artista": "Indio Solari, Los Fundamentalistas del Aire Acondicionado",
-      "anio": "2015",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b27303060ada5eee108fb77f2ac9",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0203060ada5eee108fb77f2ac9",
-      "url": "https://open.spotify.com/album/1u6H3heR03PvMNWvCnasex",
-      "temas": [
-        "Nadie Es Perfecto / Ñam Fri Fruli Fali Fru - En Vivo"
-      ],
-      "puntos": 98
-    },
-    {
-      "id": "2xrUpeNv6iAQshTdsKk0xh",
-      "nombre": "Desde los Satélites (En Vivo)",
-      "artista": "Los Fundamentalistas del Aire Acondicionado",
-      "anio": "2020",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2736fc7123d17e0716dcd593e38",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e026fc7123d17e0716dcd593e38",
-      "url": "https://open.spotify.com/album/2xrUpeNv6iAQshTdsKk0xh",
-      "temas": [
-        "Honolulu - En Vivo"
-      ],
-      "puntos": 97
-    },
-    {
-      "id": "6ETDkXNvthotL4pKkXFg4L",
-      "nombre": "Un Baión para el Ojo Idiota",
-      "artista": "Patricio Rey y sus Redonditos de Ricota",
-      "anio": "1988",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273ca7cf5470b635a1b0a53fa36",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02ca7cf5470b635a1b0a53fa36",
-      "url": "https://open.spotify.com/album/6ETDkXNvthotL4pKkXFg4L",
-      "temas": [
-        "Aquella Solitaria Vaca Cubana",
-        "Vencedores Vencidos"
-      ],
-      "puntos": 94
-    },
-    {
       "id": "15eHesyZJpvolTrSUJgoDX",
       "nombre": "Anoche",
       "artista": "Babasonicos",
@@ -247,21 +129,7 @@
       "temas": [
         "Yegua"
       ],
-      "puntos": 93
-    },
-    {
-      "id": "4Q8EmYhu8qNh6jfKYQI1o5",
-      "nombre": "Vista Brava",
-      "artista": "Los Fundamentalistas del Aire Acondicionado",
-      "anio": "2025",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2735c208bdc6b4b07deaf48fc44",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e025c208bdc6b4b07deaf48fc44",
-      "url": "https://open.spotify.com/album/4Q8EmYhu8qNh6jfKYQI1o5",
-      "temas": [
-        "Nadie Es Perfecto / Ñam Fri Fruli Fali Fru - En Vivo en Baradero Diciembre 2024"
-      ],
-      "puntos": 86
+      "puntos": 125.4
     },
     {
       "id": "2Hq8YjDCJfynzmTgLGVkxJ",
@@ -275,7 +143,37 @@
       "temas": [
         "Hacelo por Mí"
       ],
-      "puntos": 83
+      "puntos": 90.2
+    },
+    {
+      "id": "3fyFk4hNkdXZK7eIuAvkyz",
+      "nombre": "Rocanroles Sin Destino",
+      "artista": "Callejeros",
+      "anio": "2004",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27308f98b78ed3d0beef7ff59a5",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0208f98b78ed3d0beef7ff59a5",
+      "url": "https://open.spotify.com/album/3fyFk4hNkdXZK7eIuAvkyz",
+      "temas": [
+        "Distinto",
+        "Tan Perfecto Que Asusta"
+      ],
+      "puntos": 85.19999999999999
+    },
+    {
+      "id": "0iMPnRq7PL82Zrah0gTQBR",
+      "nombre": "Divididos Por La Felicidad",
+      "artista": "Sumo",
+      "anio": "1985",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273019290b3d41497eb46e9bd67",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02019290b3d41497eb46e9bd67",
+      "url": "https://open.spotify.com/album/0iMPnRq7PL82Zrah0gTQBR",
+      "temas": [
+        "La Rubia Tarada",
+        "Mejor No Hablar de Ciertas Cosas"
+      ],
+      "puntos": 83.39999999999999
     },
     {
       "id": "5traX7E608ZH7grGz186U7",
@@ -289,7 +187,21 @@
       "temas": [
         "Flight 956 - En Vivo Teatro Argentino de La Plata"
       ],
-      "puntos": 80
+      "puntos": 81.2
+    },
+    {
+      "id": "3Ddw0PoboR3X6KN5ZmYFNR",
+      "nombre": "Detonador de Sueños",
+      "artista": "La Renga",
+      "anio": "2003",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2736e180394f875460ef19d556c",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e026e180394f875460ef19d556c",
+      "url": "https://open.spotify.com/album/3Ddw0PoboR3X6KN5ZmYFNR",
+      "temas": [
+        "La Razón Que Te Demora"
+      ],
+      "puntos": 80.4
     },
     {
       "id": "3NsuNDcnIc0jAxpC9svIbz",
@@ -320,6 +232,35 @@
       "puntos": 75
     },
     {
+      "id": "2yNaksHgeMQM9Quse463b5",
+      "nombre": "Is This It",
+      "artista": "The Strokes",
+      "anio": "2001",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273a388a3f20d1bf2123249cc79",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02a388a3f20d1bf2123249cc79",
+      "url": "https://open.spotify.com/album/2yNaksHgeMQM9Quse463b5",
+      "temas": [
+        "Someday",
+        "Last Nite"
+      ],
+      "puntos": 75
+    },
+    {
+      "id": "5qNbbDBwCJn5haKSWxsBJS",
+      "nombre": "Gol De Mujer",
+      "artista": "Divididos",
+      "anio": "1998",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273430ea4b7eccf14b192745465",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02430ea4b7eccf14b192745465",
+      "url": "https://open.spotify.com/album/5qNbbDBwCJn5haKSWxsBJS",
+      "temas": [
+        "Nene de Antes"
+      ],
+      "puntos": 72.19999999999999
+    },
+    {
       "id": "3OQ83AaDoeiPsbSU7DSSl8",
       "nombre": "A Head Full of Dreams Tour Edition",
       "artista": "Coldplay",
@@ -332,6 +273,21 @@
         "Adventure of a Lifetime"
       ],
       "puntos": 71
+    },
+    {
+      "id": "2fwFXVTTeMyJj7IbIoFQZy",
+      "nombre": "Siglo XXI",
+      "artista": "Gatillazo",
+      "anio": "2013",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273aba3d3b5fdc0a1045c5ae9cc",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02aba3d3b5fdc0a1045c5ae9cc",
+      "url": "https://open.spotify.com/album/2fwFXVTTeMyJj7IbIoFQZy",
+      "temas": [
+        "La Última Patada",
+        "Esclavos del Siglo XXI"
+      ],
+      "puntos": 70.2
     },
     {
       "id": "4XDH5D7YsE7B8xuhIBDyht",
@@ -347,6 +303,21 @@
         "LUGARES QUE LLEGO"
       ],
       "puntos": 70
+    },
+    {
+      "id": "1KYkaepx3oUWJRDR8ypzxH",
+      "nombre": "No Es Solo Rock And Roll",
+      "artista": "Intoxicados",
+      "anio": "2003",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2733ee9a09c327e80b3f67ac003",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e023ee9a09c327e80b3f67ac003",
+      "url": "https://open.spotify.com/album/1KYkaepx3oUWJRDR8ypzxH",
+      "temas": [
+        "Don Electrón",
+        "De La Guitarra"
+      ],
+      "puntos": 63
     },
     {
       "id": "5uRdvUR7xCnHmUW8n64n9y",
@@ -377,18 +348,33 @@
       "puntos": 59
     },
     {
-      "id": "3Ddw0PoboR3X6KN5ZmYFNR",
-      "nombre": "Detonador de Sueños",
-      "artista": "La Renga",
-      "anio": "2003",
+      "id": "2KaHfFLmbhkHQtMAEixycQ",
+      "nombre": "Algo mejor",
+      "artista": "Fabiana Cantilo",
+      "anio": "1991",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2736e180394f875460ef19d556c",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e026e180394f875460ef19d556c",
-      "url": "https://open.spotify.com/album/3Ddw0PoboR3X6KN5ZmYFNR",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27360bf5cb3fba9b172460dafed",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0260bf5cb3fba9b172460dafed",
+      "url": "https://open.spotify.com/album/2KaHfFLmbhkHQtMAEixycQ",
       "temas": [
-        "La Razón Que Te Demora"
+        "Mary Poppins y el deshollinador",
+        "Mi enfermedad"
       ],
-      "puntos": 51
+      "puntos": 55.8
+    },
+    {
+      "id": "7xdsaV2y15dItFMlsoWTqu",
+      "nombre": "De La Cabeza Con Bersuit Vergarabat (Live In Buenos Aires / 2001)",
+      "artista": "Bersuit Vergarabat",
+      "anio": "2002",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27355144dc2badceaabc6c51c3e",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0255144dc2badceaabc6c51c3e",
+      "url": "https://open.spotify.com/album/7xdsaV2y15dItFMlsoWTqu",
+      "temas": [
+        "El Tiempo No Para - Live In Buenos Aires / 2001"
+      ],
+      "puntos": 51.6
     },
     {
       "id": "2nT2LHBP43vxzj9iYG0y6e",
@@ -405,6 +391,34 @@
       "puntos": 49
     },
     {
+      "id": "6eedtCtCjibu80yOhylSGL",
+      "nombre": "Berry Is On Top",
+      "artista": "Chuck Berry",
+      "anio": "1959",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273a496dc8c33ca6d10668b3157",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02a496dc8c33ca6d10668b3157",
+      "url": "https://open.spotify.com/album/6eedtCtCjibu80yOhylSGL",
+      "temas": [
+        "Johnny B. Goode"
+      ],
+      "puntos": 48.6
+    },
+    {
+      "id": "795wm7ucRpHjqdyIPUAd0i",
+      "nombre": "Viaje",
+      "artista": "Mancha De Rolando",
+      "anio": "2004",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27336515903f92f8bdc8ad85074",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0236515903f92f8bdc8ad85074",
+      "url": "https://open.spotify.com/album/795wm7ucRpHjqdyIPUAd0i",
+      "temas": [
+        "Arde la Ciudad"
+      ],
+      "puntos": 46.199999999999996
+    },
+    {
       "id": "6ohX7moZZnF1FwYrli1OJ6",
       "nombre": "In Utero (Deluxe Edition)",
       "artista": "Nirvana",
@@ -417,20 +431,6 @@
         "Heart-Shaped Box"
       ],
       "puntos": 46
-    },
-    {
-      "id": "5v0Fmtv7ABZUQJD0NfbGqG",
-      "nombre": "Mi Genio Amor (En Vivo, Estadio Único de La Plata / Diciembre de 2021)",
-      "artista": "Los Fundamentalistas del Aire Acondicionado",
-      "anio": "2022",
-      "tipo": "single",
-      "portada": "https://i.scdn.co/image/ab67616d0000b27307b330e1604bb916ca315c82",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0207b330e1604bb916ca315c82",
-      "url": "https://open.spotify.com/album/5v0Fmtv7ABZUQJD0NfbGqG",
-      "temas": [
-        "Mi Genio Amor - En Vivo, Estadio Único de La Plata / Diciembre de 2021"
-      ],
-      "puntos": 44
     },
     {
       "id": "3sjYvK0dmsaQSqQZR5Tn51",
@@ -447,19 +447,89 @@
       "puntos": 42
     },
     {
-      "id": "0omWExUGprwvcvYwGh3Vr0",
-      "nombre": "Momo Sampler",
-      "artista": "Patricio Rey y sus Redonditos de Ricota",
-      "anio": "2000",
+      "id": "1uepX7Q6C8lSh2kR96DmtX",
+      "nombre": "El Camino Más Largo",
+      "artista": "No Te Va Gustar",
+      "anio": "2008",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273d9df4ed24ac8a71b1bb320e8",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02d9df4ed24ac8a71b1bb320e8",
-      "url": "https://open.spotify.com/album/0omWExUGprwvcvYwGh3Vr0",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273ddd09616444114aeb60160a1",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02ddd09616444114aeb60160a1",
+      "url": "https://open.spotify.com/album/1uepX7Q6C8lSh2kR96DmtX",
       "temas": [
-        "El Templo de Momo",
-        "Rato Molhado"
+        "Tan Lejos"
       ],
-      "puntos": 36
+      "puntos": 42
+    },
+    {
+      "id": "58M6gPLnHqTnE5z2dRbKNH",
+      "nombre": "La Renga",
+      "artista": "La Renga",
+      "anio": "1998",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2731aa8c66e1c27469058e2b794",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e021aa8c66e1c27469058e2b794",
+      "url": "https://open.spotify.com/album/58M6gPLnHqTnE5z2dRbKNH",
+      "temas": [
+        "El Revelde"
+      ],
+      "puntos": 41.4
+    },
+    {
+      "id": "1zPueS3g2amDmSW3X27Prs",
+      "nombre": "Dookie",
+      "artista": "Green Day",
+      "anio": "1994",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273049c39341b1507e384524a4f",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02049c39341b1507e384524a4f",
+      "url": "https://open.spotify.com/album/1zPueS3g2amDmSW3X27Prs",
+      "temas": [
+        "When I Come Around"
+      ],
+      "puntos": 40.8
+    },
+    {
+      "id": "1VW1MFNstaJuygaoTPkdCk",
+      "nombre": "(What's The Story) Morning Glory? [Remastered]",
+      "artista": "Oasis",
+      "anio": "1995",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27385e5dcc05cc216a10f141480",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0285e5dcc05cc216a10f141480",
+      "url": "https://open.spotify.com/album/1VW1MFNstaJuygaoTPkdCk",
+      "temas": [
+        "Don't Look Back in Anger - Remastered"
+      ],
+      "puntos": 40.199999999999996
+    },
+    {
+      "id": "7CiCajBytiFZ69hJUny0s4",
+      "nombre": "Concierto Obras 30 y 31 Julio, Parte Uno (En Vivo)",
+      "artista": "Callejeros",
+      "anio": "2018",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27316833934c718b194e42e8a3e",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0216833934c718b194e42e8a3e",
+      "url": "https://open.spotify.com/album/7CiCajBytiFZ69hJUny0s4",
+      "temas": [
+        "El Nudo - Vivo - Mezclado y Masterizado 2017"
+      ],
+      "puntos": 39.6
+    },
+    {
+      "id": "2jc4dbkhewS896fajyR7hZ",
+      "nombre": "La Argentinidad Al Palo",
+      "artista": "Bersuit Vergarabat",
+      "anio": "2004",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273a56b5076040768dacbf4df6e",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02a56b5076040768dacbf4df6e",
+      "url": "https://open.spotify.com/album/2jc4dbkhewS896fajyR7hZ",
+      "temas": [
+        "La Argentinidad Al Palo",
+        "La Soledad"
+      ],
+      "puntos": 36.6
     },
     {
       "id": "3FKhxgSZdtJBIjdHsjbxI0",
@@ -476,6 +546,20 @@
       "puntos": 35
     },
     {
+      "id": "4AMgSDaOROvCGSNSz3rfYw",
+      "nombre": "Buscando un Amor",
+      "artista": "Pappo",
+      "anio": "2003",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2736b36c0ceb0d41fe8a9c45546",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e026b36c0ceb0d41fe8a9c45546",
+      "url": "https://open.spotify.com/album/4AMgSDaOROvCGSNSz3rfYw",
+      "temas": [
+        "Rock and Roll y Fiebre"
+      ],
+      "puntos": 34.8
+    },
+    {
       "id": "7GYzQIMfdDWo2XC4BDLHPk",
       "nombre": "Fuzzybrain",
       "artista": "Dayglow",
@@ -488,119 +572,6 @@
         "Can I Call You Tonight?"
       ],
       "puntos": 33
-    },
-    {
-      "id": "2NQH7gYB2buQCbdvHBNRif",
-      "nombre": "St. Elsewhere",
-      "artista": "Gnarls Barkley, CeeLo Green, Danger Mouse",
-      "anio": "2006",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273ab051a2c680f39c0d9827706",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02ab051a2c680f39c0d9827706",
-      "url": "https://open.spotify.com/album/2NQH7gYB2buQCbdvHBNRif",
-      "temas": [
-        "Crazy"
-      ],
-      "puntos": 32
-    },
-    {
-      "id": "2zs3HNN9Mng4xTBZ6qqt1U",
-      "nombre": "Definitely Maybe",
-      "artista": "Oasis",
-      "anio": "1994",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2737c46409e5671b5b433761623",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e027c46409e5671b5b433761623",
-      "url": "https://open.spotify.com/album/2zs3HNN9Mng4xTBZ6qqt1U",
-      "temas": [
-        "Rock 'N' Roll Star"
-      ],
-      "puntos": 31
-    },
-    {
-      "id": "4D5OI55msjqTEobTrcs8mK",
-      "nombre": "A Fondo Blanco",
-      "artista": "Almafuerte",
-      "anio": "1999",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273063ab0c33c2f8c4ca60dc140",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02063ab0c33c2f8c4ca60dc140",
-      "url": "https://open.spotify.com/album/4D5OI55msjqTEobTrcs8mK",
-      "temas": [
-        "Convide Rutero"
-      ],
-      "puntos": 29
-    },
-    {
-      "id": "4nJFwHTd4JySzd5vRehPQG",
-      "nombre": "World Hold On (Children of the Sky) [Radio Edit]",
-      "artista": "Bob Sinclar",
-      "anio": "2006",
-      "tipo": "single",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273b65ae9724ee6b6c05c3337ad",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02b65ae9724ee6b6c05c3337ad",
-      "url": "https://open.spotify.com/album/4nJFwHTd4JySzd5vRehPQG",
-      "temas": [
-        "World Hold On (Children of the Sky) - Radio Edit"
-      ],
-      "puntos": 27
-    },
-    {
-      "id": "0iMPnRq7PL82Zrah0gTQBR",
-      "nombre": "Divididos Por La Felicidad",
-      "artista": "Sumo",
-      "anio": "1985",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273019290b3d41497eb46e9bd67",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02019290b3d41497eb46e9bd67",
-      "url": "https://open.spotify.com/album/0iMPnRq7PL82Zrah0gTQBR",
-      "temas": [
-        "La Rubia Tarada"
-      ],
-      "puntos": 24
-    },
-    {
-      "id": "5qNbbDBwCJn5haKSWxsBJS",
-      "nombre": "Gol De Mujer",
-      "artista": "Divididos",
-      "anio": "1998",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273430ea4b7eccf14b192745465",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02430ea4b7eccf14b192745465",
-      "url": "https://open.spotify.com/album/5qNbbDBwCJn5haKSWxsBJS",
-      "temas": [
-        "Nene de Antes"
-      ],
-      "puntos": 23
-    },
-    {
-      "id": "27cn4lYAw6C5JGHGJUZMKw",
-      "nombre": "Divididos en Argentinos Juniors (En Vivo)",
-      "artista": "Divididos",
-      "anio": "2024",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273f4fdae249974b7f865454896",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02f4fdae249974b7f865454896",
-      "url": "https://open.spotify.com/album/27cn4lYAw6C5JGHGJUZMKw",
-      "temas": [
-        "Sé Vos - En Vivo"
-      ],
-      "puntos": 21
-    },
-    {
-      "id": "1F3hULFzB7JebCft7dcdBq",
-      "nombre": "Pappo's Blues, Vol. 3",
-      "artista": "Pappo's Blues",
-      "anio": "1972",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273b0bad878d09332d8ef4bb87f",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02b0bad878d09332d8ef4bb87f",
-      "url": "https://open.spotify.com/album/1F3hULFzB7JebCft7dcdBq",
-      "temas": [
-        "Sandwiches de Miga",
-        "Siempre Es Lo Mismo Nena"
-      ],
-      "puntos": 19
     }
   ]
 }
