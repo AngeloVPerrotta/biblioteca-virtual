@@ -55,7 +55,7 @@ button {
   z-index: 50;
   display: grid;
   place-items: center;
-  background: radial-gradient(ellipse at 50% 50%, #2b1c12 0%, #120d0a 72%);
+  background: radial-gradient(ellipse at 50% 46%, #2e1e14 0%, #160f0b 58%, #0e0a08 100%);
   --agujero: 0px;
 }
 
@@ -64,41 +64,30 @@ button {
   mask-image: radial-gradient(circle at 50% 50%, transparent var(--agujero), #000 calc(var(--agujero) + 1px));
 }
 
-.carga__escenario,
-.carga__progreso {
-  grid-area: 1 / 1;
-}
-
 .carga__escenario {
   position: relative;
-  width: min(260px, 62vw);
+  width: min(300px, 68vw);
   aspect-ratio: 1;
   will-change: transform;
+}
+
+.carga__escenario::before {
+  content: '';
+  position: absolute;
+  inset: 6% 4% -4%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.7), transparent);
+  filter: blur(14px);
+  transform: translateY(6%);
 }
 
 .disco {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  background:
-    radial-gradient(circle, transparent 0 1.8%, #efe2c8 1.8% 2.6%, #c25a3c 2.6% 16.6%, #7d3220 16.6% 17.2%, transparent 17.4%),
-    repeating-radial-gradient(circle, #111 0 0.7px, #1d1d1e 0.7px 1.9px);
-  -webkit-mask-image: radial-gradient(circle, transparent 0 1.8%, #000 1.9%);
-  mask-image: radial-gradient(circle, transparent 0 1.8%, #000 1.9%);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
   animation: girar 1.8s linear infinite;
-}
-
-.disco__etiqueta {
-  position: absolute;
-  left: 50%;
-  top: 41%;
-  transform: translate(-50%, -50%);
-  font-family: 'EB Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: clamp(9px, 3.2vw, 13px);
-  color: #fbeee0;
-  letter-spacing: 0.04em;
 }
 
 .disco__brillo {
@@ -106,28 +95,12 @@ button {
   inset: 0;
   border-radius: 50%;
   pointer-events: none;
-  background: conic-gradient(from 20deg, transparent 0deg, rgba(255, 255, 255, 0.09) 25deg, transparent 52deg, transparent 180deg, rgba(255, 255, 255, 0.07) 205deg, transparent 232deg);
-  -webkit-mask-image: radial-gradient(circle, transparent 0 17.6%, #000 18%);
-  mask-image: radial-gradient(circle, transparent 0 17.6%, #000 18%);
-}
-
-.carga__progreso {
-  width: calc(min(260px, 62vw) + 40px);
-  aspect-ratio: 1;
-  transform: rotate(-90deg);
-  transition: opacity 0.4s;
-}
-
-.carga__progreso circle {
-  fill: none;
-  stroke: rgba(240, 196, 131, 0.7);
-  stroke-width: 0.8;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.5s ease;
-}
-
-.carga.entrando .carga__progreso {
-  opacity: 0;
+  mix-blend-mode: screen;
+  background:
+    conic-gradient(from -8deg, transparent 0deg, rgba(255, 240, 225, 0.16) 14deg, rgba(255, 240, 225, 0.04) 30deg, transparent 46deg, transparent 172deg, rgba(255, 240, 225, 0.12) 194deg, rgba(255, 240, 225, 0.03) 212deg, transparent 228deg),
+    radial-gradient(circle at 32% 28%, rgba(255, 245, 230, 0.07), transparent 46%);
+  -webkit-mask-image: radial-gradient(circle, transparent 0 34%, #000 35.5%, #000 98.6%, transparent 99.4%);
+  mask-image: radial-gradient(circle, transparent 0 34%, #000 35.5%, #000 98.6%, transparent 99.4%);
 }
 
 @keyframes girar {
@@ -467,6 +440,126 @@ button {
   text-align: center;
 }
 
+/* ---------------------------------------------------------------- discos */
+
+.discos__periodo {
+  margin: -6px 0 12px;
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+
+.discos__lista {
+  list-style: none;
+  margin: 0 -18px;
+  padding: 0 18px calc(24px + var(--seguro-abajo));
+  overflow-y: auto;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-content: start;
+  overscroll-behavior: contain;
+}
+
+.discos__lista button {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.discos__lista img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.discos__lista button:hover img,
+.discos__lista button:focus-visible img {
+  transform: translateY(-3px) rotate(-1deg);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.55);
+}
+
+.discos__lista button:focus-visible {
+  outline: none;
+}
+
+.discos__nombre {
+  display: block;
+  margin-top: 8px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.15;
+}
+
+.discos__artista {
+  display: block;
+  font-size: 12px;
+  color: var(--texto-suave);
+  margin-top: 2px;
+}
+
+.reproductor {
+  position: fixed;
+  z-index: 16;
+  left: 16px;
+  bottom: calc(16px + var(--seguro-abajo));
+  width: min(380px, calc(100vw - 32px));
+  padding: 10px 10px 6px;
+  border-radius: var(--radio);
+  border: 1px solid var(--borde);
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--sombra);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+}
+
+.reproductor.abierto {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.reproductor__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px 8px 4px;
+}
+
+.reproductor__estado {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--acento);
+}
+
+.reproductor .cerrar {
+  position: static;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+}
+
+.reproductor__marco iframe {
+  display: block;
+  width: 100%;
+  height: 152px;
+  border: 0;
+  border-radius: 12px;
+}
+
 /* ---------------------------------------------------------------- tarjeta */
 
 .tarjeta {
@@ -677,6 +770,11 @@ button {
 
   .hub .cerrar {
     top: 18px;
+  }
+
+  .reproductor {
+    left: 12px;
+    bottom: calc(12px + var(--seguro-abajo));
   }
 
   .tarjeta {

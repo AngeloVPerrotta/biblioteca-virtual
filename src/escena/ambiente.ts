@@ -5,6 +5,7 @@
  */
 import * as THREE from 'three';
 import { limitar } from '../util/aleatorio';
+import { DESPEJADO, type EstadoClima } from './clima';
 import type { Habitacion } from './habitacion';
 import { texturaVentanaSol } from './texturas';
 
@@ -106,6 +107,13 @@ function interpolar(elev: number, manana: boolean): Estado {
 /** Intensidades base (unidades físicas de three.js), ajustadas a ojo. */
 const K = { tela: 1.6, abajo: 10, arriba: 7, relleno: 1.1, ventana: 0.75, sol: 1.15 };
 
+const GRIS_DIA = new THREE.Color('#7c828e');
+const GRIS_DIA_H = new THREE.Color('#a3a3a8');
+const GRIS_NOCHE = new THREE.Color('#1c1e29');
+const GRIS_NOCHE_H = new THREE.Color('#353341');
+const LUZ_LLUVIA = new THREE.Color('#cdd5e2');
+const LUZ_RAYO = new THREE.Color('#dfe6ff');
+
 /** De dónde viene el sol (una ventana imaginaria a la izquierda) y adónde apunta. */
 export const POS_SOL = new THREE.Vector3(-4.4, 3.1, 2.4);
 export const OBJETIVO_SOL = new THREE.Vector3(-0.15, 1.05, 0);
@@ -125,6 +133,11 @@ export class Ambiente {
   foco = 0;
   /** Hora forzada (para probar), o null para la hora real. */
   horaForzada: number | null = null;
+  /** Clima real (o de prueba): nubes, lluvia, tormenta. */
+  clima: EstadoClima = DESPEJADO;
+  private relampago = 0;
+  private rayo = -1;
+  private proximoRayo = 4;
   private ultimaActualizacion = -Infinity;
   private tiempo = 0;
   readonly direccionSol = new THREE.Vector3();
@@ -211,18 +224,31 @@ export class Ambiente {
     this.aplicar();
   }
 
+  setClima(c: EstadoClima) {
+    this.clima = c;
+    if (!c.tormenta) this.relampago = 0;
+    this.aplicar();
+  }
+
   private aplicar() {
     const e = this.estado;
     const atenuar = 1 - this.foco * 0.5;
     const h = this.hab;
-    h.cielo.uArriba.value.copy(e.arriba);
-    h.cielo.uHorizonte.value.copy(e.horizonte);
+    const c = this.clima;
+    // Cuánto tapan las nubes y la lluvia (0 = despejado, 1 = cerrado)
+    const nub = limitar(c.nubes * 0.75 + c.lluvia * 0.45, 0, 1);
+    const dia = limitar((e.elev + 8) / 20, 0, 1);
+    const grisArriba = GRIS_NOCHE.clone().lerp(GRIS_DIA, dia);
+    const grisHorizonte = GRIS_NOCHE_H.clone().lerp(GRIS_DIA_H, dia);
+    h.cielo.uArriba.value.copy(e.arriba).lerp(grisArriba, nub * 0.8);
+    h.cielo.uHorizonte.value.copy(e.horizonte).lerp(grisHorizonte, nub * 0.72);
     h.cielo.uSolColor.value.copy(e.solColor);
-    h.cielo.uEstrellas.value = e.estrellas;
+    h.cielo.uEstrellas.value = e.estrellas * (1 - nub);
+    h.cielo.uRelampago.value = this.relampago;
     const solVisible = limitar((e.elev + 6) / 10, 0, 1);
-    h.cielo.uSolBrillo.value = solVisible * (e.elev < 25 ? 1 : 0.4);
+    h.cielo.uSolBrillo.value = solVisible * (e.elev < 25 ? 1 : 0.4) * (1 - nub);
     h.cielo.uSol.value.set(e.manana ? 0.72 : 0.22, limitar(0.12 + e.elev / 80, 0.02, 0.9));
-    h.ciudad.color.copy(e.ciudad);
+    h.ciudad.color.copy(e.ciudad).lerp(grisHorizonte, nub * (c.tipo === 'niebla' ? 0.75 : 0.35));
     h.lucesCiudad.opacity = e.luces;
     h.jacaranda.color.copy(e.jacaranda);
     h.cortinas.emissive.copy(e.ventanaColor);
@@ -234,18 +260,19 @@ export class Ambiente {
     this.sol.target.position.set(OBJETIVO_SOL.x, OBJETIVO_SOL.y + bajo * 0.25, OBJETIVO_SOL.z);
     this.direccionSol.copy(this.sol.position).sub(this.sol.target.position).normalize();
     this.sol.color.copy(e.solColor);
-    this.sol.intensity = e.sol * K.sol * atenuar;
-    this.sol.visible = e.sol > 0.02;
+    this.sol.intensity = e.sol * K.sol * atenuar * (1 - nub * 0.93);
+    this.sol.visible = this.sol.intensity > 0.03;
 
     this.hemi.color.copy(e.hemiCielo);
     this.hemi.groundColor.copy(e.hemiSuelo);
-    this.hemi.intensity = e.hemi * atenuar;
+    this.hemi.intensity = (e.hemi * (1 - nub * 0.25) + this.relampago * 0.7) * atenuar;
     this.escena.environmentIntensity = e.entorno * atenuar;
     this.relleno.intensity = e.relleno * K.relleno * atenuar;
-    this.ventanaLuz.color.copy(e.ventanaColor);
-    this.ventanaLuz.intensity = e.ventana * K.ventana * atenuar;
+    this.ventanaLuz.color.copy(e.ventanaColor).lerp(LUZ_LLUVIA, nub * 0.45).lerp(LUZ_RAYO, this.relampago);
+    this.ventanaLuz.intensity = (e.ventana * K.ventana * (1 - nub * 0.35) + this.relampago * 16) * atenuar;
 
-    const lamp = e.lampara * (1 - this.foco * 0.35);
+    // En días nublados o de lluvia la lámpara se prende igual: más acogedor
+    const lamp = Math.max(e.lampara, nub > 0.45 ? 0.62 + c.lluvia * 0.35 : 0) * (1 - this.foco * 0.35);
     this.tela.intensity = lamp * K.tela;
     this.abajo.intensity = lamp * K.abajo;
     this.arriba.intensity = lamp * K.arriba;
@@ -253,7 +280,7 @@ export class Ambiente {
     const brilloPantalla = Math.max(0, lamp - 0.5) * 2;
     this.lamparaVis.pantalla.emissiveIntensity = 0.08 + brilloPantalla * 0.75;
     this.lamparaVis.bulbo.color.setRGB(1, 0.86, 0.62).multiplyScalar(0.4 + brilloPantalla * 2);
-    this.renderer.toneMappingExposure = e.exposicion;
+    this.renderer.toneMappingExposure = e.exposicion * (1 - nub * 0.05);
   }
 
   /** Oscurece la habitación para el foco (0..1) y ubica la luz de lectura. */
@@ -267,6 +294,24 @@ export class Ambiente {
   tick(dt: number) {
     this.tiempo += dt;
     this.hab.cielo.uTiempo.value = this.tiempo;
+    // Relámpagos: un destello doble y un resplandor que se apaga
+    if (this.clima.tormenta && this.rayo < 0) {
+      this.proximoRayo -= dt;
+      if (this.proximoRayo <= 0) {
+        this.rayo = 0;
+        this.proximoRayo = 5 + Math.random() * 12;
+      }
+    }
+    if (this.rayo >= 0) {
+      this.rayo += dt;
+      const t = this.rayo;
+      this.relampago = t < 0.07 ? 1 : t < 0.15 ? 0.2 : t < 0.23 ? 0.8 : Math.max(0, 0.55 - (t - 0.23) * 1.1);
+      if (t > 0.75) {
+        this.rayo = -1;
+        this.relampago = 0;
+      }
+      this.aplicar();
+    }
     this.actualizar();
   }
 }

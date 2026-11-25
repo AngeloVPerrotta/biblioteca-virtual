@@ -195,7 +195,11 @@ export function guitarraCriolla() {
 
 const COLORES_DISCOS = ['#d94f3d', '#2f4f8f', '#e8c547', '#1d1d1f', '#f2efe6', '#7b4ca0', '#3e8e6e', '#e98b5a', '#b9d3e8', '#5b3a29', '#c73b6b', '#263238'];
 
-export function mesaTocadiscos(madera: THREE.Texture) {
+/**
+ * Mesa con tocadiscos, agenda y caja de vinilos.
+ * `portadas`: URLs de las tapas (de Spotify) para las fundas del cajón, en orden.
+ */
+export function mesaTocadiscos(madera: THREE.Texture, portadas: (string | null)[]) {
   const g = new THREE.Group();
   const mat = maderaMaterial(madera, [1.4, 1], 0xc79b70, 0.45);
   const alto = 0.62;
@@ -213,23 +217,30 @@ export function mesaTocadiscos(madera: THREE.Texture) {
   const plinto = new THREE.MeshStandardMaterial({ map: mat.map, color: 0x8a5a38, roughness: 0.35 });
   td.add(caja(0.44, 0.085, 0.35, plinto, 0, 0.0425, 0));
   td.add(caja(0.43, 0.004, 0.34, new THREE.MeshStandardMaterial({ color: 0x1a1918, roughness: 0.6 }), 0, 0.087, 0));
+  // Lo que gira: plato y disco
+  const giratorio = new THREE.Group();
+  giratorio.position.set(-0.05, 0.098, 0);
   const plato = new THREE.Mesh(new THREE.CylinderGeometry(0.152, 0.152, 0.018, 64), new THREE.MeshStandardMaterial({ color: 0x2a2a2c, metalness: 0.8, roughness: 0.35 }));
-  plato.position.set(-0.05, 0.098, 0);
-  td.add(plato);
-  const vinilo = new THREE.Mesh(
-    new THREE.CircleGeometry(0.15, 96),
-    new THREE.MeshPhysicalMaterial({ map: aTextura(texturaVinilo('#c0533a')), roughness: 0.35, clearcoat: 0.6, clearcoatRoughness: 0.2 }),
-  );
+  giratorio.add(plato);
+  const matVinilo = new THREE.MeshPhysicalMaterial({ map: aTextura(texturaVinilo('#c0533a')), roughness: 0.35, clearcoat: 0.6, clearcoatRoughness: 0.2 });
+  const vinilo = new THREE.Mesh(new THREE.CircleGeometry(0.15, 96), matVinilo);
   vinilo.rotation.x = -Math.PI / 2;
-  vinilo.position.set(-0.05, 0.1085, 0);
-  td.add(vinilo);
+  vinilo.position.y = 0.0105;
+  giratorio.add(vinilo);
   const metal = new THREE.MeshStandardMaterial({ color: 0xd3d0c8, metalness: 1, roughness: 0.25 });
+  const eje = new THREE.Mesh(new THREE.CylinderGeometry(0.0035, 0.0035, 0.02, 10), metal);
+  eje.position.y = 0.015;
+  giratorio.add(eje);
+  td.add(giratorio);
+  // Brazo con su pivote: rota en Y para apoyarse sobre el disco
   const pivote = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.022, 0.03, 20), metal);
   pivote.position.set(0.16, 0.1, -0.11);
   td.add(pivote);
-  const brazo = cilindroEntre(new THREE.Vector3(0.16, 0.122, -0.11), new THREE.Vector3(0.11, 0.118, 0.08), 0.0035, 0.0035, metal);
+  const brazo = new THREE.Group();
+  brazo.position.set(0.16, 0.122, -0.11);
+  brazo.add(cilindroEntre(new THREE.Vector3(0, 0, 0), new THREE.Vector3(-0.05, -0.004, 0.19), 0.0035, 0.0035, metal));
+  brazo.add(caja(0.02, 0.008, 0.03, new THREE.MeshStandardMaterial({ color: 0x1b1b1b }), -0.054, -0.008, 0.205));
   td.add(brazo);
-  td.add(caja(0.02, 0.008, 0.03, new THREE.MeshStandardMaterial({ color: 0x1b1b1b }), 0.106, 0.114, 0.095));
   for (let i = 0; i < 2; i++) {
     const b = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.006, 16), metal);
     b.position.set(0.15 + i * 0.03, 0.09, 0.14);
@@ -251,28 +262,59 @@ export function mesaTocadiscos(madera: THREE.Texture) {
   sombra(agenda);
   g.add(agenda);
 
-  // Caja de vinilos bajo la mesa: madera maciza, abierta arriba
+  // Caja de vinilos bajo la mesa: madera maciza, el frente más bajo deja ver la primera tapa
   const cajon = new THREE.Group();
   const maderaCaja = maderaMaterial(madera, [0.5, 0.4], 0xd8ae7c, 0.5);
   const W = 0.37;
-  const D = 0.35;
+  const D = 0.36;
   const H = 0.27;
+  const frente = 0.16;
   const e = 0.014;
   cajon.add(caja(W, e, D, maderaCaja, 0, e / 2, 0));
-  cajon.add(caja(W, H, e, maderaCaja, 0, H / 2, D / 2 - e / 2));
+  cajon.add(caja(W, frente, e, maderaCaja, 0, frente / 2, D / 2 - e / 2));
   cajon.add(caja(W, H, e, maderaCaja, 0, H / 2, -D / 2 + e / 2));
-  cajon.add(caja(e, H, D, maderaCaja, -W / 2 + e / 2, H / 2, 0));
-  cajon.add(caja(e, H, D, maderaCaja, W / 2 - e / 2, H / 2, 0));
-  const manija = new THREE.Mesh(new THREE.CapsuleGeometry(0.013, 0.07, 4, 12), new THREE.MeshStandardMaterial({ color: 0x1a120c, roughness: 0.9 }));
+  for (const lado of [-1, 1]) {
+    const forma = new THREE.Shape();
+    forma.moveTo(-D / 2, 0);
+    forma.lineTo(D / 2, 0);
+    forma.lineTo(D / 2, frente);
+    forma.lineTo(-D / 2, H);
+    forma.closePath();
+    const costado = new THREE.Mesh(new THREE.ExtrudeGeometry(forma, { depth: e, bevelEnabled: false }), maderaCaja);
+    costado.rotation.y = -Math.PI / 2;
+    costado.position.set(lado * (W / 2) + (lado > 0 ? 0 : e), 0, 0);
+    cajon.add(costado);
+  }
+  const manija = new THREE.Mesh(new THREE.CapsuleGeometry(0.012, 0.06, 4, 12), new THREE.MeshStandardMaterial({ color: 0x1a120c, roughness: 0.9 }));
   manija.rotation.z = Math.PI / 2;
   manija.scale.set(1, 1, 0.25);
-  manija.position.set(0, H - 0.045, D / 2 + 0.0008);
+  manija.position.set(0, frente - 0.04, D / 2 + 0.0008);
   cajon.add(manija);
+
+  // Fundas de frente, apiladas de adelante hacia atrás (la primera es la más escuchada)
   const r = rng(141);
-  for (let i = 0; i < 24; i++) {
-    const color = COLORES_DISCOS[Math.floor(r() * COLORES_DISCOS.length)];
-    const funda = caja(0.004, 0.31, 0.31, new THREE.MeshStandardMaterial({ color, roughness: 0.7 }), -0.15 + i * 0.0128, 0.168, 0);
-    funda.rotation.z = (r() - 0.5) * 0.05;
+  const cargador = new THREE.TextureLoader();
+  cargador.setCrossOrigin('anonymous');
+  const fundas: THREE.Mesh[] = [];
+  const cantidad = Math.min(22, Math.max(portadas.length, 14));
+  for (let i = 0; i < cantidad; i++) {
+    const color = new THREE.Color(COLORES_DISCOS[Math.floor(r() * COLORES_DISCOS.length)]);
+    const lado = new THREE.MeshStandardMaterial({ color, roughness: 0.75 });
+    const tapa = new THREE.MeshStandardMaterial({ color, roughness: 0.6 });
+    const funda = new THREE.Mesh(new THREE.BoxGeometry(0.31, 0.31, 0.0045), [lado, lado, lado, lado, tapa, lado]);
+    funda.position.set((r() - 0.5) * 0.008, 0.172, D / 2 - 0.035 - i * 0.0128);
+    funda.rotation.set(-0.1 - (i === 0 ? 0.08 : 0), (r() - 0.5) * 0.02, (r() - 0.5) * 0.02);
+    const url = portadas[i];
+    if (url) {
+      cargador.load(url, (t) => {
+        t.colorSpace = THREE.SRGBColorSpace;
+        t.anisotropy = 4;
+        tapa.map = t;
+        tapa.color.set(0xffffff);
+        tapa.needsUpdate = true;
+      });
+    }
+    fundas.push(funda);
     cajon.add(funda);
   }
   cajon.position.set(0, 0, 0.02);
@@ -280,7 +322,7 @@ export function mesaTocadiscos(madera: THREE.Texture) {
   g.add(cajon);
 
   sombra(g);
-  return { grupo: g, tocadiscos: td, vinilo, agenda, cajon, alto };
+  return { grupo: g, tocadiscos: td, giratorio, brazo, vinilo: matVinilo, agenda, cajon, fundas, alto };
 }
 
 /* ------------------------------------------------------------------- cuadro */

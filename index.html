@@ -13,10 +13,9 @@
 
     <div id="carga" class="carga" role="progressbar" aria-label="Cargando la biblioteca" aria-valuemin="0" aria-valuemax="100">
       <div class="carga__escenario">
-        <div class="disco"><span class="disco__etiqueta">Biblioteca</span></div>
+        <canvas class="disco" aria-hidden="true"></canvas>
         <div class="disco__brillo"></div>
       </div>
-      <svg class="carga__progreso" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" /></svg>
     </div>
 
     <header class="barra">
@@ -25,6 +24,10 @@
         <button id="btn-libros" class="boton" type="button" aria-haspopup="dialog">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h3v16H5zM10 4h3v16h-3zM15.2 4.6l2.9-.8 4.1 15.4-2.9.8z" /></svg>
           <span>Libros</span>
+        </button>
+        <button id="btn-discos" class="boton" type="button" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 7a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" fill-rule="evenodd" /></svg>
+          <span>Discos</span>
         </button>
         <button id="btn-wishlist" class="boton" type="button" aria-haspopup="dialog">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h11a2 2 0 0 1 2 2v16l-7.5-3.5L4 21V5a2 2 0 0 1 2-2z" /></svg>
@@ -60,6 +63,24 @@
       </label>
       <ul id="hub-lista" class="hub__lista"></ul>
     </aside>
+
+    <aside id="discos" class="hub" role="dialog" aria-modal="false" aria-labelledby="discos-titulo" hidden>
+      <div class="hub__asa" aria-hidden="true"></div>
+      <div class="hub__cabecera">
+        <h2 id="discos-titulo">Mis discos</h2>
+        <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
+      </div>
+      <p id="discos-periodo" class="discos__periodo"></p>
+      <ul id="discos-lista" class="discos__lista"></ul>
+    </aside>
+
+    <section id="reproductor" class="reproductor" aria-label="Disco sonando" hidden>
+      <div class="reproductor__cabecera">
+        <span class="reproductor__estado">Sonando</span>
+        <button class="cerrar" type="button" data-cerrar aria-label="Sacar el disco">&times;</button>
+      </div>
+      <div id="reproductor-marco" class="reproductor__marco"></div>
+    </section>
 
     <section id="tarjeta" class="tarjeta" aria-live="polite" hidden>
       <button class="cerrar" type="button" data-cerrar aria-label="Volver al estante">&times;</button>

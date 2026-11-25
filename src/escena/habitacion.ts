@@ -30,6 +30,7 @@ const cieloFragment = /* glsl */ `
   uniform float uSolBrillo;
   uniform float uEstrellas;
   uniform float uTiempo;
+  uniform float uRelampago;
   varying vec2 vUv;
   float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
   void main() {
@@ -42,6 +43,7 @@ const cieloFragment = /* glsl */ `
     float titila = 0.6 + 0.4 * sin(uTiempo * (1.0 + h * 3.0) + h * 40.0);
     float estrella = step(0.992, h) * titila * smoothstep(0.25, 0.7, vUv.y);
     col += vec3(1.0, 0.95, 0.85) * estrella * uEstrellas * 0.9;
+    col += vec3(0.78, 0.82, 1.0) * uRelampago * (0.6 + 0.6 * vUv.y);
     gl_FragColor = vec4(col, 1.0);
     #include <colorspace_fragment>
   }
@@ -188,6 +190,7 @@ export function crearHabitacion(ventana: Ventana) {
     uSolBrillo: { value: 0 },
     uEstrellas: { value: 1 },
     uTiempo: { value: 0 },
+    uRelampago: { value: 0 },
   };
   const cielo = new THREE.Mesh(
     new THREE.PlaneGeometry(34, 16),

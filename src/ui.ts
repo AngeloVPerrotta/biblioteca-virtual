@@ -1,9 +1,10 @@
 /**
  * Interfaz en HTML sobre la escena: etiqueta al señalar, Hub de libros,
- * tarjeta del libro en foco, agenda (wishlist) y avisos.
+ * tarjeta del libro en foco, agenda (wishlist), discos, reproductor y avisos.
  */
 import type { DatosBiblioteca, EstadoLectura, Libro } from './datos/tipos';
 import type { Orden } from './escena/estanteria';
+import type { DatosDiscos, Disco } from './escena/tocadiscos';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -28,6 +29,8 @@ interface Acciones {
   elegirLibro: (id: string) => void;
   ordenar: (orden: Orden) => void;
   cerrarFoco: () => void;
+  elegirDisco: (id: string) => void;
+  sacarDisco: () => void;
   alCambiarPaneles: (abiertos: boolean) => void;
 }
 
@@ -41,19 +44,33 @@ export class Interfaz {
   private readonly tarjeta = $('tarjeta');
   private readonly agenda = $('agenda');
   private readonly aviso = $('aviso');
+  private readonly discos = $('discos');
+  private readonly reproductor = $('reproductor');
   private filtro: Filtro = 'todos';
   private temporizadorAviso = 0;
 
   constructor(
     private datos: DatosBiblioteca,
+    private datosDiscos: DatosDiscos,
     private acciones: Acciones,
   ) {
     this.hub.hidden = false;
+    this.discos.hidden = false;
+    this.reproductor.hidden = false;
     this.tarjeta.hidden = false;
     this.agenda.hidden = false;
 
     $('btn-libros').addEventListener('click', () => (this.hub.classList.contains('abierto') ? this.cerrarHub() : this.abrirHub()));
     $('btn-wishlist').addEventListener('click', () => (this.agenda.classList.contains('abierta') ? this.cerrarAgenda() : this.abrirAgenda()));
+    $('btn-discos').addEventListener('click', () => (this.discos.classList.contains('abierto') ? this.cerrarDiscos() : this.abrirDiscos()));
+    this.discos.querySelector('[data-cerrar]')!.addEventListener('click', () => this.cerrarDiscos());
+    this.reproductor.querySelector('[data-cerrar]')!.addEventListener('click', () => this.acciones.sacarDisco());
+    $('discos-lista').addEventListener('click', (e) => {
+      const boton = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-disco]');
+      if (!boton) return;
+      this.cerrarDiscos();
+      this.acciones.elegirDisco(boton.dataset.disco!);
+    });
     this.hub.querySelector('[data-cerrar]')!.addEventListener('click', () => this.cerrarHub());
     this.agenda.querySelector('[data-cerrar]')!.addEventListener('click', () => this.cerrarAgenda());
     this.tarjeta.querySelector('[data-cerrar]')!.addEventListener('click', () => this.acciones.cerrarFoco());
@@ -76,6 +93,7 @@ export class Interfaz {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (this.agenda.classList.contains('abierta')) this.cerrarAgenda();
+        else if (this.discos.classList.contains('abierto')) this.cerrarDiscos();
         else if (this.hub.classList.contains('abierto')) this.cerrarHub();
         else this.acciones.cerrarFoco();
       } else if (e.key === '/' && document.activeElement !== this.buscar) {
@@ -87,10 +105,11 @@ export class Interfaz {
 
     this.renderLista();
     this.renderAgenda();
+    this.renderDiscos();
   }
 
   get panelesAbiertos() {
-    return this.hub.classList.contains('abierto') || this.agenda.classList.contains('abierta');
+    return this.hub.classList.contains('abierto') || this.agenda.classList.contains('abierta') || this.discos.classList.contains('abierto');
   }
 
   /* ------------------------------------------------------------ etiqueta */
@@ -114,6 +133,7 @@ export class Interfaz {
 
   abrirHub() {
     this.cerrarAgenda();
+    this.cerrarDiscos();
     this.hub.classList.add('abierto');
     this.acciones.alCambiarPaneles(true);
   }
@@ -195,6 +215,7 @@ export class Interfaz {
 
   abrirAgenda() {
     this.cerrarHub();
+    this.cerrarDiscos();
     this.agenda.classList.add('abierta');
     this.acciones.alCambiarPaneles(true);
   }
@@ -208,6 +229,49 @@ export class Interfaz {
   cerrarPaneles() {
     this.cerrarHub();
     this.cerrarAgenda();
+    this.cerrarDiscos();
+  }
+
+  /* ------------------------------------------------------------ discos */
+
+  private renderDiscos() {
+    $('discos-periodo').textContent = `${this.datosDiscos.discos.length} discos · lo que más escuché en Spotify · ${this.datosDiscos.periodo.toLowerCase()}`;
+    $('discos-lista').innerHTML = this.datosDiscos.discos
+      .map(
+        (d) => `<li><button type="button" data-disco="${escapar(d.id)}">
+          <img src="${escapar(d.portadaChica ?? '')}" alt="" loading="lazy" />
+          <span class="discos__nombre">${escapar(d.nombre)}</span>
+          <span class="discos__artista">${escapar(d.artista)}${d.anio ? ` · ${escapar(d.anio)}` : ''}</span>
+        </button></li>`,
+      )
+      .join('');
+  }
+
+  abrirDiscos() {
+    this.cerrarHub();
+    this.cerrarAgenda();
+    this.discos.classList.add('abierto');
+    this.acciones.alCambiarPaneles(true);
+  }
+
+  cerrarDiscos() {
+    if (!this.discos.classList.contains('abierto')) return;
+    this.discos.classList.remove('abierto');
+    this.acciones.alCambiarPaneles(this.panelesAbiertos);
+  }
+
+  /** Muestra el reproductor de Spotify con el disco elegido. */
+  mostrarReproductor(disco: Disco) {
+    const marco = $('reproductor-marco');
+    marco.innerHTML = `<iframe title="${escapar(disco.nombre)} en Spotify" src="https://open.spotify.com/embed/album/${encodeURIComponent(disco.id)}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+    this.reproductor.classList.add('abierto');
+  }
+
+  ocultarReproductor() {
+    this.reproductor.classList.remove('abierto');
+    setTimeout(() => {
+      if (!this.reproductor.classList.contains('abierto')) $('reproductor-marco').innerHTML = '';
+    }, 450);
   }
 
   /* ------------------------------------------------------------ avisos */

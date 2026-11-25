@@ -18,9 +18,11 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
 
 import datosJson from './datos/biblioteca.json';
+import discosJson from './datos/discos.json';
 import type { DatosBiblioteca } from './datos/tipos';
 import { Ambiente } from './escena/ambiente';
 import { Camara } from './escena/camara';
+import { climaDePrueba, LluviaVisual, obtenerClima } from './escena/clima';
 import { HazDeSol, Polvo } from './escena/efectos';
 import { Estanteria, NIVELES, PROFUNDIDAD } from './escena/estanteria';
 import { crearHabitacion, type Ventana } from './escena/habitacion';
@@ -40,6 +42,7 @@ import {
   termo,
 } from './escena/muebles';
 import { singonio } from './escena/planta';
+import { Tocadiscos, type DatosDiscos } from './escena/tocadiscos';
 import { Postproceso } from './escena/postproceso';
 import { aTextura, config, texturaMadera } from './escena/texturas';
 import { Foco } from './foco';
@@ -49,6 +52,7 @@ import { formatoHora, Interfaz } from './ui';
 import { Animador, cuadro, salidaSuave } from './util/animacion';
 
 const datos = datosJson as unknown as DatosBiblioteca;
+const datosDiscos = discosJson as unknown as DatosDiscos;
 
 async function iniciar() {
   const canvas = document.getElementById('escena') as HTMLCanvasElement;
@@ -146,10 +150,13 @@ async function iniciar() {
   guitarra.rotation.y = 0.28;
   escena.add(guitarra);
 
-  const mesa = mesaTocadiscos(maderaClara);
+  const mesa = mesaTocadiscos(maderaClara, datosDiscos.discos.map((d) => d.portadaChica));
   mesa.grupo.position.set(W / 2 + 0.85, 0, 0.3);
   mesa.grupo.rotation.y = -0.1;
   marcarObjetos(mesa);
+  mesa.cajon.userData.interactivo.subtitulo = `${datosDiscos.discos.length} discos · ${datosDiscos.periodo.toLowerCase()}`;
+  mesa.tocadiscos.userData.interactivo.subtitulo = 'Elegí un disco del cajón';
+  const tocadiscos = new Tocadiscos({ giratorio: mesa.giratorio, brazo: mesa.brazo, vinilo: mesa.vinilo }, animador);
   escena.add(mesa.grupo);
 
   const elCuadro = cuadroColgado(datos.cuadro);
@@ -169,6 +176,16 @@ async function iniciar() {
   const polvo = new Polvo(alta ? 280 : 150, new THREE.Box3(new THREE.Vector3(-W / 2 - 2.1, 0.3, 0.1), new THREE.Vector3(W / 2 + 0.6, 2.4, 2.2)));
   const haz = new HazDeSol(ambiente.sol.map, alta ? 16 : 9);
   escena.add(polvo.puntos, haz.grupo);
+  const lluvia = new LluviaVisual(ventana, alta ? 900 : 450);
+  escena.add(lluvia.grupo);
+  // Clima: real (Open-Meteo) o de prueba con ?clima=lluvia|tormenta|nublado|torrencial
+  const climaForzado = climaDePrueba(new URLSearchParams(location.search).get('clima'));
+  const traerClima = async () => {
+    const c = climaForzado ?? (await obtenerClima());
+    if (c) ambiente.setClima(c);
+  };
+  void traerClima();
+  if (!climaForzado) setInterval(() => void traerClima(), 15 * 60 * 1000);
 
   const camara = new Camara();
   camara.encuadrar(innerWidth / innerHeight, W);
@@ -178,10 +195,11 @@ async function iniciar() {
   let ultimaElevacion = NaN;
   const actualizarSol = () => {
     const e = ambiente.estado;
-    if (Math.abs(e.elev - ultimaElevacion) < 0.05) return;
-    ultimaElevacion = e.elev;
-    haz.actualizar(ambiente.sol, e.solColor, Math.min(1, e.sol / 3) * 0.022);
-    polvo.intensidad = 0.25 + Math.min(1, e.sol / 3) * 0.35 + e.lampara * 0.1;
+    const firma = e.elev + ambiente.clima.nubes * 100 + ambiente.clima.lluvia * 1000;
+    if (Math.abs(firma - ultimaElevacion) < 0.05) return;
+    ultimaElevacion = firma;
+    haz.actualizar(ambiente.sol, e.solColor, Math.min(1, ambiente.sol.intensity / 3.5) * 0.022);
+    polvo.intensidad = (0.25 + Math.min(1, e.sol / 3) * 0.35 + e.lampara * 0.1) * (1 - ambiente.clima.lluvia * 0.6);
   };
 
   // Interfaz e interacción
@@ -202,13 +220,25 @@ async function iniciar() {
     await foco.abrir(lv, nota);
     ui.mostrarTarjeta(lv.libro);
   };
-  const ui = new Interfaz(datos, {
+  const ui = new Interfaz(datos, datosDiscos, {
     elegirLibro: (id) => void abrirLibro(id),
     ordenar: (orden) => {
       if (foco.enUso) return;
       estanteria.distribuir(orden, true);
     },
     cerrarFoco: () => void cerrarFoco(),
+    elegirDisco: (id) => {
+      const disco = datosDiscos.discos.find((d) => d.id === id);
+      if (!disco) return;
+      mesa.tocadiscos.userData.interactivo.subtitulo = `Sonando: ${disco.nombre}`;
+      ui.mostrarReproductor(disco);
+      void tocadiscos.poner(disco);
+    },
+    sacarDisco: () => {
+      ui.ocultarReproductor();
+      mesa.tocadiscos.userData.interactivo.subtitulo = 'Elegí un disco del cajón';
+      void tocadiscos.detener();
+    },
     alCambiarPaneles: (abiertos) => {
       interaccion.bloqueado = abiertos;
       if (abiertos) {
@@ -230,8 +260,11 @@ async function iniciar() {
         ui.abrirAgenda();
         break;
       case 'vinilos':
+        ui.abrirDiscos();
+        break;
       case 'tocadiscos':
-        ui.mostrarAviso('Los vinilos llegan en la próxima versión, con tu historial de Spotify.');
+        if (tocadiscos.sonando) ui.mostrarReproductor(tocadiscos.sonando.disco);
+        else ui.abrirDiscos();
         break;
       case 'reloj':
         ui.mostrarAviso(`${datosReloj.titulo} · ${datosReloj.subtitulo}`);
@@ -289,16 +322,18 @@ async function iniciar() {
     ambiente.tick(dt);
     actualizarSol();
     polvo.tick(dt);
+    tocadiscos.tick(dt);
+    lluvia.actualizar(dt, ambiente.clima.lluvia, Math.min(1, Math.max(0.35, (ambiente.estado.elev + 10) / 25)));
     const h = horaConSegundos();
     relojPared.ajustar(h);
     datosReloj.titulo = `${formatoHora(h)} en Buenos Aires`;
-    datosReloj.subtitulo = ambiente.estado.nombre;
+    datosReloj.subtitulo = `${ambiente.estado.nombre} · ${ambiente.clima.descripcion}`;
     post.render(dt);
     if (primero) {
       primero = false;
       void carga.entrar(() => {
         camara.intro = 1;
-        void animador.animar(2600, (k) => (camara.intro = 1 - k), { curva: salidaSuave });
+        void animador.animar(1900, (k) => (camara.intro = 1 - k), { curva: salidaSuave });
       });
     }
     requestAnimationFrame(bucle);
