@@ -1,0 +1,354 @@
+{
+  "_ayuda": "Perfil de cada libro para el «¿Qué leo?». tonos: 0 a 1 (pensar, emocion, melancolia, liviano, humor, intriga, aventura, oscuro, amor, aprender, impulso, poesia, calma). pesado: qué tan duro es emocionalmente (0 a 1). referencia: libros de consulta/estudio, solo aparecen si se piden por tema.",
+  "metodo-briones": {
+    "tonos": { "impulso": 0.8, "aprender": 0.6, "liviano": 0.5 },
+    "temas": ["salud", "habitos"],
+    "frase": "Hábitos, comida y entrenamiento explicados sin vueltas, para ponerte en movimiento."
+  },
+  "frankl-efimero": {
+    "tonos": { "pensar": 0.9, "calma": 0.5, "impulso": 0.5, "emocion": 0.3 },
+    "temas": ["filosofia", "psicologia"],
+    "pesado": 0.2,
+    "frase": "Frankl pensando en voz alta sobre lo pasajero de la vida y por qué eso le da valor a cada día."
+  },
+  "principe": {
+    "tonos": { "pensar": 0.7, "aprender": 0.7, "oscuro": 0.2 },
+    "temas": ["poder", "filosofia", "clasico"],
+    "pesado": 0.2,
+    "frase": "El manual clásico sobre el poder: frío, directo y sorprendentemente actual."
+  },
+  "frankl-sentido": {
+    "tonos": { "pensar": 0.8, "emocion": 0.8, "impulso": 0.8, "melancolia": 0.3 },
+    "temas": ["psicologia", "historia", "guerra", "filosofia"],
+    "pesado": 0.7,
+    "frase": "Lo que aprendió en los campos de concentración sobre encontrarle sentido a todo, incluso al dolor."
+  },
+  "habitos-atomicos": {
+    "tonos": { "impulso": 1, "aprender": 0.6, "liviano": 0.5 },
+    "temas": ["habitos"],
+    "frase": "Cambios chiquitos que se suman: el empujón práctico para armar mejores rutinas."
+  },
+  "monje-ferrari": {
+    "tonos": { "impulso": 0.9, "calma": 0.5, "liviano": 0.6, "pensar": 0.3 },
+    "temas": ["espiritual", "habitos"],
+    "frase": "Una fábula sencilla sobre bajar un cambio y vivir con más propósito."
+  },
+  "el-tunel": {
+    "tonos": { "oscuro": 0.8, "melancolia": 0.7, "intriga": 0.6, "pensar": 0.5, "amor": 0.3 },
+    "temas": ["argentina", "clasico"],
+    "pesado": 0.6,
+    "frase": "Una confesión obsesiva y asfixiante, cortita y de un tirón: Sabato en estado puro."
+  },
+  "rayuela": {
+    "tonos": { "poesia": 1, "pensar": 0.7, "amor": 0.6, "melancolia": 0.6 },
+    "temas": ["argentina", "clasico"],
+    "pesado": 0.3,
+    "frase": "París, Buenos Aires y un juego: se puede leer en el orden que quieras."
+  },
+  "el-banquete": {
+    "tonos": { "pensar": 1, "amor": 0.7, "aprender": 0.4, "poesia": 0.3 },
+    "temas": ["filosofia", "clasico"],
+    "frase": "Una cena entre amigos que termina en la conversación más famosa sobre el amor."
+  },
+  "summa-ggm": {
+    "tonos": { "poesia": 1, "melancolia": 0.6, "amor": 0.5, "aventura": 0.4 },
+    "temas": ["clasico"],
+    "pesado": 0.3,
+    "frase": "García Márquez a lo grande: realismo mágico para perderse durante semanas."
+  },
+  "ajedrez-neuronas": {
+    "tonos": { "aprender": 0.8, "liviano": 0.4 },
+    "temas": ["ajedrez"],
+    "frase": "El ajedrez como gimnasio para la cabeza, con ejercicios para arrancar."
+  },
+  "triangulo-oro": {
+    "tonos": { "aventura": 0.9, "intriga": 0.8, "liviano": 0.7, "humor": 0.4 },
+    "temas": ["lupin", "policial", "clasico", "guerra"],
+    "frase": "Lupin metido en un asunto de oro robado y espías en plena guerra."
+  },
+  "aguja-hueca": {
+    "tonos": { "intriga": 0.9, "aventura": 0.9, "liviano": 0.7, "humor": 0.4 },
+    "temas": ["lupin", "policial", "clasico"],
+    "frase": "Un estudiante brillante contra Lupin, con un secreto escondido en la costa francesa."
+  },
+  "herlock-sholmes": {
+    "tonos": { "aventura": 0.9, "intriga": 0.8, "humor": 0.7, "liviano": 0.7 },
+    "temas": ["lupin", "policial", "clasico"],
+    "frase": "Lupin contra el detective inglés más famoso (con el nombre apenas cambiado): puro ingenio."
+  },
+  "813": {
+    "tonos": { "intriga": 0.9, "aventura": 0.8, "oscuro": 0.3, "liviano": 0.5 },
+    "temas": ["lupin", "policial", "clasico"],
+    "pesado": 0.2,
+    "frase": "Una de las aventuras más largas y oscuras de Lupin, llena de enigmas."
+  },
+  "ojos-verdes": {
+    "tonos": { "aventura": 0.9, "intriga": 0.7, "amor": 0.4, "liviano": 0.7 },
+    "temas": ["lupin", "policial", "clasico"],
+    "frase": "Lupin, una joven misteriosa y un tesoro escondido: aventura con aire romántico."
+  },
+  "tapon-cristal": {
+    "tonos": { "intriga": 0.9, "aventura": 0.8, "liviano": 0.6, "humor": 0.3 },
+    "temas": ["lupin", "policial", "clasico"],
+    "frase": "Un tapón de cristal que guarda un secreto peligroso y un Lupin contra las cuerdas."
+  },
+  "dos-sonrisas": {
+    "tonos": { "intriga": 0.9, "aventura": 0.7, "amor": 0.3, "liviano": 0.7 },
+    "temas": ["lupin", "policial", "clasico"],
+    "frase": "Un misterio con una mujer que parece ser dos, y Lupin siguiéndole la pista."
+  },
+  "caballero-ladron": {
+    "tonos": { "aventura": 0.9, "humor": 0.6, "intriga": 0.7, "liviano": 0.9 },
+    "temas": ["lupin", "policial", "clasico", "cuentos"],
+    "frase": "Donde empieza todo: relatos cortos del ladrón más elegante de París."
+  },
+  "condesa-cagliostro": {
+    "tonos": { "aventura": 0.9, "intriga": 0.7, "amor": 0.4, "liviano": 0.7 },
+    "temas": ["lupin", "policial", "clasico"],
+    "frase": "El joven Lupin frente a una mujer tan astuta como él."
+  },
+  "mundo-feliz": {
+    "tonos": { "pensar": 0.9, "oscuro": 0.5, "intriga": 0.3 },
+    "temas": ["futuro", "clasico"],
+    "pesado": 0.3,
+    "frase": "Una sociedad feliz a la fuerza: la distopía que parece cada vez menos ficción."
+  },
+  "arte-de-amar": {
+    "tonos": { "amor": 0.9, "humor": 0.5, "poesia": 0.5, "liviano": 0.4 },
+    "temas": ["clasico"],
+    "frase": "Consejos de seducción de la antigua Roma, en verso y con mucha picardía."
+  },
+  "arte-de-la-guerra": {
+    "tonos": { "aprender": 0.7, "pensar": 0.6, "impulso": 0.3 },
+    "temas": ["poder", "filosofia", "clasico"],
+    "frase": "Estrategia en frases cortas, para leer de a poco y aplicar a cualquier cosa."
+  },
+  "campana-de-cristal": {
+    "tonos": { "melancolia": 1, "emocion": 0.8, "pensar": 0.5, "poesia": 0.4 },
+    "temas": ["clasico", "psicologia"],
+    "pesado": 0.9,
+    "frase": "Una novela lúcida y dura sobre sentirse fuera de lugar, con una voz inolvidable."
+  },
+  "uba-te-espera": {
+    "tonos": { "aprender": 0.5 },
+    "temas": ["facultad"],
+    "referencia": true,
+    "frase": "La guía del CBC: carreras, materias y lo que hay que saber para arrancar la facu."
+  },
+  "homo-deus": {
+    "tonos": { "pensar": 0.9, "aprender": 0.9 },
+    "temas": ["futuro", "historia", "ciencia"],
+    "pesado": 0.1,
+    "frase": "Hacia dónde va la humanidad cuando la tecnología lo cambia todo."
+  },
+  "ganar-amigos": {
+    "tonos": { "impulso": 0.8, "liviano": 0.6, "aprender": 0.5 },
+    "temas": ["social"],
+    "frase": "Un clásico práctico sobre tratar mejor a la gente (y que te escuchen)."
+  },
+  "meditaciones": {
+    "tonos": { "pensar": 0.9, "calma": 0.9, "impulso": 0.6 },
+    "temas": ["filosofia", "clasico"],
+    "pesado": 0.1,
+    "frase": "Las notas privadas de un emperador para no perder la calma: ideal de a una página por día."
+  },
+  "dorian-gray": {
+    "tonos": { "oscuro": 0.7, "poesia": 0.7, "pensar": 0.6, "intriga": 0.4 },
+    "temas": ["clasico", "terror"],
+    "pesado": 0.3,
+    "frase": "Belleza, vanidad y un retrato que envejece en tu lugar: elegante y perturbador."
+  },
+  "sapiens": {
+    "tonos": { "aprender": 1, "pensar": 0.8, "liviano": 0.2 },
+    "temas": ["historia", "ciencia"],
+    "frase": "La historia de la humanidad contada como una gran conversación."
+  },
+  "1984": {
+    "tonos": { "pensar": 0.9, "oscuro": 0.8, "intriga": 0.5, "amor": 0.2 },
+    "temas": ["futuro", "poder", "clasico"],
+    "pesado": 0.6,
+    "frase": "Vigilancia, mentira oficial y un amor prohibido: la distopía de referencia."
+  },
+  "babilonia": {
+    "tonos": { "liviano": 0.8, "impulso": 0.7, "aprender": 0.6 },
+    "temas": ["dinero"],
+    "frase": "Lecciones sobre plata y ahorro contadas como parábolas antiguas, muy fácil de leer."
+  },
+  "call-center": {
+    "tonos": { "humor": 1, "liviano": 0.9, "emocion": 0.3 },
+    "temas": ["argentina", "cuentos"],
+    "frase": "Textos cortos y muy graciosos sobre lo absurdo de todos los días."
+  },
+  "el-alquimista": {
+    "tonos": { "impulso": 0.8, "liviano": 0.7, "aventura": 0.6, "calma": 0.4, "poesia": 0.3 },
+    "temas": ["espiritual"],
+    "frase": "Un pastor que sale a buscar su tesoro: una fábula breve para recuperar el impulso."
+  },
+  "intermezzo": {
+    "tonos": { "emocion": 0.9, "amor": 0.7, "melancolia": 0.7, "pensar": 0.5 },
+    "temas": ["familia"],
+    "pesado": 0.5,
+    "frase": "Dos hermanos después de la muerte de su padre: íntima, sensible y muy actual."
+  },
+  "cosas-fuego": {
+    "tonos": { "oscuro": 1, "intriga": 0.6, "pensar": 0.4 },
+    "temas": ["terror", "argentina", "cuentos"],
+    "pesado": 0.7,
+    "frase": "Cuentos de terror bien argentinos, donde lo cotidiano se vuelve inquietante."
+  },
+  "santa-biblia": {
+    "tonos": { "calma": 0.6, "pensar": 0.6, "poesia": 0.5 },
+    "temas": ["espiritual"],
+    "referencia": true,
+    "frase": "Para leer de a pasajes, cuando busques algo de fe o de calma."
+  },
+  "diario-ana-frank": {
+    "tonos": { "emocion": 1, "melancolia": 0.7, "aprender": 0.6, "pensar": 0.4 },
+    "temas": ["historia", "guerra"],
+    "pesado": 0.8,
+    "frase": "La voz de una chica escondida durante la guerra: cercana, valiente y conmovedora."
+  },
+  "biologia-curtis": {
+    "tonos": { "aprender": 1 },
+    "temas": ["ciencia", "facultad"],
+    "referencia": true,
+    "frase": "El libro de cabecera para estudiar biología: denso, pero lo explica todo."
+  },
+  "fundamentos-ajedrez": {
+    "tonos": { "aprender": 0.9, "calma": 0.3 },
+    "temas": ["ajedrez", "clasico"],
+    "frase": "Capablanca enseñando lo esencial del ajedrez con una claridad única."
+  },
+  "encuentros-rolon": {
+    "tonos": { "amor": 0.9, "pensar": 0.7, "emocion": 0.6 },
+    "temas": ["psicologia", "argentina"],
+    "pesado": 0.3,
+    "frase": "Rolón sobre el amor, los vínculos y todo lo que no se dice."
+  },
+  "lluvia-sabe": {
+    "tonos": { "emocion": 0.8, "amor": 0.7, "melancolia": 0.6, "liviano": 0.6 },
+    "temas": ["juvenil"],
+    "pesado": 0.4,
+    "frase": "Una historia juvenil, triste y tierna, que se lee en un par de tardes."
+  },
+  "carrie": {
+    "tonos": { "oscuro": 0.9, "intriga": 0.8, "emocion": 0.3 },
+    "temas": ["terror"],
+    "pesado": 0.5,
+    "frase": "La primera novela de King: bullying, poderes y un baile de graduación que termina muy mal."
+  },
+  "los-padecientes": {
+    "tonos": { "intriga": 1, "oscuro": 0.6, "pensar": 0.4 },
+    "temas": ["policial", "psicologia", "argentina"],
+    "pesado": 0.4,
+    "frase": "Un thriller psicológico porteño, con un psicoanalista metido en un crimen familiar."
+  },
+  "historia-ajedrez": {
+    "tonos": { "aprender": 0.8, "liviano": 0.5, "humor": 0.4 },
+    "temas": ["ajedrez", "historia"],
+    "frase": "Anécdotas y curiosidades de la historia del ajedrez, para leer salteado."
+  },
+  "medianoche": {
+    "tonos": { "emocion": 0.8, "pensar": 0.7, "impulso": 0.7, "melancolia": 0.4, "liviano": 0.4 },
+    "temas": ["psicologia"],
+    "pesado": 0.4,
+    "frase": "Una biblioteca entre la vida y la muerte donde cada libro es una vida posible."
+  },
+  "cabalas-futbol": {
+    "tonos": { "liviano": 1, "humor": 0.9 },
+    "temas": ["futbol", "argentina"],
+    "frase": "Las supersticiones más delirantes del fútbol, para reírse de a ratos."
+  },
+  "gente-normal": {
+    "tonos": { "amor": 1, "emocion": 0.8, "melancolia": 0.7 },
+    "temas": ["romance"],
+    "pesado": 0.5,
+    "frase": "Dos que se encuentran y se desencuentran durante años: chiquita, intensa y muy real."
+  },
+  "paciente-silenciosa": {
+    "tonos": { "intriga": 1, "oscuro": 0.6 },
+    "temas": ["policial", "psicologia"],
+    "pesado": 0.4,
+    "frase": "Una mujer que deja de hablar después de un crimen, y un final que no ves venir."
+  },
+  "despues-king": {
+    "tonos": { "intriga": 0.8, "oscuro": 0.6, "liviano": 0.5, "emocion": 0.3 },
+    "temas": ["terror"],
+    "pesado": 0.3,
+    "frase": "Un chico que ve muertos y una historia de crecer, con el suspenso de King."
+  },
+  "chica-de-nieve": {
+    "tonos": { "intriga": 1, "oscuro": 0.5, "emocion": 0.4 },
+    "temas": ["policial"],
+    "pesado": 0.6,
+    "frase": "Una nena que desaparece en un desfile y años de búsqueda: imposible de soltar."
+  },
+  "cuco-de-cristal": {
+    "tonos": { "intriga": 1, "oscuro": 0.5 },
+    "temas": ["policial"],
+    "pesado": 0.4,
+    "frase": "Un trasplante de corazón, un pueblo raro y giros en cada capítulo."
+  },
+  "volver-a-empezar": {
+    "tonos": { "amor": 1, "emocion": 0.8, "liviano": 0.6 },
+    "temas": ["romance"],
+    "pesado": 0.4,
+    "frase": "La continuación de una historia de amor complicada, con segundas oportunidades."
+  },
+  "cartas-princesa": {
+    "tonos": { "poesia": 0.6, "humor": 0.5, "pensar": 0.5, "amor": 0.4, "calma": 0.4 },
+    "temas": [],
+    "pesado": 0.1,
+    "frase": "Cartas íntimas y juguetonas de Levrero: raro, tierno y muy personal."
+  },
+  "viento-nombre": {
+    "tonos": { "emocion": 0.9, "melancolia": 0.6, "amor": 0.4, "aprender": 0.3 },
+    "temas": ["historia", "guerra", "familia"],
+    "pesado": 0.7,
+    "frase": "Dos chicos separados de sus familias por la guerra y la frontera, unidos a través del tiempo."
+  },
+  "mercado-capitales": {
+    "tonos": { "aprender": 1 },
+    "temas": ["dinero"],
+    "referencia": true,
+    "frase": "Una introducción clara para entender bonos, acciones y cómo se invierte."
+  },
+  "vida-imita-ajedrez": {
+    "tonos": { "impulso": 0.7, "pensar": 0.6, "aprender": 0.6 },
+    "temas": ["ajedrez", "poder"],
+    "frase": "Kasparov usa el ajedrez para hablar de decisiones, estrategia y cómo pensar mejor."
+  },
+  "nunca-mas": {
+    "tonos": { "aprender": 0.9, "emocion": 0.8, "oscuro": 0.6 },
+    "temas": ["argentina", "historia", "memoria"],
+    "pesado": 1,
+    "frase": "El informe de la CONADEP: duro e imprescindible para la memoria argentina."
+  },
+  "21-lecciones": {
+    "tonos": { "pensar": 0.9, "aprender": 0.9 },
+    "temas": ["futuro", "poder"],
+    "frase": "Los grandes temas de hoy en capítulos que se pueden leer por separado."
+  },
+  "codigo-limpio": {
+    "tonos": { "aprender": 1, "impulso": 0.3 },
+    "temas": ["programacion"],
+    "referencia": true,
+    "frase": "Cómo escribir código que se entienda: un clásico para programar mejor."
+  },
+  "arquimedes": {
+    "tonos": { "aprender": 0.7, "pensar": 0.5 },
+    "temas": ["ciencia", "clasico"],
+    "frase": "Ciencia en su versión más clásica: por qué las cosas flotan, el del famoso ¡eureka!"
+  },
+  "disfruta-tu-ocio": {
+    "tonos": { "calma": 1, "liviano": 0.7, "pensar": 0.5, "impulso": 0.3 },
+    "temas": ["espiritual"],
+    "frase": "Reflexiones breves sobre aprender a descansar y disfrutar el tiempo libre sin culpa."
+  },
+  "nuestra-parte-de-noche": {
+    "tonos": { "oscuro": 1, "intriga": 0.7, "emocion": 0.6, "aventura": 0.5, "poesia": 0.4 },
+    "temas": ["terror", "argentina", "memoria"],
+    "pesado": 0.8,
+    "frase": "Padre e hijo cruzando la Argentina de la dictadura, con una secta y mucha oscuridad: enorme y fascinante."
+  }
+}

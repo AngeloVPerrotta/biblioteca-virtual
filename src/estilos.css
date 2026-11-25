@@ -690,6 +690,319 @@ button {
   display: none;
 }
 
+/* ---------------------------------------------------------------- ¿qué leo? */
+
+.hub__quelee {
+  display: block;
+  margin: -4px 0 12px;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  font-family: Caveat, cursive;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--acento);
+  cursor: pointer;
+  text-align: left;
+}
+
+.hub__quelee span {
+  font-weight: 500;
+  color: var(--texto-suave);
+}
+
+.hub__quelee span::after {
+  content: ' →';
+}
+
+.hub__quelee:hover span {
+  color: var(--texto);
+}
+
+.quelee {
+  position: fixed;
+  z-index: 20;
+  left: max(4vw, 24px);
+  top: 50%;
+  width: min(390px, 92vw);
+  max-height: 84vh;
+  overflow-y: auto;
+  padding: 26px 26px 22px;
+  border-radius: 4px;
+  color: #283662;
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgba(255, 255, 255, 0.35), transparent 60%),
+    linear-gradient(180deg, rgba(120, 90, 30, 0.06), transparent 18%),
+    #f5ecd8;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 2px 0 rgba(255, 255, 255, 0.4) inset;
+  font-family: Inter, system-ui, sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(40, 54, 98, 0.3) transparent;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-46%) rotate(-0.8deg) scale(0.97);
+  transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.4s;
+}
+
+.quelee.abierto {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) rotate(-0.8deg);
+}
+
+.quelee .cerrar {
+  border-color: rgba(40, 54, 98, 0.2);
+  color: #283662;
+}
+
+.quelee h2 {
+  margin: 0 36px 2px 0;
+  font-family: Caveat, cursive;
+  font-weight: 700;
+  font-size: 38px;
+  line-height: 1;
+}
+
+.quelee__form label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: rgba(40, 54, 98, 0.72);
+}
+
+.quelee__fila {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px dashed rgba(40, 54, 98, 0.35);
+}
+
+.quelee__fila:focus-within {
+  border-bottom-color: #b5523b;
+}
+
+.quelee__fila input {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 0 4px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: Caveat, cursive;
+  font-size: 25px;
+  font-weight: 500;
+  color: #283662;
+}
+
+.quelee__fila input::placeholder {
+  color: rgba(40, 54, 98, 0.38);
+}
+
+.quelee__ir {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: #283662;
+  color: #f5ecd8;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.quelee__ir:hover {
+  background: #b5523b;
+  transform: translateX(2px);
+}
+
+.quelee__ir svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.quelee__ideas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.idea {
+  padding: 2px 10px 3px;
+  border: 1px solid rgba(40, 54, 98, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  font-family: Caveat, cursive;
+  font-size: 19px;
+  font-weight: 500;
+  color: #283662;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+/* Con una recomendación en pantalla, las ideas se guardan para dejarle lugar */
+.quelee.con-resultado .quelee__ideas {
+  display: none;
+}
+
+.idea:hover {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(40, 54, 98, 0.45);
+}
+
+.quelee__resultado {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(40, 54, 98, 0.15);
+}
+
+.quelee__resultado[hidden] {
+  display: none;
+}
+
+.quelee__resultado.nuevo {
+  animation: quelee-papel 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes quelee-papel {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.quelee__intro {
+  margin: 0;
+  font-family: Caveat, cursive;
+  font-size: 22px;
+  font-weight: 700;
+  color: #b5523b;
+}
+
+.quelee__titulo {
+  margin: 2px 0 0;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: 27px;
+  line-height: 1.08;
+}
+
+.quelee__autor {
+  margin: 3px 0 0;
+  font-size: 14px;
+  color: rgba(40, 54, 98, 0.8);
+}
+
+.quelee__porque {
+  margin: 10px 0 0;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.quelee__acciones {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.quelee__mostrar,
+.quelee__otro {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.quelee__mostrar {
+  border: 0;
+  background: #283662;
+  color: #f5ecd8;
+}
+
+.quelee__mostrar:hover {
+  background: #b5523b;
+}
+
+.quelee__otro {
+  border: 1px solid rgba(40, 54, 98, 0.3);
+  background: transparent;
+  color: #283662;
+}
+
+.quelee__otro:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.quelee__tambien {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: rgba(40, 54, 98, 0.65);
+}
+
+.quelee__tambien:empty {
+  display: none;
+}
+
+.quelee__tambien button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 15px;
+  font-style: italic;
+  color: #283662;
+  text-decoration: underline;
+  text-decoration-color: rgba(181, 82, 59, 0.45);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.quelee__tambien button:hover {
+  text-decoration-color: #b5523b;
+}
+
+.quelee :focus-visible {
+  outline: 2px solid #b5523b;
+  outline-offset: 2px;
+}
+
+.quelee .quelee__fila input:focus-visible {
+  outline: none;
+}
+
+@media (max-width: 760px) {
+  .quelee {
+    left: 50%;
+    top: calc(64px + var(--seguro-arriba));
+    max-height: calc(100dvh - 84px - var(--seguro-arriba));
+    padding: 22px 20px 18px;
+    transform: translate(-50%, 10px) scale(0.98);
+  }
+
+  .quelee.abierto {
+    transform: translate(-50%, 0);
+  }
+
+  .quelee h2 {
+    font-size: 34px;
+  }
+
+  .quelee__titulo {
+    font-size: 24px;
+  }
+}
+
 /* ---------------------------------------------------------------- aviso */
 
 .aviso {

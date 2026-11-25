@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export type TipoInteractivo = 'libro' | 'prestado' | 'agenda' | 'vinilos' | 'tocadiscos' | 'reloj' | 'disco';
+export type TipoInteractivo = 'libro' | 'prestado' | 'agenda' | 'vinilos' | 'tocadiscos' | 'reloj' | 'disco' | 'quelee';
 
 /** Lo que la escena sabe de un objeto que se puede señalar o tocar. */
 export interface Interactivo {

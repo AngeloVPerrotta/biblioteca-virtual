@@ -45,6 +45,7 @@
         <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
       </div>
       <input id="hub-buscar" class="hub__buscar" type="search" placeholder="Buscar por título, autor o editorial" autocomplete="off" />
+      <button id="hub-quelee" class="hub__quelee" type="button">¿No sabés qué leer? <span>Contame cómo venís</span></button>
       <div class="hub__filtros" role="group" aria-label="Filtrar">
         <button class="chip" data-filtro="todos" aria-pressed="true">Todos</button>
         <button class="chip" data-filtro="leido" aria-pressed="false">Leídos</button>
@@ -92,6 +93,39 @@
       <h2 id="agenda-titulo">Libros que quiero</h2>
       <ol id="agenda-lista" class="agenda__lista"></ol>
       <p id="agenda-vacia" class="agenda__vacia">Todavía no anoté ninguno.<br />Decile a Claude cuáles querés y aparecen acá.</p>
+    </section>
+
+    <section id="quelee" class="quelee" role="dialog" aria-labelledby="quelee-titulo" hidden>
+      <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
+      <h2 id="quelee-titulo">¿Qué leo?</h2>
+      <form id="quelee-form" class="quelee__form" autocomplete="off">
+        <label for="quelee-texto">Contame cómo venís o qué tenés ganas de leer</label>
+        <div class="quelee__fila">
+          <input id="quelee-texto" type="text" maxlength="160" placeholder="cansado, algo liviano para el bondi…" enterkeyhint="go" />
+          <button type="submit" class="quelee__ir" aria-label="Elegir un libro">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+          </button>
+        </div>
+        <div class="quelee__ideas" role="group" aria-label="Ideas">
+          <button type="button" class="idea">algo liviano</button>
+          <button type="button" class="idea">que me atrape</button>
+          <button type="button" class="idea">para pensar</button>
+          <button type="button" class="idea">ando bajón</button>
+          <button type="button" class="idea">cortito, para el bondi</button>
+          <button type="button" class="idea">sorprendeme</button>
+        </div>
+      </form>
+      <div id="quelee-resultado" class="quelee__resultado" aria-live="polite" hidden>
+        <p class="quelee__intro"></p>
+        <h3 class="quelee__titulo"></h3>
+        <p class="quelee__autor"></p>
+        <p class="quelee__porque"></p>
+        <div class="quelee__acciones">
+          <button type="button" class="quelee__mostrar">Mostrámelo</button>
+          <button type="button" class="quelee__otro">Otro</button>
+        </div>
+        <p class="quelee__tambien"></p>
+      </div>
     </section>
 
     <div id="aviso" class="aviso" role="status" aria-live="polite"></div>

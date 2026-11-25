@@ -42,6 +42,7 @@ import {
   relojDePared,
   termo,
 } from './escena/muebles';
+import { papelitoQueLeo } from './escena/papelito';
 import { singonio } from './escena/planta';
 import { Tocadiscos, type DatosDiscos } from './escena/tocadiscos';
 import { Postproceso } from './escena/postproceso';
@@ -151,6 +152,17 @@ async function iniciar() {
   const unTermo = termo();
   unTermo.position.set(-W / 2 - 0.27, sup, 0.17);
   escena.add(mate, unTermo);
+  // Post-it «¿qué leo?» pegado en el cajón de la mesa de luz
+  const papelito = papelitoQueLeo();
+  papelito.mesh.position.copy(mesaLuz.grupo.position).add(new THREE.Vector3(0.12, 0.45, 0.1975));
+  papelito.mesh.rotation.z = -0.07;
+  marcar(papelito.mesh, {
+    tipo: 'quelee',
+    titulo: '¿Qué leo?',
+    subtitulo: 'Contame cómo venís y te elijo uno',
+    resaltar: papelito.resaltar,
+  });
+  escena.add(papelito.mesh);
   if (leyendo) {
     leyendo.mesh.rotation.set(0, 0.35, Math.PI / 2);
     leyendo.mesh.position.set(-W / 2 - 0.36, sup + leyendo.grosor / 2, 0.3);
@@ -333,7 +345,12 @@ async function iniciar() {
   };
 
   const ui = new Interfaz(datos, {
-    elegirLibro: (id) => void abrirLibro(id),
+    elegirLibro: (id) =>
+      void (async () => {
+        if (enCajon) await salirCajon();
+        if (foco.activo) await cerrarFoco();
+        await abrirLibro(id);
+      })(),
     ordenar: (orden) => {
       if (foco.enUso) return;
       estanteria.distribuir(orden, true);
@@ -346,6 +363,7 @@ async function iniciar() {
       mesa.tocadiscos.userData.interactivo.subtitulo = 'Elegí un disco del cajón';
       void tocadiscos.detener();
     },
+    contextoLectura: () => ({ hora: ambiente.hora, lluvia: ambiente.clima.lluvia }),
     alCambiarPaneles: (abiertos) => {
       interaccion.bloqueado = abiertos;
       if (abiertos) {
@@ -384,13 +402,16 @@ async function iniciar() {
       case 'reloj':
         ui.mostrarAviso(`${datosReloj.titulo} · ${datosReloj.subtitulo}`);
         break;
+      case 'quelee':
+        ui.abrirQueLeo();
+        break;
     }
   };
 
   interaccion = new Interaccion(
     canvas,
     camara,
-    () => enCajon ? [...zonasDiscos, ...(discoSenalado !== null ? [mesa.fundas[discoSenalado]] : [])] : [...estanteria.objetivos(), pila.grupo, mesa.tocadiscos, mesa.cajon, mesa.agenda, relojPared.grupo, ...(leyendo ? [leyendo.mesh] : [])],
+    () => enCajon ? [...zonasDiscos, ...(discoSenalado !== null ? [mesa.fundas[discoSenalado]] : [])] : [...estanteria.objetivos(), pila.grupo, mesa.tocadiscos, mesa.cajon, mesa.agenda, relojPared.grupo, papelito.mesh, ...(leyendo ? [leyendo.mesh] : [])],
     {
       alSenalar: (i, p) => {
         const e = i && !enCajon && i.tipo === 'disco' ? datosCajon : i;

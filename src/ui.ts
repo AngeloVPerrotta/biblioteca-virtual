@@ -1,10 +1,12 @@
 /**
  * Interfaz en HTML sobre la escena: etiqueta al señalar, Hub de libros,
- * tarjeta del libro en foco, agenda (wishlist), discos, reproductor y avisos.
+ * tarjeta del libro en foco, agenda (wishlist), «¿Qué leo?», discos, reproductor y avisos.
  */
+import perfilesJson from './datos/perfiles.json';
 import type { DatosBiblioteca, EstadoLectura, Libro } from './datos/tipos';
 import type { Orden } from './escena/estanteria';
 import type { Disco } from './escena/tocadiscos';
+import { Recomendador, type ContextoLectura, type Perfil, type Recomendacion } from './recomendador';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -33,6 +35,8 @@ interface Acciones {
   cerrarCajon: () => void;
   sacarDisco: () => void;
   alCambiarPaneles: (abiertos: boolean) => void;
+  /** Hora y clima de ahora, para que el «¿Qué leo?» los tenga en cuenta. */
+  contextoLectura: () => ContextoLectura;
 }
 
 type Filtro = 'todos' | EstadoLectura | 'prestado';
@@ -47,6 +51,13 @@ export class Interfaz {
   private readonly aviso = $('aviso');
   private readonly ayudaCajon = $('ayuda-cajon');
   private readonly reproductor = $('reproductor');
+  private readonly quelee = $('quelee');
+  private readonly queleeTexto = $<HTMLInputElement>('quelee-texto');
+  private readonly queleeResultado = $('quelee-resultado');
+  private readonly recomendador: Recomendador;
+  private recomendaciones: Recomendacion[] = [];
+  private recomendacionActual = 0;
+  private pedidos = 0;
   private filtro: Filtro = 'todos';
   private temporizadorAviso = 0;
 
@@ -58,6 +69,8 @@ export class Interfaz {
     this.reproductor.hidden = false;
     this.tarjeta.hidden = false;
     this.agenda.hidden = false;
+    this.quelee.hidden = false;
+    this.recomendador = new Recomendador(datos.libros, perfilesJson as unknown as Record<string, Perfil | string>);
 
     $('btn-libros').addEventListener('click', () => (this.hub.classList.contains('abierto') ? this.cerrarHub() : this.abrirHub()));
     $('btn-wishlist').addEventListener('click', () => (this.agenda.classList.contains('abierta') ? this.cerrarAgenda() : this.abrirAgenda()));
@@ -67,6 +80,7 @@ export class Interfaz {
     this.hub.querySelector('[data-cerrar]')!.addEventListener('click', () => this.cerrarHub());
     this.agenda.querySelector('[data-cerrar]')!.addEventListener('click', () => this.cerrarAgenda());
     this.tarjeta.querySelector('[data-cerrar]')!.addEventListener('click', () => this.acciones.cerrarFoco());
+    this.prepararQueLeo();
     this.buscar.addEventListener('input', () => this.renderLista());
     for (const chip of this.hub.querySelectorAll<HTMLButtonElement>('[data-filtro]')) {
       chip.addEventListener('click', () => {
@@ -85,10 +99,11 @@ export class Interfaz {
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        if (this.agenda.classList.contains('abierta')) this.cerrarAgenda();
+        if (this.quelee.classList.contains('abierto')) this.cerrarQueLeo();
+        else if (this.agenda.classList.contains('abierta')) this.cerrarAgenda();
         else if (this.hub.classList.contains('abierto')) this.cerrarHub();
         else this.acciones.cerrarFoco();
-      } else if (e.key === '/' && document.activeElement !== this.buscar) {
+      } else if (e.key === '/' && !(document.activeElement instanceof HTMLInputElement)) {
         e.preventDefault();
         this.abrirHub();
         this.buscar.focus();
@@ -100,7 +115,7 @@ export class Interfaz {
   }
 
   get panelesAbiertos() {
-    return this.hub.classList.contains('abierto') || this.agenda.classList.contains('abierta');
+    return this.hub.classList.contains('abierto') || this.agenda.classList.contains('abierta') || this.quelee.classList.contains('abierto');
   }
 
   /* ------------------------------------------------------------ etiqueta */
@@ -124,6 +139,7 @@ export class Interfaz {
 
   abrirHub() {
     this.cerrarAgenda();
+    this.cerrarQueLeo();
     this.hub.classList.add('abierto');
     this.acciones.alCambiarPaneles(true);
   }
@@ -205,6 +221,7 @@ export class Interfaz {
 
   abrirAgenda() {
     this.cerrarHub();
+    this.cerrarQueLeo();
     this.agenda.classList.add('abierta');
     this.acciones.alCambiarPaneles(true);
   }
@@ -218,6 +235,88 @@ export class Interfaz {
   cerrarPaneles() {
     this.cerrarHub();
     this.cerrarAgenda();
+    this.cerrarQueLeo();
+  }
+
+  /* ------------------------------------------------------------ ¿qué leo? */
+
+  private prepararQueLeo() {
+    const form = $<HTMLFormElement>('quelee-form');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.pedirRecomendacion();
+    });
+    for (const idea of this.quelee.querySelectorAll<HTMLButtonElement>('.idea')) {
+      idea.addEventListener('click', () => {
+        this.queleeTexto.value = idea.textContent ?? '';
+        this.pedirRecomendacion();
+      });
+    }
+    this.quelee.querySelector('[data-cerrar]')!.addEventListener('click', () => this.cerrarQueLeo());
+    this.quelee.querySelector('.quelee__otro')!.addEventListener('click', () => {
+      if (!this.recomendaciones.length) return;
+      this.recomendacionActual = (this.recomendacionActual + 1) % this.recomendaciones.length;
+      this.renderRecomendacion();
+    });
+    this.quelee.querySelector('.quelee__mostrar')!.addEventListener('click', () => {
+      const r = this.recomendaciones[this.recomendacionActual];
+      if (!r) return;
+      this.cerrarQueLeo();
+      this.acciones.elegirLibro(r.libro.id);
+    });
+    this.quelee.querySelector('.quelee__tambien')!.addEventListener('click', (e) => {
+      const boton = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-indice]');
+      if (!boton) return;
+      this.recomendacionActual = Number(boton.dataset.indice);
+      this.renderRecomendacion();
+    });
+    $('hub-quelee').addEventListener('click', () => this.abrirQueLeo());
+  }
+
+  abrirQueLeo() {
+    this.cerrarHub();
+    this.cerrarAgenda();
+    this.quelee.classList.add('abierto');
+    this.acciones.alCambiarPaneles(true);
+    // En compu el cursor ya queda listo para escribir; en el celu no, para no tapar todo con el teclado
+    if (matchMedia('(pointer: fine)').matches) setTimeout(() => this.queleeTexto.focus({ preventScroll: true }), 320);
+  }
+
+  cerrarQueLeo() {
+    if (!this.quelee.classList.contains('abierto')) return;
+    this.quelee.classList.remove('abierto');
+    if (this.quelee.contains(document.activeElement)) (document.activeElement as HTMLElement).blur();
+    this.acciones.alCambiarPaneles(this.panelesAbiertos);
+  }
+
+  private pedirRecomendacion() {
+    this.pedidos++;
+    this.recomendaciones = this.recomendador.recomendar(this.queleeTexto.value, this.acciones.contextoLectura(), this.pedidos);
+    this.recomendacionActual = 0;
+    this.renderRecomendacion();
+    if (matchMedia('(pointer: coarse)').matches) this.queleeTexto.blur();
+  }
+
+  private renderRecomendacion() {
+    const r = this.recomendaciones[this.recomendacionActual];
+    const caja = this.queleeResultado;
+    caja.hidden = !r;
+    this.quelee.classList.toggle('con-resultado', !!r);
+    if (!r) return;
+    caja.querySelector('.quelee__intro')!.textContent = `${r.intro}…`;
+    caja.querySelector('.quelee__titulo')!.textContent = r.libro.titulo;
+    caja.querySelector('.quelee__autor')!.textContent = r.libro.autor;
+    caja.querySelector('.quelee__porque')!.textContent = r.porque;
+    const otros = [1, 2]
+      .map((k) => (this.recomendacionActual + k) % this.recomendaciones.length)
+      .filter((i, k, arr) => i !== this.recomendacionActual && arr.indexOf(i) === k);
+    caja.querySelector('.quelee__tambien')!.innerHTML = otros.length
+      ? `También: ${otros.map((i) => `<button type="button" data-indice="${i}">${escapar(this.recomendaciones[i].libro.titulo)}</button>`).join(' · ')}`
+      : '';
+    // Una pequeña animación de «papel nuevo» cada vez que cambia
+    caja.classList.remove('nuevo');
+    void caja.offsetWidth;
+    caja.classList.add('nuevo');
   }
 
   /* ------------------------------------------------------------ discos */
