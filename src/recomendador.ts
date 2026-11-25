@@ -383,8 +383,9 @@ export class Recomendador {
         if (perfil.referencia && tema <= 0 && !porNombre) total -= 3;
 
         const g = libro.grosor;
-        if (pedido.largo === 'corto') total += g <= 1.5 ? 0.35 : g >= 2.5 ? -0.45 : 0;
-        if (pedido.largo === 'largo') total += g >= 2.4 ? 0.35 : g <= 1.5 ? -0.3 : 0;
+        // Si pidió algo corto (o largo), el grosor pesa en serio: cuanto más se aleja, peor
+        if (pedido.largo === 'corto') total += g <= 1.5 ? 0.35 : -(g - 1.5) * 0.6;
+        if (pedido.largo === 'largo') total += g >= 2.4 ? 0.35 : -(2.4 - g) * 0.4;
         total += pedido.pesado * (perfil.pesado ?? 0) * 0.8;
 
         const e = libro.estado ?? null;
