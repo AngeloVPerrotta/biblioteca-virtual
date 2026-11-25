@@ -139,6 +139,8 @@ export class Ambiente {
   private rayo = -1;
   private proximoRayo = 4;
   private ultimaActualizacion = -Infinity;
+  /** Cambió la posición de alguna luz con sombra (hay que recalcular sombras). */
+  private cambioSombras = true;
   private tiempo = 0;
   readonly direccionSol = new THREE.Vector3();
 
@@ -221,11 +223,19 @@ export class Ambiente {
     const fecha = this.horaForzada === null ? new Date() : fechaConHora(this.horaForzada);
     const { elevacion, manana } = posicionSolar(fecha);
     this.estado = interpolar(elevacion, manana);
+    this.cambioSombras = true;
     this.aplicar();
+  }
+
+  consumirCambio() {
+    const c = this.cambioSombras;
+    this.cambioSombras = false;
+    return c;
   }
 
   setClima(c: EstadoClima) {
     this.clima = c;
+    this.cambioSombras = true;
     if (!c.tormenta) this.relampago = 0;
     this.aplicar();
   }

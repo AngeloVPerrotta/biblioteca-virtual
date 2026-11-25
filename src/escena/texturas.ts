@@ -12,7 +12,9 @@ export function lienzo(w: number, h: number) {
   const c = document.createElement('canvas');
   c.width = w;
   c.height = h;
-  const ctx = c.getContext('2d', { willReadFrequently: false })!;
+  // En memoria (CPU): casi todas estas texturas leen sus píxeles para el grano,
+  // y leer desde la placa de video es lo que más tardaba.
+  const ctx = c.getContext('2d', { willReadFrequently: true })!;
   return { c, ctx };
 }
 

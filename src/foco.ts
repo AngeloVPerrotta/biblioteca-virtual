@@ -41,6 +41,11 @@ export class Foco {
     return this.activo !== null || this.ocupado;
   }
 
+  /** El objeto en foco se está girando (hay que actualizar su sombra). */
+  get girando() {
+    return this.activo !== null && this.giro.distanceTo(this.giroObjetivo) > 0.002;
+  }
+
   private calcularDestino() {
     const { pos, adelante, derecha, arriba } = this.camara.ejes();
     const vertical = this.camara.vertical;

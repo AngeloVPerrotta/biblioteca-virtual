@@ -28,17 +28,22 @@ export function buscarInteractivo(obj: THREE.Object3D | null): Interactivo | nul
 /** Sube el brillo de un grupo de materiales estándar sin perder su emisión original. */
 export function resaltadorDe(objeto: THREE.Object3D, intensidad = 0.22) {
   const materiales: THREE.MeshStandardMaterial[] = [];
-  objeto.traverse((o) => {
+  // Los objetos marcados con `sinResalte` (fundas con tapa, separadores) no se iluminan:
+  // sus texturas sobre blanco se "queman" si se les suma brillo.
+  const recorrer = (o: THREE.Object3D) => {
+    if (o.userData.sinResalte) return;
     const m = (o as THREE.Mesh).material;
-    if (!m) return;
-    for (const mat of Array.isArray(m) ? m : [m]) {
+    for (const mat of m ? (Array.isArray(m) ? m : [m]) : []) {
       if (mat instanceof THREE.MeshStandardMaterial && !materiales.includes(mat)) {
         materiales.push(mat);
         mat.userData.emisivoBase = mat.emissive.clone();
         mat.userData.intensidadBase = mat.emissiveIntensity;
       }
     }
-  });
+    o.children.forEach(recorrer);
+  };
+  recorrer(objeto);
+  const tinte = new THREE.Color();
   return (v: number) => {
     for (const mat of materiales) {
       const base = mat.userData.emisivoBase as THREE.Color;
@@ -46,8 +51,10 @@ export function resaltadorDe(objeto: THREE.Object3D, intensidad = 0.22) {
         mat.emissive.copy(base);
         mat.emissiveIntensity = mat.userData.intensidadBase;
       } else {
-        mat.emissive.copy(base).lerp(mat.color, v);
-        mat.emissiveIntensity = Math.max(mat.userData.intensidadBase, v * intensidad * 2);
+        // Brillo suave: hacia el propio color del material, a media intensidad
+        tinte.copy(mat.color).multiplyScalar(0.6);
+        mat.emissive.copy(base).lerp(tinte, v);
+        mat.emissiveIntensity = Math.max(mat.userData.intensidadBase, v * intensidad);
       }
     }
   };

@@ -5,6 +5,7 @@
 import * as THREE from 'three';
 import { hash, limitar, mezclar, rng } from '../util/aleatorio';
 import type { Animador } from '../util/animacion';
+import { fusionarEstaticos } from './fusion';
 import { marcar } from './interactivos';
 import type { LibroVisual } from './libros';
 import { aTextura, lienzo } from './texturas';
@@ -148,6 +149,9 @@ export class Estanteria {
 
   private construirEstructura(texturaMadera: THREE.Texture) {
     const W = this.ancho;
+    const estructura = new THREE.Group();
+    estructura.name = 'estructura';
+    this.grupo.add(estructura);
     const metal = new THREE.MeshStandardMaterial({ color: 0x1b1a19, roughness: 0.42, metalness: 0.65 });
     const tex = texturaMadera.clone();
     tex.repeat.set(W / 0.9, 0.5);
@@ -159,7 +163,7 @@ export class Estanteria {
       m.position.set(x, y, z);
       m.castShadow = true;
       m.receiveShadow = true;
-      this.grupo.add(m);
+      estructura.add(m);
       return m;
     };
 
@@ -188,7 +192,7 @@ export class Estanteria {
       m.scale.y = a.distanceTo(b);
       m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
       m.castShadow = true;
-      this.grupo.add(m);
+      estructura.add(m);
     };
     for (const x of [-W / 2 - 0.002, W / 2 + 0.002]) {
       for (let i = 0; i < 4; i++) {
@@ -208,9 +212,10 @@ export class Estanteria {
         const r = new THREE.Mesh(rueda, goma);
         r.position.set(x, 0.026, z);
         r.castShadow = true;
-        this.grupo.add(r);
+        estructura.add(r);
       }
     }
+    fusionarEstaticos(estructura);
   }
 
   private crearSujetalibros() {

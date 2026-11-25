@@ -164,6 +164,11 @@ export class Interaccion {
     }
   }
 
+  /** Hay algún brillo o movimiento de señalado en curso. */
+  get animando() {
+    return this.brillo.size > 0;
+  }
+
   /** Objeto señalado actualmente (para reposicionar la etiqueta táctil). */
   get objetoSenalado() {
     return this.actualObjeto;

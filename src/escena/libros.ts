@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import type { Libro } from '../datos/tipos';
+import { compactarGrupos } from './fusion';
 import { marcar } from './interactivos';
 import { dibujarContratapa, dibujarLomo, dibujarTapa } from './lomos';
 import { aTextura, texturaPaginas } from './texturas';
@@ -40,7 +41,8 @@ export class LibroVisual {
     this.alto = (libro.alto / 100) * ESCALA_LIBROS;
     this.grosor = (libro.grosor / 100) * ESCALA_LIBROS;
     this.ancho = (libro.ancho / 100) * ESCALA_LIBROS;
-    const geo = new RoundedBoxGeometry(this.grosor, this.alto, this.ancho, 2, 0.0015);
+    // Caras: +x tapa, -x contratapa, +y/-y/-z cantos de páginas, +z lomo → 4 dibujos en vez de 6
+    const geo = compactarGrupos(new RoundedBoxGeometry(this.grosor, this.alto, this.ancho, 2, 0.0015), (i) => [0, 1, 2, 2, 3, 2][i]);
     const lomo = aTextura(dibujarLomo(libro));
     const brillo = libro.lomo.brillo ?? 0.3;
     const rugosidad = 0.8 - brillo * 0.42;
@@ -55,8 +57,7 @@ export class LibroVisual {
     this.matTapa = new THREE.MeshStandardMaterial({ color, roughness: rugosidad, emissive: color, emissiveIntensity: 0 });
     this.matContra = this.matTapa.clone();
     const paginas = materialPaginas(libro.lomo.gastado ?? 0);
-    // Orden de caras: +x tapa, -x contratapa, +y/-y cantos, +z lomo, -z canto delantero
-    this.mesh = new THREE.Mesh(geo, [this.matTapa, this.matContra, paginas, paginas, this.matLomo, paginas]);
+    this.mesh = new THREE.Mesh(geo, [this.matTapa, this.matContra, paginas, this.matLomo]);
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
     this.mesh.name = `libro:${libro.id}`;

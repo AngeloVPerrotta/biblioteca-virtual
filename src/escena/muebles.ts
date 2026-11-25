@@ -4,6 +4,7 @@
  */
 import * as THREE from 'three';
 import { rng } from '../util/aleatorio';
+import { compactarGrupos } from './fusion';
 import { marcar, resaltadorDe } from './interactivos';
 import type { LibroVisual } from './libros';
 import { aTextura, grano, lienzo, texturaCuadro, texturaTapaGuitarra, texturaVinilo } from './texturas';
@@ -320,6 +321,7 @@ export function mesaTocadiscos(madera: THREE.Texture, items: { portada?: string 
       sep.add(pestana);
       sep.position.set(0, 0, D / 2 - 0.03 - i * paso);
       sep.rotation.x = -0.06;
+      sep.userData.sinResalte = true;
       cajon.add(sep);
       separadores++;
       continue;
@@ -327,10 +329,12 @@ export function mesaTocadiscos(madera: THREE.Texture, items: { portada?: string 
     const color = new THREE.Color(COLORES_DISCOS[Math.floor(r() * COLORES_DISCOS.length)]);
     const lado = new THREE.MeshStandardMaterial({ color, roughness: 0.75 });
     const tapa = new THREE.MeshStandardMaterial({ color, roughness: 0.6 });
-    const funda = new THREE.Mesh(new THREE.BoxGeometry(0.31, 0.31, 0.0045), [lado, lado, lado, lado, tapa, lado]);
+    // Tapa adelante y el resto de las caras con un solo material: 2 dibujos por funda
+    const funda = new THREE.Mesh(compactarGrupos(new THREE.BoxGeometry(0.31, 0.31, 0.0045), (k) => (k === 4 ? 1 : 0)), [lado, tapa]);
     funda.position.set((r() - 0.5) * 0.008, 0.172, D / 2 - 0.03 - i * paso);
     funda.rotation.set(-0.06 - (i === 0 ? 0.06 : 0), (r() - 0.5) * 0.02, (r() - 0.5) * 0.02);
     funda.userData.base = funda.position.clone();
+    funda.userData.sinResalte = true;
     const url = item.portada;
     if (url) {
       cargador.load(url, (t) => {
@@ -680,6 +684,7 @@ export function relojDePared() {
     m.castShadow = true;
     pivote.add(m);
     pivote.position.z = z;
+    pivote.userData.noFusionar = true;
     g.add(pivote);
     return pivote;
   };

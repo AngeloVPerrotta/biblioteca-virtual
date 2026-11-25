@@ -1,12 +1,11 @@
 /**
  * Postproceso: oclusión ambiental (solo en compu), bloom suave en lámparas y ventana,
- * y un pase final de grano fílmico, viñeta y calidez.
+ * y un pase final que aplica el tono (ACES) y suma grano fílmico, viñeta y calidez.
  */
 import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
-import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { FullScreenQuad, Pass } from 'three/addons/postprocessing/Pass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
@@ -31,6 +30,59 @@ const Saneador = {
   `,
 };
 
+/**
+ * Dibuja la escena con antialiasing (MSAA) en un destino propio y la pasa ya limpia
+ * (Saneador) al resto de la cadena. Así el MSAA se paga una sola vez y no en cada
+ * pase de postproceso, que trabajan sobre imágenes ya suavizadas.
+ */
+class PaseEscena extends Pass {
+  readonly destino: THREE.WebGLRenderTarget;
+  private readonly material: THREE.ShaderMaterial;
+  private readonly quad: FullScreenQuad;
+
+  constructor(
+    private readonly escena: THREE.Scene,
+    private readonly camara: THREE.Camera,
+    ancho: number,
+    alto: number,
+    muestras: number,
+  ) {
+    super();
+    this.destino = new THREE.WebGLRenderTarget(ancho, alto, { type: THREE.HalfFloatType, samples: muestras });
+    this.material = new THREE.ShaderMaterial({
+      uniforms: THREE.UniformsUtils.clone(Saneador.uniforms),
+      vertexShader: Saneador.vertexShader,
+      fragmentShader: Saneador.fragmentShader,
+      depthTest: false,
+      depthWrite: false,
+    });
+    this.quad = new FullScreenQuad(this.material);
+    this.needsSwap = true;
+  }
+
+  setSize(ancho: number, alto: number) {
+    this.destino.setSize(ancho, alto);
+  }
+
+  render(renderer: THREE.WebGLRenderer, writeBuffer: THREE.WebGLRenderTarget) {
+    const autoClear = renderer.autoClear;
+    renderer.autoClear = false;
+    renderer.setRenderTarget(this.destino);
+    renderer.clear();
+    renderer.render(this.escena, this.camara);
+    renderer.autoClear = autoClear;
+    this.material.uniforms.tDiffuse.value = this.destino.texture;
+    renderer.setRenderTarget(this.renderToScreen ? null : writeBuffer);
+    this.quad.render(renderer);
+  }
+
+  dispose() {
+    this.destino.dispose();
+    this.material.dispose();
+    this.quad.dispose();
+  }
+}
+
 const PaseFinal = {
   uniforms: {
     tDiffuse: { value: null },
@@ -53,6 +105,11 @@ const PaseFinal = {
     float azar(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
     void main() {
       vec4 c = texture2D(tDiffuse, vUv);
+      // Tono y espacio de color acá mismo (antes era un pase aparte): un dibujo menos por cuadro
+      #ifdef TONE_MAPPING
+        c.rgb = toneMapping(c.rgb);
+      #endif
+      c = linearToOutputTexel(c);
       vec2 d = (vUv - 0.5) * vec2(1.0, 0.9);
       float v = smoothstep(0.78, 0.18, length(d));
       float vineta = uVineta + uOscurecer * 0.35;
@@ -71,14 +128,20 @@ export class Postproceso {
   readonly bloom: UnrealBloomPass;
   readonly final: ShaderPass;
   private readonly gtao: GTAOPass | null;
+  private readonly paseEscena: PaseEscena;
 
   constructor(renderer: THREE.WebGLRenderer, escena: THREE.Scene, camara: THREE.PerspectiveCamera, alta: boolean, ocultarEnAO: THREE.Object3D[]) {
     const tam = renderer.getDrawingBufferSize(new THREE.Vector2());
-    const destino = new THREE.WebGLRenderTarget(tam.x, tam.y, { type: THREE.HalfFloatType, samples: alta ? 4 : 2 });
+    // El resto de la cadena no necesita MSAA: recibe la escena ya suavizada
+    const destino = new THREE.WebGLRenderTarget(tam.x, tam.y, { type: THREE.HalfFloatType });
     this.composer = new EffectComposer(renderer, destino);
-    this.composer.addPass(new RenderPass(escena, camara));
+    this.paseEscena = new PaseEscena(escena, camara, tam.x, tam.y, alta ? 4 : 2);
+    this.composer.addPass(this.paseEscena);
     if (alta) {
-      this.gtao = new GTAOPass(escena, camara, tam.x, tam.y);
+      this.gtao = new GTAOPass(escena, camara, Math.round(tam.x / 2), Math.round(tam.y / 2));
+      // La oclusión ambiental se calcula a media resolución: se ve igual y cuesta un cuarto
+      const setSizeOriginal = this.gtao.setSize.bind(this.gtao);
+      this.gtao.setSize = (w: number, h: number) => setSizeOriginal(Math.max(1, Math.round(w / 2)), Math.max(1, Math.round(h / 2)));
       this.gtao.blendIntensity = 0.85;
       this.gtao.updateGtaoMaterial({ radius: 0.32, distanceExponent: 1.4, thickness: 1.2, scale: 1.1, samples: 16 });
       // Los efectos transparentes (haz, polvo, vidrio) no deben generar oclusión
@@ -93,16 +156,24 @@ export class Postproceso {
     } else {
       this.gtao = null;
     }
-    this.composer.addPass(new ShaderPass(Saneador));
     this.bloom = new UnrealBloomPass(new THREE.Vector2(tam.x / 2, tam.y / 2), 0.32, 0.6, 0.86);
     this.composer.addPass(this.bloom);
-    this.composer.addPass(new OutputPass());
     this.final = new ShaderPass(PaseFinal);
     this.composer.addPass(this.final);
   }
 
   setSize(w: number, h: number) {
     this.composer.setSize(w, h);
+  }
+
+  setPixelRatio(pr: number, w: number, h: number) {
+    this.composer.setPixelRatio(pr);
+    this.composer.setSize(w, h);
+  }
+
+  /** Donde se dibuja la escena (para precompilar los shaders con la misma configuración). */
+  get destinoEscena() {
+    return this.paseEscena.destino;
   }
 
   set oscurecer(v: number) {

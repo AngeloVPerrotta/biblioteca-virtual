@@ -25,6 +25,7 @@ import { Camara } from './escena/camara';
 import { climaDePrueba, LluviaVisual, obtenerClima } from './escena/clima';
 import { HazDeSol, Polvo } from './escena/efectos';
 import { Estanteria, NIVELES, PROFUNDIDAD } from './escena/estanteria';
+import { fusionarEstaticos } from './escena/fusion';
 import { crearHabitacion, type Ventana } from './escena/habitacion';
 import { marcar, resaltadorDe, type Interactivo } from './escena/interactivos';
 import { LibroVisual } from './escena/libros';
@@ -57,7 +58,9 @@ const datosDiscos = discosJson as unknown as DatosDiscos;
 async function iniciar() {
   const canvas = document.getElementById('escena') as HTMLCanvasElement;
   const carga = crearCarga();
+  performance.mark('carga-inicio');
   const progreso = async (p: number) => {
+    performance.mark(`carga-${p}`);
     carga.progreso(p);
     await cuadro();
   };
@@ -73,6 +76,9 @@ async function iniciar() {
   renderer.setSize(innerWidth, innerHeight, false);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
+  // Las sombras se recalculan solo cuando algo se mueve (ver el bucle)
+  renderer.shadowMap.autoUpdate = false;
+  renderer.shadowMap.needsUpdate = true;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   config.aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   // Si el navegador pierde el contexto gráfico (pasa a veces en celulares), ofrecer recargar
@@ -239,6 +245,11 @@ async function iniciar() {
   marcar(relojPared.grupo, datosReloj);
   await progreso(0.85);
 
+  // Optimización: las piezas quietas que comparten material se dibujan de una sola vez
+  for (const o of [planta, guitarra, mesaLuz.grupo, lampara.grupo, mate, unTermo, elCuadro, mesa.grupo, mesa.agenda, relojPared.grupo, hab.grupo]) {
+    fusionarEstaticos(o);
+  }
+
   // Luz, atmósfera, cámara y postproceso
   const ambiente = new Ambiente(escena, renderer, hab, { pantalla: lampara.pantalla, bulbo: lampara.bulbo, posLuz: posLampara }, alta);
   const polvo = new Polvo(alta ? 280 : 150, new THREE.Box3(new THREE.Vector3(-W / 2 - 2.1, 0.3, 0.1), new THREE.Vector3(W / 2 + 0.6, 2.4, 2.2)));
@@ -394,6 +405,25 @@ async function iniciar() {
   canvas.addEventListener('pointerdown', () => {
     if (ui.panelesAbiertos) ui.cerrarPaneles();
   });
+  // Atajo: girar la ruedita hacia atrás sale del foco (libro) o del modo cajón
+  let ruedaAcumulada = 0;
+  let ruedaUltima = 0;
+  canvas.addEventListener(
+    'wheel',
+    (e) => {
+      if (!enCajon && !foco.activo) return;
+      e.preventDefault();
+      const ahora = performance.now();
+      if (ahora - ruedaUltima > 350) ruedaAcumulada = 0;
+      ruedaUltima = ahora;
+      if (e.deltaY > 0) ruedaAcumulada += e.deltaMode === 1 ? e.deltaY * 30 : e.deltaY;
+      if (ruedaAcumulada > 60) {
+        ruedaAcumulada = -Infinity;
+        void (enCajon ? salirCajon() : cerrarFoco());
+      }
+    },
+    { passive: false },
+  );
   if (movil) {
     window.addEventListener('pointerdown', () => camara.escucharGiroscopio(), { once: true });
   }
@@ -417,19 +447,84 @@ async function iniciar() {
     return ba.getUTCHours() + ba.getUTCMinutes() / 60 + ba.getUTCSeconds() / 3600;
   };
 
+  // Los shaders se compilan en paralelo mientras gira el disco de carga, en vez de trabar el primer cuadro.
+  // Se apunta al mismo destino que usa la escena para que sean exactamente los mismos programas.
+  renderer.setRenderTarget(post.destinoEscena);
+  const compilando = renderer.compileAsync(escena, camara.cam);
+  renderer.setRenderTarget(null);
+  await compilando.catch(() => undefined);
   await progreso(1);
+  // Resolución adaptable: si la compu no llega a ~40 fps baja un poco la resolución interna,
+  // y la vuelve a subir cuando sobra margen (en compus rápidas queda siempre al máximo)
+  const prMaximo = renderer.getPixelRatio();
+  let prActual = prMaximo;
+  let sumaCuadros = 0;
+  let cuadros = 0;
+  let inicioMedicion = performance.now() + 2500;
+  const ajustarResolucion = (dt: number, valido: boolean) => {
+    if (!valido) {
+      sumaCuadros = 0;
+      cuadros = 0;
+      return;
+    }
+    if (performance.now() < inicioMedicion || document.hidden) return;
+    sumaCuadros += dt;
+    cuadros++;
+    if (cuadros < 90) return;
+    const promedio = (sumaCuadros / cuadros) * 1000;
+    sumaCuadros = 0;
+    cuadros = 0;
+    let nuevo = prActual;
+    if (promedio > 26) nuevo = Math.max(0.6, prActual - 0.15);
+    else if (promedio < 15) nuevo = Math.min(prMaximo, prActual + 0.15);
+    if (Math.abs(nuevo - prActual) > 0.01) {
+      prActual = nuevo;
+      renderer.setPixelRatio(prActual);
+      renderer.setSize(innerWidth, innerHeight, false);
+      post.setPixelRatio(prActual, innerWidth, innerHeight);
+      inicioMedicion = performance.now() + 1000;
+    }
+  };
+
+  // En reposo (nada se mueve y nadie toca nada por unos segundos) la escena se dibuja a ~30 cuadros:
+  // el polvo y la lluvia se ven igual y la compu descansa. Cualquier gesto vuelve a la velocidad plena.
+  let ultimaActividad = performance.now();
+  const marcarActividad = () => (ultimaActividad = performance.now());
+  for (const ev of ['pointermove', 'pointerdown', 'wheel', 'keydown', 'touchstart'] as const) {
+    addEventListener(ev, marcarActividad, { passive: true });
+  }
+  let ultimoCuadro = 0;
+  const posAnterior = new THREE.Vector3();
+  const rotAnterior = new THREE.Quaternion();
+
   const reloj = new THREE.Timer();
   let primero = true;
   const bucle = (ahora: number) => {
+    const enReposo = !primero && ahora - ultimaActividad > 4000 && !animador.activo && !interaccion.animando && !foco.enUso;
+    if (enReposo && ahora - ultimoCuadro < 29) {
+      requestAnimationFrame(bucle);
+      return;
+    }
+    ultimoCuadro = ahora;
     reloj.update(ahora);
     const dt = Math.min(reloj.getDelta(), 0.05);
     animador.tick(performance.now());
     camara.tick(dt);
+    // Si la cámara todavía se acomoda (paralaje, giroscopio) no estamos en reposo
+    if (camara.cam.position.distanceToSquared(posAnterior) > 1e-9 || 1 - Math.abs(camara.cam.quaternion.dot(rotAnterior)) > 1e-9) {
+      marcarActividad();
+    }
+    posAnterior.copy(camara.cam.position);
+    rotAnterior.copy(camara.cam.quaternion);
     interaccion.tick(dt);
     foco.tick(dt);
     ambiente.tick(dt);
     actualizarSol();
     polvo.tick(dt);
+    // Las sombras se recalculan solo cuando algo se mueve: el brillo al señalar un libro no las cambia,
+    // pero en el cajón el disco señalado sí sube
+    if (animador.activo || foco.girando || (enCajon && interaccion.animando) || ambiente.consumirCambio()) renderer.shadowMap.needsUpdate = true;
+    ajustarResolucion(dt, !enReposo);
     tocadiscos.tick(dt);
     lluvia.actualizar(dt, ambiente.clima.lluvia, Math.min(1, Math.max(0.35, (ambiente.estado.elev + 10) / 25)));
     const h = horaConSegundos();
@@ -439,6 +534,7 @@ async function iniciar() {
     post.render(dt);
     if (primero) {
       primero = false;
+      performance.mark('carga-primer-cuadro');
       void carga.entrar(() => {
         camara.intro = 1;
         void animador.animar(1900, (k) => (camara.intro = 1 - k), { curva: salidaSuave });
