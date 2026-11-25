@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#17110d" />
+    <title>Biblioteca</title>
+    <meta name="description" content="Una habitación cálida con mis libros, mi wishlist y lo que estoy leyendo." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <canvas id="escena" aria-label="Habitación con la biblioteca en 3D"></canvas>
+
+    <div id="carga" class="carga" role="progressbar" aria-label="Cargando la biblioteca" aria-valuemin="0" aria-valuemax="100">
+      <div class="carga__escenario">
+        <div class="disco"><span class="disco__etiqueta">Biblioteca</span></div>
+        <div class="disco__brillo"></div>
+      </div>
+      <svg class="carga__progreso" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" /></svg>
+    </div>
+
+    <header class="barra">
+      <div class="marca">Biblioteca</div>
+      <nav class="barra__acciones">
+        <button id="btn-libros" class="boton" type="button" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h3v16H5zM10 4h3v16h-3zM15.2 4.6l2.9-.8 4.1 15.4-2.9.8z" /></svg>
+          <span>Libros</span>
+        </button>
+        <button id="btn-wishlist" class="boton" type="button" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h11a2 2 0 0 1 2 2v16l-7.5-3.5L4 21V5a2 2 0 0 1 2-2z" /></svg>
+          <span>Wishlist</span>
+        </button>
+      </nav>
+    </header>
+
+    <div id="etiqueta" class="etiqueta" role="status" aria-live="polite"><strong></strong><span></span></div>
+
+    <aside id="hub" class="hub" role="dialog" aria-modal="false" aria-labelledby="hub-titulo" hidden>
+      <div class="hub__asa" aria-hidden="true"></div>
+      <div class="hub__cabecera">
+        <h2 id="hub-titulo">Mis libros <span id="hub-cuenta" class="hub__cuenta"></span></h2>
+        <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
+      </div>
+      <input id="hub-buscar" class="hub__buscar" type="search" placeholder="Buscar por título, autor o editorial" autocomplete="off" />
+      <div class="hub__filtros" role="group" aria-label="Filtrar">
+        <button class="chip" data-filtro="todos" aria-pressed="true">Todos</button>
+        <button class="chip" data-filtro="leido" aria-pressed="false">Leídos</button>
+        <button class="chip" data-filtro="empezado" aria-pressed="false">Empezados</button>
+        <button class="chip" data-filtro="sin-leer" aria-pressed="false">Sin leer</button>
+        <button class="chip" data-filtro="prestado" aria-pressed="false">Prestados</button>
+      </div>
+      <label class="hub__orden">
+        Ordenar la biblioteca
+        <select id="hub-orden">
+          <option value="fotos">Como en mis fotos</option>
+          <option value="color">Por color</option>
+          <option value="autor">Por autor</option>
+          <option value="titulo">Por título</option>
+        </select>
+      </label>
+      <ul id="hub-lista" class="hub__lista"></ul>
+    </aside>
+
+    <section id="tarjeta" class="tarjeta" aria-live="polite" hidden>
+      <button class="cerrar" type="button" data-cerrar aria-label="Volver al estante">&times;</button>
+      <p id="tarjeta-estado" class="tarjeta__estado"></p>
+      <h2 id="tarjeta-titulo"></h2>
+      <p id="tarjeta-autor" class="tarjeta__autor"></p>
+      <p id="tarjeta-editorial" class="tarjeta__editorial"></p>
+      <p id="tarjeta-notas" class="tarjeta__notas"></p>
+      <p class="tarjeta__ayuda">Arrastrá para girarlo · tocá afuera para devolverlo</p>
+    </section>
+
+    <section id="agenda" class="agenda" role="dialog" aria-labelledby="agenda-titulo" hidden>
+      <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
+      <h2 id="agenda-titulo">Libros que quiero</h2>
+      <ol id="agenda-lista" class="agenda__lista"></ol>
+      <p id="agenda-vacia" class="agenda__vacia">Todavía no anoté ninguno.<br />Decile a Claude cuáles querés y aparecen acá.</p>
+    </section>
+
+    <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

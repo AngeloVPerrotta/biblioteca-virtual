@@ -1,0 +1,333 @@
+import './estilos.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/eb-garamond/500.css';
+import '@fontsource/eb-garamond/600.css';
+import '@fontsource/eb-garamond/700.css';
+import '@fontsource/eb-garamond/400-italic.css';
+import '@fontsource/eb-garamond/500-italic.css';
+import '@fontsource/playfair-display/600.css';
+import '@fontsource/oswald/500.css';
+import '@fontsource/bebas-neue/400.css';
+import '@fontsource/caveat/500.css';
+import '@fontsource/caveat/700.css';
+
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
+
+import datosJson from './datos/biblioteca.json';
+import type { DatosBiblioteca } from './datos/tipos';
+import { Ambiente } from './escena/ambiente';
+import { Camara } from './escena/camara';
+import { HazDeSol, Polvo } from './escena/efectos';
+import { Estanteria, NIVELES, PROFUNDIDAD } from './escena/estanteria';
+import { crearHabitacion, type Ventana } from './escena/habitacion';
+import { marcar, resaltadorDe, type Interactivo } from './escena/interactivos';
+import { LibroVisual } from './escena/libros';
+import { FUENTES_CANVAS } from './escena/lomos';
+import {
+  cuadroColgado,
+  guitarraCriolla,
+  lamparaDePie,
+  marcarObjetos,
+  mateConBombilla,
+  mesaDeLuz,
+  mesaTocadiscos,
+  pilaDeLibros,
+  relojDePared,
+  termo,
+} from './escena/muebles';
+import { singonio } from './escena/planta';
+import { Postproceso } from './escena/postproceso';
+import { aTextura, config, texturaMadera } from './escena/texturas';
+import { Foco } from './foco';
+import { Interaccion } from './interaccion';
+import { crearCarga } from './carga';
+import { formatoHora, Interfaz } from './ui';
+import { Animador, cuadro, salidaSuave } from './util/animacion';
+
+const datos = datosJson as unknown as DatosBiblioteca;
+
+async function iniciar() {
+  const canvas = document.getElementById('escena') as HTMLCanvasElement;
+  const carga = crearCarga();
+  const progreso = async (p: number) => {
+    carga.progreso(p);
+    await cuadro();
+  };
+
+  await Promise.all(FUENTES_CANVAS.map((f) => document.fonts.load(f)));
+  await progreso(0.08);
+
+  const movil = matchMedia('(pointer: coarse)').matches || Math.min(innerWidth, innerHeight) < 600;
+  const alta = !movil;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, alta ? 2 : 1.6));
+  renderer.setSize(innerWidth, innerHeight, false);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  config.aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  RectAreaLightUniformsLib.init();
+
+  const escena = new THREE.Scene();
+  escena.background = new THREE.Color('#120d0a');
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  escena.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  escena.environmentIntensity = 0.16;
+
+  const animador = new Animador();
+
+  // Libros
+  const libros = datos.libros.map((l) => new LibroVisual(l));
+  await progreso(0.4);
+  const leyendo = datos.leyendoAhora ? (libros.find((lv) => lv.libro.id === datos.leyendoAhora) ?? null) : null;
+  const acostados = libros.filter((lv) => lv.libro.acostado && lv !== leyendo);
+  const parados = libros.filter((lv) => !lv.libro.acostado && lv !== leyendo);
+
+  const madera = aTextura(texturaMadera('#7a4c2c', { vetas: 11, semilla: 3 }));
+  const maderaClara = aTextura(texturaMadera('#a87a4e', { vetas: 8, semilla: 5, contraste: 0.24 }));
+  await progreso(0.5);
+
+  // Biblioteca con su decoración
+  const pila = pilaDeLibros(acostados);
+  const estanteria = new Estanteria({
+    parados,
+    texturaMadera: madera,
+    animador,
+    decoraciones: [],
+  });
+  const zEstante = 0.04;
+  estanteria.grupo.position.z = zEstante;
+  escena.add(estanteria.grupo);
+  const W = estanteria.ancho;
+  // Los libros acostados, en pila arriba de la biblioteca, junto a la planta
+  pila.grupo.position.set(W / 2 - pila.ancho / 2 - 0.04, NIVELES[4], PROFUNDIDAD / 2 - 0.01);
+  pila.grupo.rotation.y = -0.06;
+  estanteria.grupo.add(pila.grupo);
+
+  const planta = singonio();
+  planta.position.set(-W * 0.2, NIVELES[4], zEstante + PROFUNDIDAD / 2);
+  escena.add(planta);
+  await progreso(0.6);
+
+  // Habitación
+  const ventana: Ventana = { x0: -W / 2 - 1.6, x1: -W / 2 - 0.7, y0: 0.92, y1: 2.24 };
+  const hab = crearHabitacion(ventana);
+  escena.add(hab.grupo);
+  await progreso(0.75);
+
+  const mesaLuz = mesaDeLuz(maderaClara);
+  mesaLuz.grupo.position.set(-W / 2 - 0.4, 0, 0.24);
+  escena.add(mesaLuz.grupo);
+  const sup = mesaLuz.superficie;
+  const mate = mateConBombilla();
+  mate.position.set(-W / 2 - 0.55, sup, 0.32);
+  const unTermo = termo();
+  unTermo.position.set(-W / 2 - 0.27, sup, 0.17);
+  escena.add(mate, unTermo);
+  if (leyendo) {
+    leyendo.mesh.rotation.set(0, 0.35, Math.PI / 2);
+    leyendo.mesh.position.set(-W / 2 - 0.36, sup + leyendo.grosor / 2, 0.3);
+    leyendo.mesh.userData.interactivo.subtitulo = `${leyendo.libro.autor} · leyendo ahora`;
+    escena.add(leyendo.mesh);
+  }
+
+  const lampara = lamparaDePie(maderaClara);
+  lampara.grupo.position.set(-W / 2 - 1.0, 0, 0.62);
+  escena.add(lampara.grupo);
+  const posLampara = lampara.posLuz.clone().add(lampara.grupo.position);
+
+  const guitarra = guitarraCriolla();
+  guitarra.position.set(-W / 2 - 1.55, 0, 0.3);
+  guitarra.rotation.y = 0.28;
+  escena.add(guitarra);
+
+  const mesa = mesaTocadiscos(maderaClara);
+  mesa.grupo.position.set(W / 2 + 0.85, 0, 0.3);
+  mesa.grupo.rotation.y = -0.1;
+  marcarObjetos(mesa);
+  escena.add(mesa.grupo);
+
+  const elCuadro = cuadroColgado(datos.cuadro);
+  elCuadro.position.set(W / 2 + 0.85, 1.58, 0);
+  escena.add(elCuadro);
+
+  // Reloj de pared con la hora de Buenos Aires
+  const relojPared = relojDePared();
+  relojPared.grupo.position.set(W / 2 + 1.62, 1.66, 0);
+  escena.add(relojPared.grupo);
+  const datosReloj: Interactivo = { tipo: 'reloj', titulo: '', subtitulo: '', resaltar: resaltadorDe(relojPared.grupo, 0.15) };
+  marcar(relojPared.grupo, datosReloj);
+  await progreso(0.85);
+
+  // Luz, atmósfera, cámara y postproceso
+  const ambiente = new Ambiente(escena, renderer, hab, { pantalla: lampara.pantalla, bulbo: lampara.bulbo, posLuz: posLampara }, alta);
+  const polvo = new Polvo(alta ? 280 : 150, new THREE.Box3(new THREE.Vector3(-W / 2 - 2.1, 0.3, 0.1), new THREE.Vector3(W / 2 + 0.6, 2.4, 2.2)));
+  const haz = new HazDeSol(ambiente.sol.map, alta ? 16 : 9);
+  escena.add(polvo.puntos, haz.grupo);
+
+  const camara = new Camara();
+  camara.encuadrar(innerWidth / innerHeight, W);
+  const post = new Postproceso(renderer, escena, camara.cam, alta, [haz.grupo, polvo.puntos]);
+  const foco = new Foco(escena, camara, animador, ambiente, post);
+
+  let ultimaElevacion = NaN;
+  const actualizarSol = () => {
+    const e = ambiente.estado;
+    if (Math.abs(e.elev - ultimaElevacion) < 0.05) return;
+    ultimaElevacion = e.elev;
+    haz.actualizar(ambiente.sol, e.solColor, Math.min(1, e.sol / 3) * 0.022);
+    polvo.intensidad = 0.25 + Math.min(1, e.sol / 3) * 0.35 + e.lampara * 0.1;
+  };
+
+  // Interfaz e interacción
+  let interaccion: Interaccion;
+  const cerrarFoco = async () => {
+    if (!foco.activo) return;
+    ui.ocultarTarjeta();
+    await foco.cerrar();
+    interaccion.modoFoco = false;
+  };
+  const abrirLibro = async (id: string, desde: THREE.Object3D | null = null) => {
+    const lv = libros.find((l) => l.libro.id === id);
+    if (!lv || foco.enUso) return;
+    ui.ocultarEtiqueta();
+    interaccion.limpiar();
+    interaccion.modoFoco = true;
+    const nota = desde ?? (lv.mesh.visible ? null : (estanteria.objetivos().find((o) => o.userData.interactivo?.id === id) ?? null));
+    await foco.abrir(lv, nota);
+    ui.mostrarTarjeta(lv.libro);
+  };
+  const ui = new Interfaz(datos, {
+    elegirLibro: (id) => void abrirLibro(id),
+    ordenar: (orden) => {
+      if (foco.enUso) return;
+      estanteria.distribuir(orden, true);
+    },
+    cerrarFoco: () => void cerrarFoco(),
+    alCambiarPaneles: (abiertos) => {
+      interaccion.bloqueado = abiertos;
+      if (abiertos) {
+        ui.ocultarEtiqueta();
+        interaccion.limpiar();
+      }
+    },
+  });
+
+  const seleccionar = (i: Interactivo, objeto: THREE.Object3D) => {
+    switch (i.tipo) {
+      case 'libro':
+        void abrirLibro(i.id!);
+        break;
+      case 'prestado':
+        void abrirLibro(i.id!, objeto);
+        break;
+      case 'agenda':
+        ui.abrirAgenda();
+        break;
+      case 'vinilos':
+      case 'tocadiscos':
+        ui.mostrarAviso('Los vinilos llegan en la próxima versión, con tu historial de Spotify.');
+        break;
+      case 'reloj':
+        ui.mostrarAviso(`${datosReloj.titulo} · ${datosReloj.subtitulo}`);
+        break;
+    }
+  };
+
+  interaccion = new Interaccion(
+    canvas,
+    camara,
+    () => [...estanteria.objetivos(), pila.grupo, mesa.tocadiscos, mesa.cajon, mesa.agenda, relojPared.grupo, ...(leyendo ? [leyendo.mesh] : [])],
+    {
+      alSenalar: (i, p) => (i && p ? ui.mostrarEtiqueta(i.titulo, i.subtitulo ?? '', p.x, p.y) : ui.ocultarEtiqueta()),
+      alSeleccionar: seleccionar,
+      alTocarVacio: () => void cerrarFoco(),
+      alArrastrar: (dx, dy) => foco.arrastrar(dx, dy),
+    },
+  );
+  canvas.addEventListener('pointerdown', () => {
+    if (ui.panelesAbiertos) ui.cerrarPaneles();
+  });
+  if (movil) {
+    window.addEventListener('pointerdown', () => camara.escucharGiroscopio(), { once: true });
+  }
+
+  const redimensionar = () => {
+    renderer.setSize(innerWidth, innerHeight, false);
+    post.setSize(innerWidth, innerHeight);
+    camara.encuadrar(innerWidth / innerHeight, W);
+  };
+  window.addEventListener('resize', redimensionar);
+
+  // Para probar otras horas: ?hora=19.5
+  const horaUrl = new URLSearchParams(location.search).get('hora');
+  if (horaUrl !== null && !Number.isNaN(Number(horaUrl))) {
+    ambiente.horaForzada = Number(horaUrl);
+    ambiente.actualizar(true);
+  }
+  const horaConSegundos = () => {
+    if (ambiente.horaForzada !== null) return ambiente.horaForzada;
+    const ba = new Date(Date.now() - 3 * 3600000);
+    return ba.getUTCHours() + ba.getUTCMinutes() / 60 + ba.getUTCSeconds() / 3600;
+  };
+
+  await progreso(1);
+  const reloj = new THREE.Timer();
+  let primero = true;
+  const bucle = (ahora: number) => {
+    reloj.update(ahora);
+    const dt = Math.min(reloj.getDelta(), 0.05);
+    animador.tick(performance.now());
+    camara.tick(dt);
+    interaccion.tick(dt);
+    foco.tick(dt);
+    ambiente.tick(dt);
+    actualizarSol();
+    polvo.tick(dt);
+    const h = horaConSegundos();
+    relojPared.ajustar(h);
+    datosReloj.titulo = `${formatoHora(h)} en Buenos Aires`;
+    datosReloj.subtitulo = ambiente.estado.nombre;
+    post.render(dt);
+    if (primero) {
+      primero = false;
+      void carga.entrar(() => {
+        camara.intro = 1;
+        void animador.animar(2600, (k) => (camara.intro = 1 - k), { curva: salidaSuave });
+      });
+    }
+    requestAnimationFrame(bucle);
+  };
+  requestAnimationFrame(bucle);
+
+  // Para depurar desde la consola
+  Object.assign(window, {
+    __biblioteca: {
+      escena,
+      camara,
+      ambiente,
+      estanteria,
+      renderer,
+      post,
+      haz,
+      polvo,
+      abrirLibro,
+      cerrarFoco,
+      probarHora: (h: number | null) => {
+        ambiente.horaForzada = h;
+        ambiente.actualizar(true);
+      },
+    },
+  });
+}
+
+iniciar().catch((e) => {
+  console.error(e);
+  const carga = document.getElementById('carga');
+  if (carga) carga.insertAdjacentHTML('beforeend', '<p class="carga__error">No se pudo cargar la biblioteca. Probá recargar la página.</p>');
+});
