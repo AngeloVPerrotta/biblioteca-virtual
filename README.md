@@ -2,7 +2,20 @@
 
 Mi biblioteca en 3D: una habitación de entrecasa, cálida y tranquila, con mis libros reales en una biblioteca tipo Ruffo, la guitarra criolla, el mate, el tocadiscos y la luz que cambia según la hora de Buenos Aires.
 
-Hecha con [Three.js](https://threejs.org) y Vite. Todo (libros, lomos, alfombra, parquet, cuadro) se dibuja por código al cargar: no hay modelos ni imágenes pesadas.
+**👉 [biblioteca.angeloperrotta.com.ar](https://biblioteca.angeloperrotta.com.ar)** (mejor en la compu; también anda en el celu)
+
+![Recorrido: la pantalla de carga, abrir un libro, el «¿Qué leo?» y el cajón de vinilos](docs/recorrido.gif)
+
+Hecha con [Three.js](https://threejs.org), TypeScript y Vite, publicada en Cloudflare. Todo (libros, lomos, alfombra, parquet, cuadro) se dibuja por código al cargar: no hay modelos ni imágenes pesadas.
+
+| | |
+|---|---|
+| ![La habitación en la hora dorada](docs/habitacion.jpg) | ![«¿Qué leo?»: la biblioteca elige un libro según cómo te sentís](docs/que-leo.jpg) |
+| **La habitación** con la luz real de Buenos Aires | **¿Qué leo?** Le contás cómo te sentís y elige un libro |
+| ![El cajón de vinilos con mis discos de Spotify](docs/vinilos.jpg) | ![Un libro en primer plano](docs/libro.jpg) |
+| **Los vinilos**, armados con mi historial de Spotify | **Cada libro** sale del estante y se puede girar |
+| ![La agenda con sugerencias «Si te gustó…»](docs/agenda.jpg) | ![La habitación de noche, con la lámpara](docs/noche.jpg) |
+| **La agenda**: wishlist y «Si te gustó…» | **De noche**, solo con la lámpara |
 
 ## Qué se puede hacer
 
