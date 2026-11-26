@@ -3,6 +3,7 @@
  * tarjeta del libro en foco, agenda (wishlist), «¿Qué leo?», discos, reproductor y avisos.
  */
 import perfilesJson from './datos/perfiles.json';
+import sugerenciasJson from './datos/sugerencias.json';
 import type { DatosBiblioteca, EstadoLectura, Libro } from './datos/tipos';
 import type { Orden } from './escena/estanteria';
 import type { Disco } from './escena/tocadiscos';
@@ -37,8 +38,18 @@ interface Acciones {
   alCambiarPaneles: (abiertos: boolean) => void;
   /** Hora y clima de ahora, para que el «¿Qué leo?» los tenga en cuenta. */
   contextoLectura: () => ContextoLectura;
+  /** Desde la lista del cajón: señalar un disco (sube en el cajón) o ponerlo. */
+  senalarDiscoLista: (id: string | null) => void;
+  ponerDiscoLista: (id: string) => void;
   /** La biblioteca señala (o deja de señalar) un libro; devuelve dónde está. */
   senalarLibro: (id: string | null, opciones?: { ola?: boolean; inmediato?: boolean }) => Promise<string | null>;
+}
+
+interface Sugerencia {
+  si: string;
+  titulo: string;
+  autor: string;
+  resumen: string;
 }
 
 const EJEMPLOS = [
@@ -63,6 +74,8 @@ export class Interfaz {
   private readonly aviso = $('aviso');
   private readonly ayudaCajon = $('ayuda-cajon');
   private readonly reproductor = $('reproductor');
+  private readonly listaDiscos = $('discos-lista');
+  private discoEnLista: string | null = null;
   private readonly quelee = $('quelee');
   private readonly queleeTexto = $<HTMLInputElement>('quelee-texto');
   private readonly queleeResultado = $('quelee-resultado');
@@ -72,6 +85,10 @@ export class Interfaz {
   private ubicacion: string | null = null;
   private cuales: Cuales = 'todos';
   private pedidos = 0;
+  /** Obra recomendada dentro de una antología, para recordarla en la tarjeta del libro. */
+  private paraLeer: { id: string; texto: string } | null = null;
+  private sugerencias: { si: Libro; s: Sugerencia }[] = [];
+  private paginaSugerencias = 0;
   private filtro: Filtro = 'todos';
   private temporizadorAviso = 0;
 
@@ -84,6 +101,8 @@ export class Interfaz {
     this.tarjeta.hidden = false;
     this.agenda.hidden = false;
     this.quelee.hidden = false;
+    this.listaDiscos.hidden = false;
+    this.prepararListaDiscos();
     this.recomendador = new Recomendador(datos.libros, perfilesJson as unknown as Record<string, Perfil | string>);
 
     $('btn-libros').addEventListener('click', () => (this.hub.classList.contains('abierto') ? this.cerrarHub() : this.abrirHub()));
@@ -126,6 +145,7 @@ export class Interfaz {
 
     this.renderLista();
     this.renderAgenda();
+    this.prepararSugerencias();
   }
 
   get panelesAbiertos() {
@@ -208,6 +228,8 @@ export class Interfaz {
       notas.push(`Se lo presté a ${libro.prestado.a}${desde}.`);
     }
     if (libro.notas) notas.push(libro.notas);
+    if (this.paraLeer?.id === libro.id) notas.unshift(this.paraLeer.texto);
+    this.paraLeer = null;
     $('tarjeta-notas').textContent = notas.join(' ');
     $('tarjeta-estado').innerHTML = this.insignias(libro);
     this.tarjeta.classList.add('abierta');
@@ -231,6 +253,51 @@ export class Interfaz {
           }</li>`,
       )
       .join('');
+  }
+
+  /* ------------------------------------------------------------ para descubrir */
+
+  /** «Si te gustó X… te podría gustar Y»: solo de libros leídos, y nunca algo que ya está o ya quiero. */
+  private prepararSugerencias() {
+    const norm = (t: string) => normalizar(t).replace(/[^a-z0-9ñ]+/g, ' ').trim();
+    const tengo = new Set([...this.datos.libros.map((l) => norm(l.titulo)), ...this.datos.wishlist.map((d) => norm(d.titulo))]);
+    const lista = (sugerenciasJson as unknown as { sugerencias: Sugerencia[] }).sugerencias;
+    this.sugerencias = lista
+      .map((s) => ({ s, si: this.datos.libros.find((l) => l.id === s.si) }))
+      .filter((x): x is { s: Sugerencia; si: Libro } => !!x.si && x.si.estado !== 'sin-leer' && !tengo.has(norm(x.s.titulo)))
+      .sort(() => Math.random() - 0.5);
+    for (const pestana of this.agenda.querySelectorAll<HTMLButtonElement>('[data-hoja]')) {
+      pestana.addEventListener('click', () => this.verHoja(pestana.dataset.hoja!));
+    }
+    $('agenda-otras').addEventListener('click', () => {
+      this.paginaSugerencias++;
+      this.renderSugerencias();
+    });
+    this.renderSugerencias();
+  }
+
+  private verHoja(hoja: string) {
+    for (const p of this.agenda.querySelectorAll('[data-hoja]')) p.setAttribute('aria-selected', String(p.getAttribute('data-hoja') === hoja));
+    for (const c of this.agenda.querySelectorAll<HTMLElement>('[data-hoja-contenido]')) c.hidden = c.dataset.hojaContenido !== hoja;
+    this.agenda.scrollTop = 0;
+  }
+
+  private renderSugerencias() {
+    const porPagina = 4;
+    const total = this.sugerencias.length;
+    const paginas = Math.max(1, Math.ceil(total / porPagina));
+    const inicio = (this.paginaSugerencias % paginas) * porPagina;
+    $('agenda-sugerencias').innerHTML = this.sugerencias
+      .slice(inicio, inicio + porPagina)
+      .map(
+        ({ s, si }) => `<li>
+          <small>Si te gustó «${escapar(si.titulo)}»…</small>
+          <strong>${escapar(s.titulo)}</strong> <span class="agenda__autor">— ${escapar(s.autor)}</span>
+          <p>${escapar(s.resumen)}</p>
+        </li>`,
+      )
+      .join('');
+    $('agenda-otras').hidden = paginas < 2;
   }
 
   abrirAgenda() {
@@ -283,6 +350,7 @@ export class Interfaz {
       const r = this.recomendaciones[this.recomendacionActual];
       if (!r) return;
       this.cerrarQueLeo(true);
+      this.paraLeer = r.obra ? { id: r.libro.id, texto: `✦ Para leer: «${r.obra.titulo}» (${r.obra.tipo}).` } : null;
       this.acciones.elegirLibro(r.libro.id);
     });
     this.quelee.querySelector('.quelee__tambien')!.addEventListener('click', (e) => {
@@ -366,14 +434,15 @@ export class Interfaz {
     }
     caja.querySelector('.quelee__donde')!.textContent = this.ubicacion ? `Te está esperando ${this.ubicacion}.` : '';
     caja.querySelector('.quelee__intro')!.textContent = `${r.intro}…`;
-    caja.querySelector('.quelee__titulo')!.textContent = r.libro.titulo;
-    caja.querySelector('.quelee__autor')!.textContent = r.libro.autor;
+    // En una antología, la obra concreta: «Relato de un náufrago», novela corta en «Narrativa completa I»
+    caja.querySelector('.quelee__titulo')!.textContent = r.obra?.titulo ?? r.libro.titulo;
+    caja.querySelector('.quelee__autor')!.textContent = r.obra ? `${r.libro.autor} · ${r.obra.tipo} en «${r.libro.titulo}»` : r.libro.autor;
     caja.querySelector('.quelee__porque')!.textContent = r.porque;
     const otros = [1, 2]
       .map((k) => (this.recomendacionActual + k) % this.recomendaciones.length)
       .filter((i, k, arr) => i !== this.recomendacionActual && arr.indexOf(i) === k);
     caja.querySelector('.quelee__tambien')!.innerHTML = otros.length
-      ? `También: ${otros.map((i) => `<button type="button" data-indice="${i}">${escapar(this.recomendaciones[i].libro.titulo)}</button>`).join(' · ')}`
+      ? `También: ${otros.map((i) => `<button type="button" data-indice="${i}">${escapar(this.recomendaciones[i].obra?.titulo ?? this.recomendaciones[i].libro.titulo)}</button>`).join(' · ')}`
       : '';
     // Una pequeña animación de «papel nuevo» cada vez que cambia
     caja.classList.remove('nuevo');
@@ -383,10 +452,56 @@ export class Interfaz {
 
   /* ------------------------------------------------------------ discos */
 
-  /** Cartelito de ayuda mientras se eligen discos en el cajón. */
+  /** Cartelito de ayuda (y la lista de atajo) mientras se eligen discos en el cajón. */
   mostrarAyudaCajon(visible: boolean, tactil = false) {
     $('ayuda-cajon-texto').textContent = tactil ? 'Tocá un disco para verlo y otra vez para ponerlo' : 'Pasá por los discos y hacé clic en uno para ponerlo';
     this.ayudaCajon.classList.toggle('visible', visible);
+    this.listaDiscos.classList.toggle('visible', visible);
+    if (!visible) this.senalarEnLista(null);
+  }
+
+  /** Lista de atajo con los discos del cajón, agrupados por género como los separadores. */
+  cargarDiscos(discos: Disco[]) {
+    let genero = '';
+    const html: string[] = [];
+    for (const d of discos) {
+      if (d.genero && d.genero !== genero) {
+        genero = d.genero;
+        html.push(`<li class="discos-lista__genero">${escapar(genero)}</li>`);
+      }
+      html.push(`<li><button type="button" data-disco="${escapar(d.id)}">
+        <img src="${escapar(d.portadaChica ?? d.portada ?? '')}" alt="" width="40" height="40" loading="lazy" decoding="async" />
+        <span><strong>${escapar(d.nombre)}</strong><small>${escapar(d.artista)}</small></span>
+      </button></li>`);
+    }
+    $('discos-lista-items').innerHTML = html.join('');
+  }
+
+  private prepararListaDiscos() {
+    const lista = $('discos-lista-items');
+    const boton = (e: Event) => (e.target as HTMLElement).closest<HTMLButtonElement>('[data-disco]');
+    lista.addEventListener('pointerover', (e) => this.senalarEnLista(boton(e)?.dataset.disco ?? null));
+    lista.addEventListener('focusin', (e) => this.senalarEnLista(boton(e)?.dataset.disco ?? null));
+    lista.addEventListener('pointerleave', () => this.senalarEnLista(null));
+    lista.addEventListener('click', (e) => {
+      const id = boton(e)?.dataset.disco;
+      if (!id) return;
+      this.senalarEnLista(null);
+      this.acciones.ponerDiscoLista(id);
+    });
+  }
+
+  private senalarEnLista(id: string | null) {
+    if (id === this.discoEnLista) return;
+    this.discoEnLista = id;
+    this.acciones.senalarDiscoLista(id);
+  }
+
+  /** Marca en la lista el disco que está sonando. */
+  private marcarSonando(id: string | null) {
+    for (const b of this.listaDiscos.querySelectorAll<HTMLButtonElement>('[data-disco]')) {
+      b.classList.toggle('sonando', b.dataset.disco === id);
+    }
   }
 
   /** Muestra el reproductor de Spotify con el disco elegido. */
@@ -394,10 +509,12 @@ export class Interfaz {
     const marco = $('reproductor-marco');
     marco.innerHTML = `<iframe title="${escapar(disco.nombre)} en Spotify" src="https://open.spotify.com/embed/album/${encodeURIComponent(disco.id)}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
     this.reproductor.classList.add('abierto');
+    this.marcarSonando(disco.id);
   }
 
   ocultarReproductor() {
     this.reproductor.classList.remove('abierto');
+    this.marcarSonando(null);
     setTimeout(() => {
       if (!this.reproductor.classList.contains('abierto')) $('reproductor-marco').innerHTML = '';
     }, 450);

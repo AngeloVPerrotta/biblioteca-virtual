@@ -221,6 +221,7 @@ async function iniciar() {
   const geoZona = new THREE.PlaneGeometry(0.31, 0.36);
   let discoSenalado: number | null = null;
   const ultimoValor: number[] = [];
+  const datosFundas: Interactivo[] = [];
   mesa.fundas.forEach((funda, i) => {
     const disco = datosDiscos.discos[i];
     if (!disco) return;
@@ -253,6 +254,7 @@ async function iniciar() {
         funda.rotation.x = inclinacion - v * 0.08;
       },
     };
+    datosFundas[i] = datosDisco;
     // La zona y la funda comparten los mismos datos: pasar de una a otra no cambia la selección
     marcar(zona, datosDisco);
     marcar(funda, datosDisco);
@@ -423,6 +425,18 @@ async function iniciar() {
     const desde = camara.mezclaVista;
     await animador.animar(900, (k) => (camara.mezclaVista = desde * (1 - k)), { clave: 'vista' });
   };
+  // Atajo desde la lista del cajón: el disco señalado en la lista sube en el cajón 3D
+  let enLista: number | null = null;
+  const subirDesdeLista = (i: number, hasta: number) => {
+    const desde = ultimoValor[i] ?? 0;
+    void animador.animar(260, (k) => datosFundas[i]?.resaltar(desde + (hasta - desde) * k), { clave: `lista:${i}` });
+  };
+  const senalarDiscoLista = (id: string | null) => {
+    const i = id ? datosDiscos.discos.findIndex((d) => d.id === id) : -1;
+    if (enLista !== null && enLista !== i) subirDesdeLista(enLista, 0);
+    enLista = i >= 0 && enCajon ? i : null;
+    if (enLista !== null) subirDesdeLista(enLista, 1);
+  };
   const ponerDisco = (id: string) => {
     const disco = datosDiscos.discos.find((d) => d.id === id);
     if (!disco) return;
@@ -451,6 +465,11 @@ async function iniciar() {
       void tocadiscos.detener();
     },
     contextoLectura: () => ({ hora: ambiente.hora, lluvia: ambiente.clima.lluvia }),
+    senalarDiscoLista,
+    ponerDiscoLista: (id) => {
+      ponerDisco(id);
+      void salirCajon();
+    },
     senalarLibro,
     alCambiarPaneles: (abiertos) => {
       interaccion.bloqueado = abiertos;
@@ -460,6 +479,8 @@ async function iniciar() {
       }
     },
   });
+
+  ui.cargarDiscos(datosDiscos.discos);
 
   const seleccionar = (i: Interactivo, objeto: THREE.Object3D) => {
     switch (i.tipo) {

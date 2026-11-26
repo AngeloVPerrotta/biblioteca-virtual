@@ -1,5 +1,5 @@
 {
-  "_ayuda": "Perfil de cada libro para el «¿Qué leo?». tonos: 0 a 1 (pensar, emocion, melancolia, liviano, humor, intriga, aventura, oscuro, amor, aprender, impulso, poesia, calma). pesado: qué tan duro es emocionalmente (0 a 1). referencia: libros de consulta/estudio, solo aparecen si se piden por tema. momentos: momentos de la vida o sentimientos para los que el libro es especialmente bueno (perdido, empezar, ruptura, enamorado, duelo, cabeza, estancado, soledad, nostalgia, existencial, camino, agotado, feliz, bronca, examenes, viaje, trabajo, familia, raro, envion, bajon).",
+  "_ayuda": "Perfil de cada libro para el «¿Qué leo?». tonos: 0 a 1 (pensar, emocion, melancolia, liviano, humor, intriga, aventura, oscuro, amor, aprender, impulso, poesia, calma). pesado: qué tan duro es emocionalmente (0 a 1). referencia: libros de consulta/estudio, solo aparecen si se piden por tema. momentos: momentos de la vida o sentimientos para los que el libro es especialmente bueno (perdido, empezar, ruptura, enamorado, duelo, cabeza, estancado, soledad, nostalgia, existencial, camino, agotado, feliz, bronca, examenes, viaje, trabajo, familia, raro, envion, bajon). obras: en antologías y libros de cuentos, cada obra de adentro con su propio perfil (el «¿Qué leo?» recomienda la obra concreta).",
   "metodo-briones": {
     "tonos": {
       "impulso": 0.8,
@@ -181,6 +181,100 @@
     "momentos": [
       "nostalgia",
       "viaje"
+    ],
+    "obras": [
+      {
+        "titulo": "La hojarasca",
+        "tipo": "novela corta",
+        "largo": "medio",
+        "tonos": {
+          "melancolia": 0.8,
+          "poesia": 0.8,
+          "pensar": 0.5,
+          "oscuro": 0.3
+        },
+        "frase": "La primera visita a Macondo: un entierro incómodo contado por tres voces de la misma familia.",
+        "momentos": [
+          "nostalgia",
+          "familia",
+          "duelo"
+        ],
+        "pesado": 0.3
+      },
+      {
+        "titulo": "Relato de un náufrago",
+        "tipo": "crónica",
+        "largo": "medio",
+        "tonos": {
+          "aventura": 1,
+          "intriga": 0.7,
+          "emocion": 0.5,
+          "impulso": 0.5,
+          "liviano": 0.4
+        },
+        "frase": "Diez días a la deriva en una balsa, contados por el marinero que sobrevivió: periodismo que se lee como una aventura.",
+        "momentos": [
+          "viaje",
+          "envion",
+          "perdido"
+        ],
+        "pesado": 0.2
+      },
+      {
+        "titulo": "El coronel no tiene quien le escriba",
+        "tipo": "novela corta",
+        "largo": "corto",
+        "tonos": {
+          "melancolia": 0.8,
+          "emocion": 0.7,
+          "poesia": 0.6,
+          "pensar": 0.5,
+          "humor": 0.2
+        },
+        "frase": "Un coronel viejo espera cada viernes una carta que nunca llega, y un gallo de pelea es toda su esperanza: corta, digna y conmovedora.",
+        "momentos": [
+          "soledad",
+          "bajon",
+          "estancado"
+        ],
+        "pesado": 0.4
+      },
+      {
+        "titulo": "La mala hora",
+        "tipo": "novela",
+        "largo": "medio",
+        "tonos": {
+          "intriga": 0.7,
+          "oscuro": 0.6,
+          "pensar": 0.5,
+          "humor": 0.2
+        },
+        "frase": "En un pueblo empiezan a aparecer pasquines anónimos que cuentan los secretos de todos, y el miedo se va desatando.",
+        "momentos": [
+          "bronca"
+        ],
+        "pesado": 0.4
+      },
+      {
+        "titulo": "Cien años de soledad",
+        "tipo": "novela",
+        "largo": "largo",
+        "tonos": {
+          "poesia": 1,
+          "melancolia": 0.7,
+          "aventura": 0.6,
+          "amor": 0.5,
+          "pensar": 0.5
+        },
+        "frase": "La saga de los Buendía en Macondo: siete generaciones, magia cotidiana y una de las novelas más grandes del idioma.",
+        "momentos": [
+          "familia",
+          "nostalgia",
+          "existencial",
+          "viaje"
+        ],
+        "pesado": 0.3
+      }
     ]
   },
   "ajedrez-neuronas": {
@@ -249,6 +343,40 @@
       "viaje",
       "feliz",
       "examenes"
+    ],
+    "obras": [
+      {
+        "titulo": "La dama rubia",
+        "tipo": "novela corta",
+        "largo": "medio",
+        "tonos": {
+          "aventura": 0.9,
+          "intriga": 0.9,
+          "humor": 0.6,
+          "liviano": 0.7
+        },
+        "frase": "Varios robos en París con la misma firma, una misteriosa mujer rubia y el detective inglés llegando a la ciudad.",
+        "momentos": [
+          "viaje",
+          "feliz"
+        ]
+      },
+      {
+        "titulo": "La lámpara judía",
+        "tipo": "novela corta",
+        "largo": "corto",
+        "tonos": {
+          "aventura": 0.8,
+          "intriga": 0.9,
+          "humor": 0.5,
+          "liviano": 0.7
+        },
+        "frase": "Alguien roba una lámpara que no parece valer nada, y Sholmes y Lupin vuelven a medirse.",
+        "momentos": [
+          "examenes",
+          "agotado"
+        ]
+      }
     ]
   },
   "813": {
@@ -348,6 +476,142 @@
       "feliz",
       "examenes",
       "agotado"
+    ],
+    "obras": [
+      {
+        "titulo": "La detención de Arsène Lupin",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "aventura": 0.9,
+          "intriga": 0.8,
+          "humor": 0.5,
+          "liviano": 0.8
+        },
+        "frase": "En un transatlántico rumbo a Nueva York llega un aviso: Arsène Lupin viaja a bordo con un nombre falso.",
+        "momentos": [
+          "viaje",
+          "feliz"
+        ]
+      },
+      {
+        "titulo": "Arsène Lupin en prisión",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "aventura": 0.8,
+          "intriga": 0.8,
+          "humor": 0.6,
+          "liviano": 0.8
+        },
+        "frase": "Desde la cárcel, Lupin avisa por carta que va a robar un castillo… y lo cumple.",
+        "momentos": [
+          "feliz",
+          "envion"
+        ]
+      },
+      {
+        "titulo": "La evasión de Arsène Lupin",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "aventura": 0.8,
+          "intriga": 0.9,
+          "humor": 0.5,
+          "liviano": 0.8
+        },
+        "frase": "Lupin anuncia que no piensa ir a su propio juicio. Todos lo vigilan y nadie entiende cómo lo hace.",
+        "momentos": [
+          "envion",
+          "estancado"
+        ]
+      },
+      {
+        "titulo": "El misterioso viajero",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "aventura": 0.9,
+          "intriga": 0.8,
+          "humor": 0.4,
+          "liviano": 0.8
+        },
+        "frase": "En un tren, por una vez le roban a Lupin, y sale a perseguir al ladrón: el cazador cazado.",
+        "momentos": [
+          "viaje"
+        ]
+      },
+      {
+        "titulo": "El collar de la reina",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "intriga": 0.8,
+          "aventura": 0.7,
+          "melancolia": 0.3,
+          "liviano": 0.7
+        },
+        "frase": "El robo de un collar histórico y una pista que lleva a la infancia del ladrón más elegante de París.",
+        "momentos": [
+          "nostalgia"
+        ]
+      },
+      {
+        "titulo": "El siete de corazones",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "intriga": 0.9,
+          "aventura": 0.7,
+          "liviano": 0.7
+        },
+        "frase": "Un siete de corazones clavado en la pared, unos planos secretos y la noche en que el narrador conoce a Lupin."
+      },
+      {
+        "titulo": "La caja fuerte de la señora Imbert",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "humor": 0.8,
+          "intriga": 0.6,
+          "liviano": 0.9,
+          "aventura": 0.5
+        },
+        "frase": "Por una vez Lupin cae en la trampa: un golpe que le sale al revés, con mucho humor.",
+        "momentos": [
+          "agotado",
+          "examenes"
+        ]
+      },
+      {
+        "titulo": "La perla negra",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "intriga": 1,
+          "aventura": 0.6,
+          "liviano": 0.7
+        },
+        "frase": "Lupin entra a robar una perla y se encuentra con un crimen que tiene que resolver él mismo.",
+        "temas": [
+          "policial"
+        ]
+      },
+      {
+        "titulo": "Herlock Sholmes llega demasiado tarde",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "aventura": 0.9,
+          "intriga": 0.8,
+          "humor": 0.6,
+          "liviano": 0.8
+        },
+        "frase": "El primer cruce entre Lupin y el detective inglés, en un castillo lleno de pasadizos.",
+        "momentos": [
+          "feliz"
+        ]
+      }
     ]
   },
   "condesa-cagliostro": {
@@ -399,6 +663,38 @@
     "momentos": [
       "ruptura",
       "enamorado"
+    ],
+    "obras": [
+      {
+        "titulo": "El arte de amar",
+        "tipo": "poema",
+        "largo": "corto",
+        "tonos": {
+          "amor": 1,
+          "humor": 0.6,
+          "poesia": 0.5,
+          "liviano": 0.5
+        },
+        "frase": "Consejos en verso para conquistar y enamorar, con más picardía de la que esperarías de la antigua Roma.",
+        "momentos": [
+          "enamorado"
+        ]
+      },
+      {
+        "titulo": "El remedio del amor",
+        "tipo": "poema",
+        "largo": "corto",
+        "tonos": {
+          "amor": 0.6,
+          "humor": 0.6,
+          "impulso": 0.5,
+          "melancolia": 0.3
+        },
+        "frase": "La continuación: cómo olvidar un amor que te hace mal, en consejos breves y sorprendentemente actuales.",
+        "momentos": [
+          "ruptura"
+        ]
+      }
     ]
   },
   "arte-de-la-guerra": {
@@ -638,6 +934,184 @@
     "frase": "Cuentos de terror bien argentinos, donde lo cotidiano se vuelve inquietante.",
     "momentos": [
       "raro"
+    ],
+    "obras": [
+      {
+        "titulo": "El chico sucio",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 1,
+          "intriga": 0.6,
+          "pensar": 0.5
+        },
+        "frase": "Una mujer que vive en Constitución, un chico que duerme en la calle frente a su casa y una desaparición que no la deja en paz.",
+        "pesado": 0.7
+      },
+      {
+        "titulo": "La Hostería",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 0.8,
+          "intriga": 0.7,
+          "aventura": 0.3
+        },
+        "frase": "Dos chicas se meten de noche en una hostería de La Rioja que guarda un pasado que no quería ser molestado.",
+        "momentos": [
+          "viaje"
+        ],
+        "temas": [
+          "memoria"
+        ],
+        "pesado": 0.5
+      },
+      {
+        "titulo": "Los años intoxicados",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 0.7,
+          "melancolia": 0.5,
+          "pensar": 0.4
+        },
+        "frase": "Tres amigas adolescentes en la Argentina de los apagones y la hiperinflación, cada vez más lejos de todo.",
+        "momentos": [
+          "nostalgia"
+        ],
+        "pesado": 0.6
+      },
+      {
+        "titulo": "La casa de Adela",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 1,
+          "intriga": 0.8,
+          "melancolia": 0.3
+        },
+        "frase": "Una casa abandonada del barrio, una amiga de la infancia y una noche de la que nadie volvió igual.",
+        "momentos": [
+          "nostalgia"
+        ],
+        "pesado": 0.6
+      },
+      {
+        "titulo": "Pablito clavó un clavito: una evocación del Petiso Orejudo",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 1,
+          "intriga": 0.6
+        },
+        "frase": "Un guía del tour del crimen porteño empieza a ver al Petiso Orejudo donde no debería.",
+        "temas": [
+          "historia"
+        ],
+        "pesado": 0.7
+      },
+      {
+        "titulo": "Tela de araña",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 0.7,
+          "intriga": 0.6,
+          "aventura": 0.3,
+          "humor": 0.3
+        },
+        "frase": "Un viaje a Paraguay con un marido insoportable, una prima que ve cosas y una ruta que se pone cada vez más rara.",
+        "momentos": [
+          "viaje",
+          "ruptura"
+        ],
+        "pesado": 0.4
+      },
+      {
+        "titulo": "Fin de curso",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 0.9,
+          "emocion": 0.4
+        },
+        "frase": "En el colegio, una compañera empieza a lastimarse por algo que solo ella puede ver.",
+        "pesado": 0.8
+      },
+      {
+        "titulo": "Nada de carne sobre nosotras",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 0.7,
+          "humor": 0.3,
+          "pensar": 0.3
+        },
+        "frase": "Una mujer encuentra una calavera en la calle, se la lleva a su casa y empieza a cuidarla demasiado.",
+        "momentos": [
+          "raro"
+        ],
+        "pesado": 0.4
+      },
+      {
+        "titulo": "El patio del vecino",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 1,
+          "intriga": 0.8
+        },
+        "frase": "En la casa nueva, desde la terraza, ella cree ver a un chico encadenado en el patio de al lado.",
+        "momentos": [
+          "empezar"
+        ],
+        "pesado": 0.7
+      },
+      {
+        "titulo": "Bajo el agua negra",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 1,
+          "intriga": 0.8,
+          "pensar": 0.4
+        },
+        "frase": "Una fiscal entra a una villa junto al Riachuelo para investigar una muerte, y algo en el agua la está esperando.",
+        "temas": [
+          "policial"
+        ],
+        "pesado": 0.7
+      },
+      {
+        "titulo": "Verde rojo anaranjado",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "melancolia": 0.7,
+          "oscuro": 0.6,
+          "emocion": 0.4
+        },
+        "frase": "Un chico que dejó de salir de su cuarto y solo habla por chat: el cuento más melancólico del libro.",
+        "momentos": [
+          "soledad",
+          "ruptura"
+        ],
+        "pesado": 0.6
+      },
+      {
+        "titulo": "Las cosas que perdimos en el fuego",
+        "tipo": "cuento",
+        "largo": "corto",
+        "tonos": {
+          "oscuro": 1,
+          "pensar": 0.7
+        },
+        "frase": "Después de una ola de violencia contra mujeres, ellas deciden prenderse fuego por su cuenta: el cuento que da nombre al libro.",
+        "momentos": [
+          "bronca"
+        ],
+        "pesado": 0.9
+      }
     ]
   },
   "santa-biblia": {
@@ -653,6 +1127,82 @@
     "frase": "Para leer de a pasajes, cuando busques algo de fe o de calma.",
     "momentos": [
       "duelo"
+    ],
+    "obras": [
+      {
+        "titulo": "Eclesiastés",
+        "tipo": "libro",
+        "largo": "corto",
+        "tonos": {
+          "pensar": 1,
+          "melancolia": 0.5,
+          "calma": 0.4
+        },
+        "frase": "Un sabio que ya lo probó todo se pregunta qué sentido tiene: breve, honesto y sorprendentemente moderno.",
+        "momentos": [
+          "existencial",
+          "perdido"
+        ]
+      },
+      {
+        "titulo": "Salmos",
+        "tipo": "libro",
+        "largo": "medio",
+        "tonos": {
+          "poesia": 0.9,
+          "calma": 0.9,
+          "emocion": 0.6
+        },
+        "frase": "Poemas para leer de a uno: hay para la angustia, para agradecer y para pedir calma.",
+        "momentos": [
+          "duelo",
+          "cabeza",
+          "bajon"
+        ]
+      },
+      {
+        "titulo": "Cantar de los Cantares",
+        "tipo": "libro",
+        "largo": "corto",
+        "tonos": {
+          "amor": 1,
+          "poesia": 1
+        },
+        "frase": "Un poema de amor y deseo entre dos amantes, de los más bellos que se escribieron.",
+        "momentos": [
+          "enamorado"
+        ]
+      },
+      {
+        "titulo": "Job",
+        "tipo": "libro",
+        "largo": "corto",
+        "tonos": {
+          "pensar": 0.9,
+          "emocion": 0.7,
+          "oscuro": 0.4
+        },
+        "frase": "Un hombre que lo pierde todo discute con Dios por qué sufre el que no hizo nada malo.",
+        "momentos": [
+          "duelo",
+          "bronca",
+          "bajon"
+        ]
+      },
+      {
+        "titulo": "Proverbios",
+        "tipo": "libro",
+        "largo": "corto",
+        "tonos": {
+          "pensar": 0.6,
+          "calma": 0.5,
+          "impulso": 0.5
+        },
+        "frase": "Frases cortas de sabiduría práctica para el día a día, ideales de a poquito.",
+        "momentos": [
+          "camino"
+        ]
+      }
     ]
   },
   "diario-ana-frank": {

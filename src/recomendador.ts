@@ -34,7 +34,25 @@ export interface Perfil {
   /** Momentos de la vida o sentimientos para los que este libro es especialmente bueno. */
   momentos?: string[];
   frase: string;
+  /** En antologías y libros de cuentos: cada obra de adentro, para recomendar una concreta. */
+  obras?: Obra[];
 }
+
+/** Una obra dentro de un libro (un cuento, una novela de una antología…). */
+export interface Obra {
+  titulo: string;
+  /** «cuento», «novela corta», «novela», «crónica»… */
+  tipo: string;
+  largo: 'corto' | 'medio' | 'largo';
+  tonos: Tonos;
+  frase: string;
+  momentos?: string[];
+  temas?: string[];
+  pesado?: number;
+}
+
+/** Grosor equivalente (cm) según el largo de una obra, para comparar con los libros enteros. */
+const GROSOR_OBRA = { corto: 1, medio: 1.8, largo: 3.4 } as const;
 
 export interface ContextoLectura {
   /** Hora de Buenos Aires, 0 a 24. */
@@ -45,6 +63,8 @@ export interface ContextoLectura {
 
 export interface Recomendacion {
   libro: Libro;
+  /** Si el libro es una antología: qué leer concretamente adentro. */
+  obra?: { titulo: string; tipo: string };
   /** Frase corta, manuscrita, de por qué este. */
   intro: string;
   porque: string;
@@ -306,21 +326,48 @@ interface Pedido {
 }
 
 export class Recomendador {
-  private readonly candidatos: { libro: Libro; perfil: Perfil }[];
+  /** Lo que se puede recomendar: libros enteros u obras dentro de una antología. */
+  private readonly candidatos: { clave: string; libro: Libro; perfil: Perfil; obra?: Obra; grosor: number }[] = [];
   private readonly indiceNombres = new Map<string, Set<string>>();
 
   constructor(libros: Libro[], perfiles: Record<string, Perfil | string>) {
-    this.candidatos = libros
-      .filter((l) => typeof perfiles[l.id] === 'object')
-      .map((libro) => ({ libro, perfil: perfiles[libro.id] as Perfil }));
-    // Autores y palabras distintivas de los títulos, para «algo de King» o «Rayuela»
-    for (const { libro } of this.candidatos) {
-      for (const p of normalizar(`${libro.titulo} ${libro.autor}`).split(' ')) {
-        if (p.length < 4 || COMUNES.has(p)) continue;
-        const ids = this.indiceNombres.get(p) ?? new Set<string>();
-        ids.add(libro.id);
-        this.indiceNombres.set(p, ids);
+    for (const libro of libros) {
+      const perfil = perfiles[libro.id];
+      if (typeof perfil !== 'object') continue;
+      if (!perfil.obras?.length) {
+        this.candidatos.push({ clave: libro.id, libro, perfil, grosor: libro.grosor });
+        continue;
       }
+      // Una antología se recomienda obra por obra, cada una con su propio perfil
+      perfil.obras.forEach((obra, i) =>
+        this.candidatos.push({
+          clave: `${libro.id}#${i}`,
+          libro,
+          obra,
+          grosor: GROSOR_OBRA[obra.largo],
+          perfil: {
+            tonos: obra.tonos,
+            temas: [...perfil.temas, ...(obra.temas ?? [])],
+            momentos: obra.momentos ?? [],
+            pesado: obra.pesado ?? perfil.pesado,
+            referencia: perfil.referencia,
+            frase: obra.frase,
+          },
+        }),
+      );
+    }
+    // Autores y palabras distintivas de los títulos (también de cada obra), para «algo de King» o «Rayuela»
+    const indexar = (texto: string, clave: string) => {
+      for (const p of normalizar(texto).split(' ')) {
+        if (p.length < 4 || COMUNES.has(p)) continue;
+        const claves = this.indiceNombres.get(p) ?? new Set<string>();
+        claves.add(clave);
+        this.indiceNombres.set(p, claves);
+      }
+    };
+    for (const c of this.candidatos) {
+      indexar(`${c.libro.titulo} ${c.libro.autor}`, c.clave);
+      if (c.obra) indexar(c.obra.titulo, c.clave);
     }
     for (const [alias, autor] of [['gabo', 'marquez'], ['lupin', 'leblanc']] as const) {
       const ids = this.indiceNombres.get(autor);
@@ -437,7 +484,7 @@ export class Recomendador {
     const norma = Math.hypot(...TONOS.map((t) => pedido.tonos[t])) || 1;
     const puntuados = this.candidatos
       .filter(({ libro }) => !libro.prestado && (cuales === 'todos' || libro.estado === cuales))
-      .map(({ libro, perfil }) => {
+      .map(({ clave, libro, perfil, obra, grosor }) => {
         let tono = 0;
         let mejor: Tono | null = null;
         let mejorValor = 0;
@@ -458,11 +505,11 @@ export class Recomendador {
         }
         let momento = 0;
         for (const [m, w] of pedido.momentos) if (perfil.momentos?.includes(m)) momento += w;
-        const porNombre = pedido.nombres.has(libro.id);
+        const porNombre = pedido.nombres.has(clave);
         let total = tono + tema * 0.9 + momento * 0.9 + (porNombre ? 1.6 : 0);
         if (perfil.referencia && tema <= 0 && !porNombre) total -= 3;
 
-        const g = libro.grosor;
+        const g = grosor;
         // Si pidió algo corto (o largo), el grosor pesa en serio: cuanto más se aleja, peor
         if (pedido.largo === 'corto') total += g <= 1.5 ? 0.35 : -(g - 1.5) * 0.6;
         if (pedido.largo === 'largo') total += g >= 2.4 ? 0.35 : -(2.4 - g) * 0.4;
@@ -478,7 +525,7 @@ export class Recomendador {
         for (const t of TONOS) total += (ambiente[t] ?? 0) * (perfil.tonos[t] ?? 0) * pesoAmbiente;
         total += azar() * (0.12 + pedido.azar * 0.9 + (especifico ? 0 : 0.3));
 
-        return { libro, perfil, total, mejor, temaPrincipal, porNombre, tono, tema };
+        return { libro, perfil, obra, grosor, total, mejor, temaPrincipal, porNombre, tono, tema };
       })
       .sort((a, b) => b.total - a.total);
 
@@ -489,8 +536,9 @@ export class Recomendador {
       let mejorI = 0;
       let mejorV = -Infinity;
       restantes.forEach((c, i) => {
-        const repetidos = elegidos.filter((x) => x.libro.autor === c.libro.autor).length;
-        const v = c.total - repetidos * 0.45;
+        const mismoAutor = elegidos.filter((x) => x.libro.autor === c.libro.autor).length;
+        const mismoLibro = elegidos.filter((x) => x.libro === c.libro).length;
+        const v = c.total - mismoAutor * 0.45 - mismoLibro * 0.5;
         if (v > mejorV) {
           mejorV = v;
           mejorI = i;
@@ -516,12 +564,25 @@ export class Recomendador {
 
       const partes = [c.perfil.frase];
       const e = c.libro.estado;
-      if (e === 'empezado') partes.push('Lo dejaste por la mitad: buen momento para retomarlo.');
+      const volver = pedido.estado === 'releer' || cuales === 'leido';
+      if (c.obra) {
+        // Dónde está la obra y cómo va ese libro
+        const libro = `«${c.libro.titulo}»`;
+        if (e === 'empezado') partes.push(`Está en tu ${libro}, que dejaste por la mitad.`);
+        else if (e === 'sin-leer') partes.push(`Está en tu ${libro}, que todavía no empezaste.`);
+        else if (e === 'leido') partes.push(`Está en tu ${libro}: ya lo leíste, pero ${volver ? 'es ideal para volver' : 'da para volver'}.`);
+        else partes.push(`Está en tu ${libro}.`);
+      } else if (e === 'empezado') partes.push('Lo dejaste por la mitad: buen momento para retomarlo.');
       else if (e === 'sin-leer') partes.push('Todavía no lo leíste.');
-      else if (e === 'leido') partes.push(pedido.estado === 'releer' || cuales === 'leido' ? 'Ya lo leíste: ideal para volver.' : 'Ya lo leíste, pero da para volver.');
-      if (pedido.largo === 'corto' && c.libro.grosor <= 1.5) partes.push('Es cortito.');
-      if (pedido.largo === 'largo' && c.libro.grosor >= 2.4) partes.push('Da para rato.');
-      return { libro: c.libro, intro, porque: partes.join(' ') };
+      else if (e === 'leido') partes.push(volver ? 'Ya lo leíste: ideal para volver.' : 'Ya lo leíste, pero da para volver.');
+      if (pedido.largo === 'corto' && c.grosor <= 1.5) partes.push('Es cortito.');
+      if (pedido.largo === 'largo' && c.grosor >= 2.4) partes.push('Da para rato.');
+      return {
+        libro: c.libro,
+        obra: c.obra ? { titulo: c.obra.titulo, tipo: c.obra.tipo } : undefined,
+        intro,
+        porque: partes.join(' '),
+      };
     });
   }
 }

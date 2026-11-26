@@ -70,6 +70,11 @@
       <button id="ayuda-cajon-volver" class="ayuda__volver" type="button">Volver</button>
     </div>
 
+    <aside id="discos-lista" class="discos-lista" aria-label="Atajo: los discos del cajón" hidden>
+      <p class="discos-lista__titulo">En el cajón</p>
+      <ul id="discos-lista-items" class="discos-lista__items"></ul>
+    </aside>
+
     <section id="reproductor" class="reproductor" aria-label="Disco sonando" hidden>
       <div class="reproductor__cabecera">
         <span class="reproductor__estado">Sonando</span>
@@ -90,9 +95,20 @@
 
     <section id="agenda" class="agenda" role="dialog" aria-labelledby="agenda-titulo" hidden>
       <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">&times;</button>
-      <h2 id="agenda-titulo">Libros que quiero</h2>
-      <ol id="agenda-lista" class="agenda__lista"></ol>
-      <p id="agenda-vacia" class="agenda__vacia">Todavía no anoté ninguno.<br />Decile a Claude cuáles querés y aparecen acá.</p>
+      <div class="agenda__pestanas" role="tablist" aria-label="Hojas de la agenda">
+        <button type="button" role="tab" data-hoja="quiero" aria-selected="true">Quiero leer</button>
+        <button type="button" role="tab" data-hoja="descubrir" aria-selected="false">Para descubrir</button>
+      </div>
+      <div class="agenda__hoja" data-hoja-contenido="quiero">
+        <h2 id="agenda-titulo">Libros que quiero</h2>
+        <ol id="agenda-lista" class="agenda__lista"></ol>
+        <p id="agenda-vacia" class="agenda__vacia">Todavía no anoté ninguno.<br />Decile a Claude cuáles querés y aparecen acá.</p>
+      </div>
+      <div class="agenda__hoja" data-hoja-contenido="descubrir" hidden>
+        <h2>Te podría gustar</h2>
+        <ol id="agenda-sugerencias" class="agenda__sugerencias"></ol>
+        <button id="agenda-otras" class="agenda__otras" type="button">Otras ideas ↻</button>
+      </div>
     </section>
 
     <section id="quelee" class="quelee" role="dialog" aria-labelledby="quelee-titulo" hidden>

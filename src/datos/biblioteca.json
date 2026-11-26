@@ -1,6 +1,12 @@
 {
   "leyendoAhora": null,
-  "wishlist": [],
+  "wishlist": [
+    { "titulo": "El cisne negro", "autor": "Nassim Nicholas Taleb" },
+    { "titulo": "Pensar rápido, pensar despacio", "autor": "Daniel Kahneman" },
+    { "titulo": "El tren de la medianoche", "autor": "Matt Haig", "nota": "De la misma saga que La biblioteca de la medianoche" },
+    { "titulo": "Recuerdos que mienten un poco", "autor": "Indio Solari" },
+    { "titulo": "Una breve historia de casi todo", "autor": "Bill Bryson" }
+  ],
   "libros": [
     { "id": "metodo-briones", "estado": "leido", "titulo": "El método Briones", "autor": "Beltrán Briones", "alto": 23, "grosor": 2.3, "ancho": 15,
       "lomo": { "fondo": "#1d2b4f", "texto": "#eeeae0", "fuente": "garamond", "mayus": true, "autorMayus": true, "orden": "autor-titulo", "logo": "circulo", "brillo": 0.5 } },

@@ -542,6 +542,189 @@ button {
   }
 }
 
+/* ---------------------------------------------------------------- atajo de discos en el cajón */
+
+.discos-lista {
+  position: fixed;
+  z-index: 13;
+  right: 16px;
+  top: calc(72px + var(--seguro-arriba));
+  bottom: calc(86px + var(--seguro-abajo));
+  width: 248px;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radio);
+  border: 1px solid rgba(255, 226, 186, 0.08);
+  background: rgba(27, 20, 16, 0.42);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(14px);
+  transition: opacity 0.4s ease 0.25s, transform 0.4s ease 0.25s, visibility 0.4s 0.25s, background 0.3s ease;
+}
+
+.discos-lista.visible {
+  opacity: 0.72;
+  visibility: visible;
+  transform: none;
+}
+
+/* Disimulada hasta que se la usa */
+.discos-lista.visible:hover,
+.discos-lista.visible:focus-within {
+  opacity: 1;
+  background: rgba(27, 20, 16, 0.7);
+}
+
+.discos-lista__titulo {
+  margin: 0;
+  padding: 12px 14px 6px;
+  font-family: Caveat, cursive;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--texto);
+}
+
+.discos-lista__items {
+  flex: 1;
+  margin: 0;
+  padding: 0 6px 10px;
+  list-style: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 226, 186, 0.2) transparent;
+}
+
+.discos-lista__genero {
+  padding: 8px 8px 2px;
+  font-family: Caveat, cursive;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--acento);
+}
+
+.discos-lista__items button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.discos-lista__items button:hover,
+.discos-lista__items button:focus-visible {
+  background: rgba(255, 236, 205, 0.1);
+  outline: none;
+}
+
+.discos-lista__items img {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
+  object-fit: cover;
+  background: rgba(255, 236, 205, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.discos-lista__items span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.discos-lista__items strong,
+.discos-lista__items small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.discos-lista__items strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.discos-lista__items small {
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+
+.discos-lista__items button.sonando strong::after {
+  content: ' ♪';
+  color: var(--acento);
+}
+
+/* En el celu: una tira de tapas abajo, sobre el cartelito de ayuda */
+@media (max-width: 760px) {
+  .discos-lista {
+    top: auto;
+    left: 12px;
+    right: 12px;
+    bottom: calc(76px + var(--seguro-abajo));
+    width: auto;
+    transform: translateY(10px);
+  }
+
+  .discos-lista.visible {
+    opacity: 1;
+    background: rgba(27, 20, 16, 0.62);
+  }
+
+  .discos-lista__titulo {
+    display: none;
+  }
+
+  .discos-lista__items {
+    display: flex;
+    gap: 6px;
+    padding: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .discos-lista__genero {
+    display: none;
+  }
+
+  .discos-lista__items li {
+    flex: none;
+  }
+
+  .discos-lista__items button {
+    width: 64px;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0;
+  }
+
+  .discos-lista__items img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .discos-lista__items span {
+    width: 64px;
+  }
+
+  .discos-lista__items strong {
+    font-size: 10.5px;
+    text-align: center;
+  }
+
+  .discos-lista__items small {
+    display: none;
+  }
+}
+
 /* ---------------------------------------------------------------- tarjeta */
 
 .tarjeta {
@@ -634,8 +817,11 @@ button {
     linear-gradient(90deg, transparent 32px, rgba(200, 80, 80, 0.35) 32px, rgba(200, 80, 80, 0.35) 33px, transparent 33px),
     repeating-linear-gradient(transparent 0 31px, rgba(70, 100, 160, 0.18) 31px 32px),
     #f4ecd9;
+  background-attachment: local;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), inset 10px 0 18px -12px rgba(0, 0, 0, 0.35);
   font-family: Caveat, cursive;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(40, 54, 98, 0.3) transparent;
   opacity: 0;
   visibility: hidden;
   transform: translate(-50%, -46%) rotate(-1.2deg) scale(0.96);
@@ -687,6 +873,90 @@ button {
 }
 
 .agenda__vacia[hidden] {
+  display: none;
+}
+
+/* Pestañas de la agenda: lo que quiero leer y lo que la biblioteca me sugiere */
+.agenda__pestanas {
+  display: flex;
+  gap: 4px;
+  margin: -12px 40px 14px -6px;
+}
+
+.agenda__pestanas button {
+  padding: 2px 10px 4px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  font-family: Caveat, cursive;
+  font-size: 21px;
+  font-weight: 700;
+  color: rgba(40, 54, 98, 0.45);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.agenda__pestanas button:hover {
+  color: rgba(40, 54, 98, 0.75);
+}
+
+.agenda__pestanas button[aria-selected='true'] {
+  color: #283662;
+  border-bottom-color: #b5523b;
+}
+
+.agenda__hoja[hidden] {
+  display: none;
+}
+
+.agenda__sugerencias {
+  margin: 0;
+  padding: 0 0 0 4px;
+  list-style: none;
+}
+
+.agenda__sugerencias li {
+  margin-bottom: 16px;
+}
+
+.agenda__sugerencias small {
+  display: block;
+  font-size: 19px;
+  line-height: 24px;
+  color: #b5523b;
+}
+
+.agenda__sugerencias strong {
+  font-size: 27px;
+  line-height: 30px;
+}
+
+.agenda__autor {
+  font-size: 20px;
+  opacity: 0.75;
+}
+
+.agenda__sugerencias p {
+  margin: 2px 0 0;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 16.5px;
+  line-height: 1.35;
+  color: rgba(40, 54, 98, 0.88);
+}
+
+.agenda__otras {
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  font-family: Caveat, cursive;
+  font-size: 22px;
+  font-weight: 700;
+  color: #b5523b;
+  cursor: pointer;
+}
+
+.agenda__otras[hidden] {
   display: none;
 }
 
