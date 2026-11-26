@@ -94,5 +94,7 @@ export interface DatosBiblioteca {
   /** Imagen para el cuadro (ruta dentro de /public). Si falta, se dibuja uno original. */
   cuadro?: string | null;
   wishlist: Deseo[];
+  /** Libros que leí pero no están en el estante (prestados que no vuelven, de otra persona…). */
+  leidosFuera?: Deseo[];
   libros: Libro[];
 }

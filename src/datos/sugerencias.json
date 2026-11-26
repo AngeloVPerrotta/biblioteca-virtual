@@ -1,5 +1,5 @@
 {
-  "_ayuda": "Libros para descubrir, en la agenda de la Wishlist: «Si te gustó (si) … te podría gustar (titulo)». 'si' es el id de un libro de la biblioteca. El resumen va sin spoilers. Si un libro de acá se suma a la biblioteca o a la wishlist, deja de aparecer solo.",
+  "_ayuda": "Libros para descubrir, en la agenda de la Wishlist: «Si te gustó (si) … te podría gustar (titulo)». 'si' es el id de un libro de la biblioteca, o el título de uno de 'leidosFuera'. El resumen va sin spoilers. Si un libro de acá se suma a la biblioteca o a la wishlist, deja de aparecer solo.",
   "sugerencias": [
     { "si": "1984", "titulo": "Fahrenheit 451", "autor": "Ray Bradbury", "resumen": "Un futuro donde los bomberos no apagan incendios: queman libros. Uno de ellos empieza a preguntarse qué dicen." },
     { "si": "1984", "titulo": "Nosotros", "autor": "Yevgueni Zamiatin", "resumen": "La distopía rusa que inspiró a Orwell y a Huxley: una ciudad de cristal donde todo está calculado, hasta el amor." },
@@ -32,6 +32,7 @@
     { "si": "caballero-ladron", "titulo": "Las aventuras de Sherlock Holmes", "autor": "Arthur Conan Doyle", "resumen": "Los casos clásicos del detective del que Leblanc se burló con su Herlock Sholmes." },
     { "si": "encuentros-rolon", "titulo": "Historias de diván", "autor": "Gabriel Rolón", "resumen": "Historias de pacientes contadas por su analista: el libro que hizo conocido a Rolón." },
     { "si": "ajedrez-neuronas", "titulo": "Novela de ajedrez", "autor": "Stefan Zweig", "resumen": "En un barco, el campeón mundial de ajedrez se cruza con un desconocido que juega de una forma extraña." },
+    { "si": "Antes de que se enfríe el café", "titulo": "Los días de la librería Morisaki", "autor": "Satoshi Yagisawa", "resumen": "Una chica con el corazón roto se muda arriba de la librería de viejo de su tío en Tokio, y entre libros empieza a sanar." },
     { "si": "despues-king", "titulo": "Joyland", "autor": "Stephen King", "resumen": "Un verano trabajando en un parque de diversiones, un primer amor que se termina y un misterio viejo: King en modo nostálgico." }
   ]
 }

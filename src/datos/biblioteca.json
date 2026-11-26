@@ -5,7 +5,15 @@
     { "titulo": "Pensar rápido, pensar despacio", "autor": "Daniel Kahneman" },
     { "titulo": "El tren de la medianoche", "autor": "Matt Haig", "nota": "De la misma saga que La biblioteca de la medianoche" },
     { "titulo": "Recuerdos que mienten un poco", "autor": "Indio Solari" },
-    { "titulo": "Una breve historia de casi todo", "autor": "Bill Bryson" }
+    { "titulo": "Una breve historia de casi todo", "autor": "Bill Bryson" },
+    { "titulo": "Historias de diván", "autor": "Gabriel Rolón" },
+    { "titulo": "Los peligros de fumar en la cama", "autor": "Mariana Enriquez" },
+    { "titulo": "Stoner", "autor": "John Williams" },
+    { "titulo": "Fahrenheit 451", "autor": "Ray Bradbury" }
+  ],
+  "leidosFuera": [
+    { "titulo": "Romper el círculo", "autor": "Colleen Hoover", "nota": "Lo presté y no vuelve" },
+    { "titulo": "Antes de que se enfríe el café", "autor": "Toshikazu Kawaguchi" }
   ],
   "libros": [
     { "id": "metodo-briones", "estado": "leido", "titulo": "El método Briones", "autor": "Beltrán Briones", "alto": 23, "grosor": 2.3, "ancho": 15,

@@ -87,7 +87,7 @@ export class Interfaz {
   private pedidos = 0;
   /** Obra recomendada dentro de una antología, para recordarla en la tarjeta del libro. */
   private paraLeer: { id: string; texto: string } | null = null;
-  private sugerencias: { si: Libro; s: Sugerencia }[] = [];
+  private sugerencias: { si: { titulo: string }; s: Sugerencia }[] = [];
   private paginaSugerencias = 0;
   private filtro: Filtro = 'todos';
   private temporizadorAviso = 0;
@@ -260,11 +260,19 @@ export class Interfaz {
   /** «Si te gustó X… te podría gustar Y»: solo de libros leídos, y nunca algo que ya está o ya quiero. */
   private prepararSugerencias() {
     const norm = (t: string) => normalizar(t).replace(/[^a-z0-9ñ]+/g, ' ').trim();
-    const tengo = new Set([...this.datos.libros.map((l) => norm(l.titulo)), ...this.datos.wishlist.map((d) => norm(d.titulo))]);
+    const fuera = this.datos.leidosFuera ?? [];
+    // Nada que ya tenga, quiera o haya leído en otro lado
+    const tengo = new Set([...this.datos.libros, ...this.datos.wishlist, ...fuera].map((l) => norm(l.titulo)));
     const lista = (sugerenciasJson as unknown as { sugerencias: Sugerencia[] }).sugerencias;
+    // «si» es el id de un libro leído del estante, o el título de uno leído fuera de él
+    const leido = (si: string): { titulo: string } | undefined => {
+      const libro = this.datos.libros.find((l) => l.id === si);
+      if (libro) return libro.estado !== 'sin-leer' ? libro : undefined;
+      return fuera.find((d) => norm(d.titulo) === norm(si));
+    };
     this.sugerencias = lista
-      .map((s) => ({ s, si: this.datos.libros.find((l) => l.id === s.si) }))
-      .filter((x): x is { s: Sugerencia; si: Libro } => !!x.si && x.si.estado !== 'sin-leer' && !tengo.has(norm(x.s.titulo)))
+      .map((s) => ({ s, si: leido(s.si) }))
+      .filter((x): x is { s: Sugerencia; si: { titulo: string } } => !!x.si && !tengo.has(norm(x.s.titulo)))
       .sort(() => Math.random() - 0.5);
     for (const pestana of this.agenda.querySelectorAll<HTMLButtonElement>('[data-hoja]')) {
       pestana.addEventListener('click', () => this.verHoja(pestana.dataset.hoja!));

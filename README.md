@@ -26,6 +26,7 @@ Todo está en [`src/datos/biblioteca.json`](src/datos/biblioteca.json):
 - `prestado`: `{ "a": "Juan", "desde": "2026-11-20" }`. El libro sale del estante y queda un papelito en su lugar.
 - `leyendoAhora`: el `id` del libro que va en la mesa de luz (o `null`).
 - `wishlist`: `[{ "titulo": "…", "autor": "…" }]`.
+- `leidosFuera`: libros que leí pero no están en el estante (prestados que no vuelven, de otra persona…). No se recomiendan y sirven para las sugerencias.
 - `notas`: texto libre que aparece al mirar el libro de cerca.
 - `tapa`: ruta a una foto real de la tapa dentro de `public/` (opcional).
 - `cuadro`: ruta a una imagen para el cuadro (opcional).
