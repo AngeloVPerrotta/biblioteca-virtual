@@ -555,9 +555,9 @@ button {
   flex-direction: column;
   border-radius: var(--radio);
   border: 1px solid rgba(255, 226, 186, 0.08);
-  background: rgba(27, 20, 16, 0.42);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* Sin desenfoque en reposo: el panel queda sobre la escena que se redibuja todo el tiempo,
+     y desenfocar ese pedazo en cada cuadro le cuesta a la placa de video */
+  background: rgba(27, 20, 16, 0.55);
   opacity: 0;
   visibility: hidden;
   transform: translateX(14px);
@@ -574,7 +574,9 @@ button {
 .discos-lista.visible:hover,
 .discos-lista.visible:focus-within {
   opacity: 1;
-  background: rgba(27, 20, 16, 0.7);
+  background: rgba(27, 20, 16, 0.66);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .discos-lista__titulo {

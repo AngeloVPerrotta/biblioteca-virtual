@@ -43,17 +43,38 @@ export function rgba(hex: string, a: number) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
+/**
+ * Tabla de ruido precalculada (largo primo, así no se alinea con el ancho de ninguna textura):
+ * el grano la recorre en vez de pedir un número al azar por píxel, que era lo más lento de la carga.
+ */
+const LARGO_RUIDO = 65521;
+let tablaRuido: Float32Array | null = null;
+function ruidoBlanco() {
+  if (!tablaRuido) {
+    tablaRuido = new Float32Array(LARGO_RUIDO);
+    const r = rng(9001);
+    for (let i = 0; i < LARGO_RUIDO; i++) tablaRuido[i] = r() - 0.5;
+  }
+  return tablaRuido;
+}
+
+/** Suma a los píxeles un ruido de amplitud `amp` (los datos del canvas ya se recortan solos a 0–255). */
+function sumarGrano(d: Uint8ClampedArray, amp: number, semilla: number) {
+  const tabla = ruidoBlanco();
+  let k = (Math.imul(semilla >>> 0, 2654435761) >>> 0) % LARGO_RUIDO;
+  for (let i = 0; i < d.length; i += 4) {
+    const n = tabla[k] * amp;
+    if (++k === LARGO_RUIDO) k = 0;
+    d[i] += n;
+    d[i + 1] += n;
+    d[i + 2] += n;
+  }
+}
+
 /** Agrega grano por píxel (papel, tela, pelo de alfombra). */
 export function grano(ctx: CanvasRenderingContext2D, w: number, h: number, amp: number, semilla = 1) {
   const img = ctx.getImageData(0, 0, w, h);
-  const d = img.data;
-  const r = rng(semilla);
-  for (let i = 0; i < d.length; i += 4) {
-    const n = (r() - 0.5) * amp;
-    d[i] = Math.max(0, Math.min(255, d[i] + n));
-    d[i + 1] = Math.max(0, Math.min(255, d[i + 1] + n));
-    d[i + 2] = Math.max(0, Math.min(255, d[i + 2] + n));
-  }
+  sumarGrano(img.data, amp, semilla);
   ctx.putImageData(img, 0, 0);
 }
 
@@ -446,20 +467,41 @@ export function texturaAlfombra() {
     ctx.fillStyle = r() > 0.5 ? `rgba(255,230,200,${r() * 0.04})` : `rgba(0,0,0,${r() * 0.05})`;
     ctx.fillRect(0, y, W, 6);
   }
-  // Desgaste: zonas más gastadas en el centro (donde se camina)
+  // Desgaste: zonas más gastadas en el centro (donde se camina). Es una mancha suave, así que se
+  // calcula a un cuarto de resolución y se interpola: se ve igual y cuesta 16 veces menos.
   const { fbm } = crearRuido(62, 8);
+  const ew = W / 4;
+  const eh = H / 4;
+  const campo = new Float32Array(ew * eh);
+  for (let y = 0; y < eh; y++) {
+    for (let x = 0; x < ew; x++) campo[y * ew + x] = Math.max(0, fbm((x / ew) * 8, (y / eh) * 8, 4) - 0.52) * 0.9;
+  }
+  const desgasteEn = (x: number, y: number) => {
+    const fx = Math.min(ew - 1.001, x / 4);
+    const fy = Math.min(eh - 1.001, y / 4);
+    const x0 = fx | 0;
+    const y0 = fy | 0;
+    const tx = fx - x0;
+    const ty = fy - y0;
+    const i = y0 * ew + x0;
+    const a = campo[i] + (campo[i + 1] - campo[i]) * tx;
+    const b = campo[i + ew] + (campo[i + ew + 1] - campo[i + ew]) * tx;
+    return a + (b - a) * ty;
+  };
   const img = ctx.getImageData(0, 0, W, H);
   const d = img.data;
   for (let y = 0; y < H; y++) {
     for (let x = 0; x < W; x++) {
+      const desgaste = desgasteEn(x, y);
+      if (desgaste <= 0) continue;
       const i = (y * W + x) * 4;
-      const desgaste = Math.max(0, fbm((x / W) * 8, (y / H) * 8, 4) - 0.52) * 0.9;
-      const pelo = (r() - 0.5) * 22;
-      d[i] = d[i] + (225 - d[i]) * desgaste * 0.5 + pelo;
-      d[i + 1] = d[i + 1] + (205 - d[i + 1]) * desgaste * 0.45 + pelo;
-      d[i + 2] = d[i + 2] + (180 - d[i + 2]) * desgaste * 0.4 + pelo;
+      d[i] += (225 - d[i]) * desgaste * 0.5;
+      d[i + 1] += (205 - d[i + 1]) * desgaste * 0.45;
+      d[i + 2] += (180 - d[i + 2]) * desgaste * 0.4;
     }
   }
+  // El pelo de la alfombra
+  sumarGrano(d, 22, 63);
   ctx.putImageData(img, 0, 0);
   return c;
 }

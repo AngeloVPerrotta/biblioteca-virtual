@@ -96,17 +96,20 @@ async function iniciar() {
     { once: true },
   );
   RectAreaLightUniformsLib.init();
+  performance.mark('carga-renderer');
 
   const escena = new THREE.Scene();
   escena.background = new THREE.Color('#120d0a');
   const pmrem = new THREE.PMREMGenerator(renderer);
   escena.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   escena.environmentIntensity = 0.16;
+  performance.mark('carga-entorno');
 
   const animador = new Animador();
 
   // Libros
   const libros = datos.libros.map((l) => new LibroVisual(l));
+  performance.mark('carga-libros');
   await progreso(0.4);
   const leyendo = datos.leyendoAhora ? (libros.find((lv) => lv.libro.id === datos.leyendoAhora) ?? null) : null;
   const acostados = libros.filter((lv) => lv.libro.acostado && lv !== leyendo);
@@ -192,6 +195,22 @@ async function iniciar() {
   guitarra.position.set(-W / 2 - 1.55, 0, 0.3);
   guitarra.rotation.y = 0.28;
   escena.add(guitarra);
+
+  // Cada visita el cajón se ordena distinto: los géneros y los discos dentro de cada uno van al azar,
+  // así lo primero que aparece (y lo que se pone) va cambiando
+  const barajar = <T,>(lista: T[]) => {
+    for (let i = lista.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [lista[i], lista[j]] = [lista[j], lista[i]];
+    }
+    return lista;
+  };
+  const porGenero = new Map<string, DatosDiscos['discos']>();
+  for (const d of datosDiscos.discos) {
+    const genero = d.genero ?? 'Otros';
+    porGenero.set(genero, [...(porGenero.get(genero) ?? []), d]);
+  }
+  datosDiscos.discos = barajar([...porGenero.values()]).flatMap((discos) => barajar(discos));
 
   // Lo que va en el cajón: un separador al empezar cada género y las fundas
   const itemsCajon: { portada?: string | null; separador?: string }[] = [];

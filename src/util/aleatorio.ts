@@ -30,7 +30,12 @@ export function crearRuido(semilla: number, periodo = 8) {
   const n = periodo;
   const valores = new Float32Array(n * n);
   for (let i = 0; i < valores.length; i++) valores[i] = r();
-  const v = (x: number, y: number) => valores[(((y % n) + n) % n) * n + (((x % n) + n) % n)];
+  // Con períodos potencia de 2 (los de siempre) el «módulo» se hace con una máscara de bits: mucho más rápido
+  const mascara = n - 1;
+  const v =
+    (n & mascara) === 0
+      ? (x: number, y: number) => valores[(y & mascara) * n + (x & mascara)]
+      : (x: number, y: number) => valores[(((y % n) + n) % n) * n + (((x % n) + n) % n)];
   const suavizar = (t: number) => t * t * (3 - 2 * t);
 
   const ruido = (x: number, y: number) => {
