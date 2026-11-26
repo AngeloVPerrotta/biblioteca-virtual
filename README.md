@@ -34,14 +34,21 @@ El perfil de cada libro para el «¿Qué leo?» está en `src/datos/perfiles.jso
 
 ## Actualizar los discos de Spotify
 
+La forma recomendada es con el **historial de reproducción extendido** (el .zip que se pide en spotify.com/account/privacy). No hace falta iniciar sesión ni ninguna clave:
+
 ```bash
-node scripts/spotify-top.mjs <CLIENT_ID>             # últimas 4 semanas
-node scripts/spotify-top.mjs <CLIENT_ID> medium_term # últimos 6 meses
+node scripts/spotify-historial.mjs "<carpeta Spotify Extended Streaming History>"
 ```
 
-Abre la autorización de Spotify (flujo PKCE, sin client secret), trae los temas más escuchados de las últimas semanas y meses, los agrupa por disco y guarda solo la lista en `src/datos/discos.json`. La app de Spotify necesita la Redirect URI `http://127.0.0.1:8888/callback`.
+Suma lo escuchado por disco mezclando lo de siempre con lo de ahora (la parte de cada disco en todo el historial, más la mitad de su parte del último año), elige un disco por artista y saca la tapa de las páginas públicas de Spotify. El historial **no** se copia al proyecto (tiene datos privados): a `src/datos/discos.json` va solo lo público de cada disco.
 
-La selección del cajón la arma [`scripts/curar-discos.mjs`](scripts/curar-discos.mjs): 20 discos repartidos por género (cupos en `CUPOS`, género de cada artista en `GENEROS`), uno por artista. En el cajón van agrupados con separadores de cartón.
+También se puede usar la API, con lo de las últimas semanas y meses (necesita autorizar la app, con la Redirect URI `http://127.0.0.1:8888/callback`):
+
+```bash
+node scripts/spotify-top.mjs <CLIENT_ID>
+```
+
+La selección del cajón la arma [`scripts/curar-discos.mjs`](scripts/curar-discos.mjs): 25 discos repartidos por género (rock nacional, reggaetón, trap y rap, corridos, hip hop y R&B, rock y punk, pop y reggae; cupos en `CUPOS`, género de cada artista en `GENEROS`), uno por artista. En el cajón van agrupados con separadores de cartón.
 
 ## Correrlo en la compu
 

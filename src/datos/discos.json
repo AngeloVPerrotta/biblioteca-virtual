@@ -1,74 +1,60 @@
 {
-  "actualizado": "2026-11-25",
-  "periodo": "Lo más escuchado últimamente",
+  "actualizado": "2026-11-24",
+  "periodo": "De siempre y de ahora",
   "discos": [
     {
-      "id": "0TmPRZoau8M0QIfnMgwrlI",
-      "nombre": "Oktubre",
+      "id": "1JZBc7tWO3m3ryyToiLTdj",
+      "nombre": "La Mosca y la Sopa",
       "artista": "Patricio Rey y sus Redonditos de Ricota",
-      "anio": "1986",
+      "anio": "1991",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273353360f871d689ff74dd3712",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02353360f871d689ff74dd3712",
-      "url": "https://open.spotify.com/album/0TmPRZoau8M0QIfnMgwrlI",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2731c0740bf2b983943ca25a15d",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e021c0740bf2b983943ca25a15d",
+      "url": "https://open.spotify.com/album/1JZBc7tWO3m3ryyToiLTdj",
       "temas": [
-        "Canción para Naufragios",
-        "Música para Pastillas",
-        "Preso en Mi Ciudad",
-        "Ji Ji Ji",
-        "Motor Psico"
+        "Salando las Heridas",
+        "Tarea Fina",
+        "El Pibe de los Astilleros",
+        "Un Poco de Amor Francés",
+        "Queso Ruso"
       ],
-      "puntos": 726.7999999999998,
+      "puntos": 100,
       "genero": "Rock nacional"
     },
     {
-      "id": "0HBXl0BoyqkfJmxjrLtnqL",
-      "nombre": "Los Fundamentalistas del Aire Acondicionado en Huracán (En Vivo)",
-      "artista": "Los Fundamentalistas del Aire Acondicionado",
-      "anio": "2023",
+      "id": "7gSe5tBOrBERCFvQgR6TsC",
+      "nombre": "En Vivo en el Palacio de los Deportes - 25 Aniversario",
+      "artista": "Los Auténticos Decadentes",
+      "anio": "2012",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273ef8a92853feeb035732f5d55",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02ef8a92853feeb035732f5d55",
-      "url": "https://open.spotify.com/album/0HBXl0BoyqkfJmxjrLtnqL",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2734f568fff018a881ce15eda52",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e024f568fff018a881ce15eda52",
+      "url": "https://open.spotify.com/album/7gSe5tBOrBERCFvQgR6TsC",
       "temas": [
-        "Mi Genio Amor - En Vivo",
-        "Rock para el Negro Atila - En Vivo",
-        "Héroe del Whisky - En Vivo",
-        "Yo No Me Caí del Cielo - En Vivo",
-        "Nuestro Amo Juega al Esclavo - En Vivo"
+        "No Me Importa el Dinero (feat. Julieta Venegas) - Vivo en el Palacio de los Deportes",
+        "Luna Radiante (feat. Babasónicos) - Vivo En El Palacio de los Deportes",
+        "Paseando por Temperley - Vivo en el Palacio de los Deportes"
       ],
-      "puntos": 551.8,
+      "puntos": 16.9,
       "genero": "Rock nacional"
     },
     {
-      "id": "4D1aIzUYKG6jytRjgT0QIx",
-      "nombre": "La Era De La Boludez",
-      "artista": "Divididos",
-      "anio": "1993",
+      "id": "7xdsaV2y15dItFMlsoWTqu",
+      "nombre": "De La Cabeza Con Bersuit Vergarabat",
+      "artista": "Bersuit Vergarabat",
+      "anio": "2002",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2737e09bfe5e78c7fb5cb3d9b68",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e027e09bfe5e78c7fb5cb3d9b68",
-      "url": "https://open.spotify.com/album/4D1aIzUYKG6jytRjgT0QIx",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27355144dc2badceaabc6c51c3e",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0255144dc2badceaabc6c51c3e",
+      "url": "https://open.spotify.com/album/7xdsaV2y15dItFMlsoWTqu",
       "temas": [
-        "Paisano De Hurlingham",
-        "Dame Un Limón"
+        "El Tiempo No Para - Live In Buenos Aires / 2001",
+        "Un Pacto - Live In Buenos Aires / 2001",
+        "Mi Caramelo - Live In Buenos Aires / 2001",
+        "El Viejo De Arriba - Live In Buenos Aires / 2001",
+        "Murguita Del Sur - Live In Buenos Aires / 2001"
       ],
-      "puntos": 149.60000000000002,
-      "genero": "Rock nacional"
-    },
-    {
-      "id": "15eHesyZJpvolTrSUJgoDX",
-      "nombre": "Anoche",
-      "artista": "Babasonicos",
-      "anio": "2005",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273ee6c0ec02e7af747ca39bf21",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02ee6c0ec02e7af747ca39bf21",
-      "url": "https://open.spotify.com/album/15eHesyZJpvolTrSUJgoDX",
-      "temas": [
-        "Yegua"
-      ],
-      "puntos": 125.4,
+      "puntos": 16,
       "genero": "Rock nacional"
     },
     {
@@ -82,242 +68,407 @@
       "url": "https://open.spotify.com/album/3fyFk4hNkdXZK7eIuAvkyz",
       "temas": [
         "Distinto",
-        "Tan Perfecto Que Asusta"
+        "Tan Perfecto Que Asusta",
+        "Prohibido",
+        "Un Lugar Perfecto",
+        "Rocanroles Sin Destino"
       ],
-      "puntos": 85.19999999999999,
+      "puntos": 12.5,
       "genero": "Rock nacional"
     },
     {
-      "id": "0iMPnRq7PL82Zrah0gTQBR",
-      "nombre": "Divididos Por La Felicidad",
-      "artista": "Sumo",
-      "anio": "1985",
+      "id": "5UmrOPpQ3VmXmBRSvXMbcR",
+      "nombre": "Acariciando Lo Aspero",
+      "artista": "Divididos",
+      "anio": "1991",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273019290b3d41497eb46e9bd67",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02019290b3d41497eb46e9bd67",
-      "url": "https://open.spotify.com/album/0iMPnRq7PL82Zrah0gTQBR",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273abbe0ef276b8fd385d709aa7",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02abbe0ef276b8fd385d709aa7",
+      "url": "https://open.spotify.com/album/5UmrOPpQ3VmXmBRSvXMbcR",
       "temas": [
-        "La Rubia Tarada",
-        "Mejor No Hablar de Ciertas Cosas"
+        "Ala Delta",
+        "El 38",
+        "Sábado"
       ],
-      "puntos": 83.39999999999999,
+      "puntos": 12.4,
       "genero": "Rock nacional"
     },
     {
-      "id": "3Ddw0PoboR3X6KN5ZmYFNR",
-      "nombre": "Detonador de Sueños",
-      "artista": "La Renga",
-      "anio": "2003",
+      "id": "3RQQmkQEvNCY4prGKE6oc5",
+      "nombre": "Un Verano Sin Ti",
+      "artista": "Bad Bunny",
+      "anio": "2022",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2736e180394f875460ef19d556c",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e026e180394f875460ef19d556c",
-      "url": "https://open.spotify.com/album/3Ddw0PoboR3X6KN5ZmYFNR",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27349d694203245f241a1bcaa72",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0249d694203245f241a1bcaa72",
+      "url": "https://open.spotify.com/album/3RQQmkQEvNCY4prGKE6oc5",
       "temas": [
-        "La Razón Que Te Demora"
+        "Tarot",
+        "Ojitos Lindos",
+        "Party",
+        "Andrea",
+        "Dos Mil 16"
       ],
-      "puntos": 80.4,
-      "genero": "Rock nacional"
+      "puntos": 87.3,
+      "genero": "Reggaetón"
     },
     {
-      "id": "1KYkaepx3oUWJRDR8ypzxH",
-      "nombre": "No Es Solo Rock And Roll",
-      "artista": "Intoxicados",
-      "anio": "2003",
+      "id": "3V2ApPxUSquOkjLQU3wmjh",
+      "nombre": "BUENAS NOCHES",
+      "artista": "Quevedo",
+      "anio": "2024",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2733ee9a09c327e80b3f67ac003",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e023ee9a09c327e80b3f67ac003",
-      "url": "https://open.spotify.com/album/1KYkaepx3oUWJRDR8ypzxH",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2734b690afba75a356fcdad526e",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e024b690afba75a356fcdad526e",
+      "url": "https://open.spotify.com/album/3V2ApPxUSquOkjLQU3wmjh",
       "temas": [
-        "Don Electrón",
-        "De La Guitarra"
+        "BUENAS NOCHES",
+        "HALO",
+        "LA 125",
+        "GRAN VÍA",
+        "IGUALES"
       ],
-      "puntos": 63,
-      "genero": "Rock nacional"
+      "puntos": 40.4,
+      "genero": "Reggaetón"
     },
     {
-      "id": "2yNaksHgeMQM9Quse463b5",
-      "nombre": "Is This It",
-      "artista": "The Strokes",
-      "anio": "2001",
+      "id": "7pijRxgRaBirPz6wDaJIp9",
+      "nombre": "FELIZ CUMPLEAÑOS FERXXO TE PIRATEAMOS EL ÁLBUM",
+      "artista": "Feid",
+      "anio": "2022",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273a388a3f20d1bf2123249cc79",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02a388a3f20d1bf2123249cc79",
-      "url": "https://open.spotify.com/album/2yNaksHgeMQM9Quse463b5",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27373456ed697350847810e52b3",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0273456ed697350847810e52b3",
+      "url": "https://open.spotify.com/album/7pijRxgRaBirPz6wDaJIp9",
       "temas": [
-        "Someday",
-        "Last Nite"
+        "Belixe",
+        "Castigo",
+        "Nieve",
+        "Feliz Cumpleaños Ferxxo",
+        "Ferxxo 100"
       ],
-      "puntos": 75,
-      "genero": "Rock internacional"
+      "puntos": 37.5,
+      "genero": "Reggaetón"
     },
     {
-      "id": "3OQ83AaDoeiPsbSU7DSSl8",
-      "nombre": "A Head Full of Dreams Tour Edition",
-      "artista": "Coldplay",
-      "anio": "2015",
+      "id": "2Nt6MDJXfoxQ22tIQgWXIh",
+      "nombre": "VICE VERSA",
+      "artista": "Rauw Alejandro",
+      "anio": "2021",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b27320ad8aa561006ba6a3d7f7bd",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0220ad8aa561006ba6a3d7f7bd",
-      "url": "https://open.spotify.com/album/3OQ83AaDoeiPsbSU7DSSl8",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273f793c0c53727d8c5c950f809",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02f793c0c53727d8c5c950f809",
+      "url": "https://open.spotify.com/album/2Nt6MDJXfoxQ22tIQgWXIh",
       "temas": [
-        "Adventure of a Lifetime"
+        "Desenfocao'",
+        "Cosa Guapa",
+        "La Old Skul",
+        "Sexo Virtual",
+        "Desesperados"
       ],
-      "puntos": 71,
-      "genero": "Rock internacional"
+      "puntos": 14.6,
+      "genero": "Reggaetón"
     },
     {
-      "id": "2gR5VChCr7aKQ2Ybk6vpf3",
-      "nombre": "Continuum",
-      "artista": "John Mayer",
-      "anio": "2006",
+      "id": "7b3PrkHcWx17AQwlI2M1Uc",
+      "nombre": "PARAÍSO",
+      "artista": "Mora",
+      "anio": "2022",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273fa8e8cc9d6d0862b7033dbaa",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02fa8e8cc9d6d0862b7033dbaa",
-      "url": "https://open.spotify.com/album/2gR5VChCr7aKQ2Ybk6vpf3",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2732a5c6164e8743597f44b645e",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e022a5c6164e8743597f44b645e",
+      "url": "https://open.spotify.com/album/7b3PrkHcWx17AQwlI2M1Uc",
       "temas": [
-        "Vultures"
+        "APA",
+        "COMO HAS ESTAU?",
+        "CALENTÓN",
+        "MODELITO",
+        "BIENVENIDA AL PARAÍSO"
       ],
-      "puntos": 59,
-      "genero": "Rock internacional"
-    },
-    {
-      "id": "6eedtCtCjibu80yOhylSGL",
-      "nombre": "Berry Is On Top",
-      "artista": "Chuck Berry",
-      "anio": "1959",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273a496dc8c33ca6d10668b3157",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02a496dc8c33ca6d10668b3157",
-      "url": "https://open.spotify.com/album/6eedtCtCjibu80yOhylSGL",
-      "temas": [
-        "Johnny B. Goode"
-      ],
-      "puntos": 48.6,
-      "genero": "Rock internacional"
-    },
-    {
-      "id": "6ohX7moZZnF1FwYrli1OJ6",
-      "nombre": "In Utero (Deluxe Edition)",
-      "artista": "Nirvana",
-      "anio": "1993",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273aca059cebc1841277db22d1c",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02aca059cebc1841277db22d1c",
-      "url": "https://open.spotify.com/album/6ohX7moZZnF1FwYrli1OJ6",
-      "temas": [
-        "Heart-Shaped Box"
-      ],
-      "puntos": 46,
-      "genero": "Rock internacional"
-    },
-    {
-      "id": "1VW1MFNstaJuygaoTPkdCk",
-      "nombre": "(What's The Story) Morning Glory? [Remastered]",
-      "artista": "Oasis",
-      "anio": "1995",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b27385e5dcc05cc216a10f141480",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0285e5dcc05cc216a10f141480",
-      "url": "https://open.spotify.com/album/1VW1MFNstaJuygaoTPkdCk",
-      "temas": [
-        "Don't Look Back in Anger - Remastered"
-      ],
-      "puntos": 40.199999999999996,
-      "genero": "Rock internacional"
-    },
-    {
-      "id": "2Hq8YjDCJfynzmTgLGVkxJ",
-      "nombre": "El Cielo Puede Esperar",
-      "artista": "Attaque 77",
-      "anio": "1990",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b273834dbc2fb7fc8fb32cd593ff",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02834dbc2fb7fc8fb32cd593ff",
-      "url": "https://open.spotify.com/album/2Hq8YjDCJfynzmTgLGVkxJ",
-      "temas": [
-        "Hacelo por Mí"
-      ],
-      "puntos": 90.2,
-      "genero": "Punk y metal"
-    },
-    {
-      "id": "2EC1fS6uKutEPexAfOgBEl",
-      "nombre": "Almafuerte",
-      "artista": "Almafuerte",
-      "anio": "1998",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b27342b38cbb710a9685b8fcd8a7",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0242b38cbb710a9685b8fcd8a7",
-      "url": "https://open.spotify.com/album/2EC1fS6uKutEPexAfOgBEl",
-      "temas": [
-        "Sé Vos"
-      ],
-      "puntos": 75,
-      "genero": "Punk y metal"
+      "puntos": 13.8,
+      "genero": "Reggaetón"
     },
     {
       "id": "2Vo0I6ocNBz16QklB1zVc3",
       "nombre": "YSYSMO",
-      "artista": "YSY A, SPONSOR DIOS",
+      "artista": "YSY A",
       "anio": "2022",
       "tipo": "album",
       "portada": "https://i.scdn.co/image/ab67616d0000b2738aaa87d1b2aa73e9e6d24dd3",
       "portadaChica": "https://i.scdn.co/image/ab67616d00001e028aaa87d1b2aa73e9e6d24dd3",
       "url": "https://open.spotify.com/album/2Vo0I6ocNBz16QklB1zVc3",
       "temas": [
-        "PA ESTA SOLEDAD",
-        "RELOJES REVENTADOS",
+        "A POR TODO",
+        "CUÁNTOS TÉRMINOS?",
         "CUÁNTO VALE HACER EL AMOR?",
-        "SER EL TRAP",
-        "CUÁNTOS TÉRMINOS?"
+        "UN PISO MÁS",
+        "RELOJES REVENTADOS"
       ],
-      "puntos": 147,
-      "genero": "Urbano"
+      "puntos": 18.9,
+      "genero": "Trap y rap"
     },
     {
-      "id": "3sjYvK0dmsaQSqQZR5Tn51",
-      "nombre": "Spotify Singles",
-      "artista": "Lali",
+      "id": "35pPpQjgXMiiDtlJDvcOa3",
+      "nombre": "FRÍO",
+      "artista": "Harry Nach",
+      "anio": "2022",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273ca125522a36ed8f32342ea32",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02ca125522a36ed8f32342ea32",
+      "url": "https://open.spotify.com/album/35pPpQjgXMiiDtlJDvcOa3",
+      "temas": [
+        "LOKOTRON",
+        "LAS BOTELLAS GOLDEN",
+        "COMO LAS DEMAS",
+        "PERDON TOI EN DINERO",
+        "LOS XULITOS"
+      ],
+      "puntos": 16.2,
+      "genero": "Trap y rap"
+    },
+    {
+      "id": "26nUVuonXEdbJTo9PeBYoR",
+      "nombre": "Antes de Ameri",
+      "artista": "Duki",
       "anio": "2023",
-      "tipo": "single",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2739c270fa136d48417b592fb7a",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e029c270fa136d48417b592fb7a",
-      "url": "https://open.spotify.com/album/3sjYvK0dmsaQSqQZR5Tn51",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27397916acfd8f391e5f4198e45",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0297916acfd8f391e5f4198e45",
+      "url": "https://open.spotify.com/album/26nUVuonXEdbJTo9PeBYoR",
       "temas": [
-        "Yegua"
+        "RoCKSTAR 2.0",
+        "CSIpher (audio latino)",
+        "RoCKSTAR 2.0",
+        "cONTRA><Mi",
+        "hARAkiRI"
       ],
-      "puntos": 42,
-      "genero": "Pop e indie"
+      "puntos": 15.5,
+      "genero": "Trap y rap"
     },
     {
-      "id": "7GYzQIMfdDWo2XC4BDLHPk",
-      "nombre": "Fuzzybrain",
-      "artista": "Dayglow",
-      "anio": "2019",
-      "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b27379bcebdcb3fbce97443db1e9",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0279bcebdcb3fbce97443db1e9",
-      "url": "https://open.spotify.com/album/7GYzQIMfdDWo2XC4BDLHPk",
+      "id": "0jps45S3BLg0ObqAyboGVb",
+      "nombre": "Capítulo 1",
+      "artista": "Beny Jr",
+      "anio": "2022",
+      "tipo": "ep",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27309f74babecfa7422e8df567e",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0209f74babecfa7422e8df567e",
+      "url": "https://open.spotify.com/album/0jps45S3BLg0ObqAyboGVb",
       "temas": [
-        "Can I Call You Tonight?"
+        "Que Dirá?",
+        "Sigue",
+        "Cómo Es?",
+        "La Verdad",
+        "Lograr"
       ],
-      "puntos": 33,
-      "genero": "Pop e indie"
+      "puntos": 13.3,
+      "genero": "Trap y rap"
     },
     {
-      "id": "5uRdvUR7xCnHmUW8n64n9y",
-      "nombre": "Homework",
-      "artista": "Daft Punk",
-      "anio": "1997",
+      "id": "1xBoZOfcOsqd77V6AENKYC",
+      "nombre": "Atrevido",
+      "artista": "Trueno",
+      "anio": "2020",
       "tipo": "album",
-      "portada": "https://i.scdn.co/image/ab67616d0000b2738ac778cc7d88779f74d33311",
-      "portadaChica": "https://i.scdn.co/image/ab67616d00001e028ac778cc7d88779f74d33311",
-      "url": "https://open.spotify.com/album/5uRdvUR7xCnHmUW8n64n9y",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273f4483d4440a89a2cab3b5141",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02f4483d4440a89a2cab3b5141",
+      "url": "https://open.spotify.com/album/1xBoZOfcOsqd77V6AENKYC",
       "temas": [
-        "Around the World"
+        "G.P.S. - con Aleman",
+        "Atrevido",
+        "Background",
+        "2.0.1.9",
+        "Sangría - con WOS"
       ],
-      "puntos": 62,
-      "genero": "Electrónica"
+      "puntos": 11.1,
+      "genero": "Trap y rap"
+    },
+    {
+      "id": "2xqdV2npgZXiowXCAYwd2Y",
+      "nombre": "SAETA",
+      "artista": "Paco Amoroso",
+      "anio": "2021",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27351ea181a3e89877e0975358b",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0251ea181a3e89877e0975358b",
+      "url": "https://open.spotify.com/album/2xqdV2npgZXiowXCAYwd2Y",
+      "temas": [
+        "Viuda Negra",
+        "Switch",
+        "Da Igual",
+        "Aire",
+        "Ángel de la Noche"
+      ],
+      "puntos": 10.2,
+      "genero": "Trap y rap"
+    },
+    {
+      "id": "507VZINfvVEAyrcPbJuOVU",
+      "nombre": "Nata Montana",
+      "artista": "Natanael Cano",
+      "anio": "2023",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273066c67e297dd388e5b25bc3a",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02066c67e297dd388e5b25bc3a",
+      "url": "https://open.spotify.com/album/507VZINfvVEAyrcPbJuOVU",
+      "temas": [
+        "En Corto",
+        "Mas Altas Que Bajadas",
+        "Como Es Arriba Es Abajo",
+        "Mi Bello Angel",
+        "Viejo Lobo"
+      ],
+      "puntos": 17.5,
+      "genero": "Corridos"
+    },
+    {
+      "id": "3ind4Ir3JMazCITxWQajDb",
+      "nombre": "Mi Vida En Un Cigarro 2",
+      "artista": "Junior H",
+      "anio": "2022",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273bce9f6ae2b428bc6a3616a10",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02bce9f6ae2b428bc6a3616a10",
+      "url": "https://open.spotify.com/album/3ind4Ir3JMazCITxWQajDb",
+      "temas": [
+        "El Nene",
+        "Como Jordan",
+        "Extssy Model",
+        "Los Botones Azules",
+        "Nunca Tristes Siempre Locos"
+      ],
+      "puntos": 12.9,
+      "genero": "Corridos"
+    },
+    {
+      "id": "5MS3MvWHJ3lOZPLiMxzOU6",
+      "nombre": "Her Loss",
+      "artista": "Drake",
+      "anio": "2022",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27302854a7060fccc1a66a4b5ad",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0202854a7060fccc1a66a4b5ad",
+      "url": "https://open.spotify.com/album/5MS3MvWHJ3lOZPLiMxzOU6",
+      "temas": [
+        "Rich Flex",
+        "On BS",
+        "Major Distribution",
+        "Pussy & Millions (feat. Travis Scott)",
+        "Privileged Rappers"
+      ],
+      "puntos": 15.2,
+      "genero": "Hip hop y R&B"
+    },
+    {
+      "id": "5EbpxRwbbpCJUepbqVTZ1U",
+      "nombre": "Trilogy",
+      "artista": "The Weeknd",
+      "anio": "2012",
+      "tipo": "compilation",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273b298538481c52f7e217ed000",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02b298538481c52f7e217ed000",
+      "url": "https://open.spotify.com/album/5EbpxRwbbpCJUepbqVTZ1U",
+      "temas": [
+        "Next",
+        "Wicked Games",
+        "Till Dawn (Here Comes The Sun)",
+        "Coming Down",
+        "The Morning"
+      ],
+      "puntos": 14.9,
+      "genero": "Hip hop y R&B"
+    },
+    {
+      "id": "2nkto6YNI4rUYTLqEwWJ3o",
+      "nombre": "Flower Boy",
+      "artista": "Tyler, The Creator",
+      "anio": "2017",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2738940ac99f49e44f59e6f7fb3",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e028940ac99f49e44f59e6f7fb3",
+      "url": "https://open.spotify.com/album/2nkto6YNI4rUYTLqEwWJ3o",
+      "temas": [
+        "Boredom (feat. Rex Orange County & Anna of the North)",
+        "See You Again (feat. Kali Uchis)",
+        "Garden Shed (feat. Estelle)",
+        "Where This Flower Blooms (feat. Frank Ocean)",
+        "Pothole (feat. Jaden Smith)"
+      ],
+      "puntos": 9.2,
+      "genero": "Hip hop y R&B"
+    },
+    {
+      "id": "5Y0p2XCgRRIjna91aQE8q7",
+      "nombre": "The Queen Is Dead",
+      "artista": "The Smiths",
+      "anio": "1986",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b2736236778a208a15eb71079601",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e026236778a208a15eb71079601",
+      "url": "https://open.spotify.com/album/5Y0p2XCgRRIjna91aQE8q7",
+      "temas": [
+        "There Is a Light That Never Goes Out - 2011 Remaster",
+        "Bigmouth Strikes Again - 2011 Remaster",
+        "I Know It's Over - 2011 Remaster",
+        "There Is a Light That Never Goes Out - Take 1",
+        "Unloveable - 2017 Master"
+      ],
+      "puntos": 14,
+      "genero": "Rock y punk"
+    },
+    {
+      "id": "3nHpBmW5wJXGeC3ojBkpey",
+      "nombre": "Take Off Your Pants And Jacket",
+      "artista": "blink-182",
+      "anio": "2001",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b273d9d27e5b56e2b983e54dba64",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e02d9d27e5b56e2b983e54dba64",
+      "url": "https://open.spotify.com/album/3nHpBmW5wJXGeC3ojBkpey",
+      "temas": [
+        "Every Time I Look For You",
+        "First Date",
+        "The Rock Show",
+        "Anthem Part Two",
+        "Happy Holidays, You Bastard"
+      ],
+      "puntos": 11,
+      "genero": "Rock y punk"
+    },
+    {
+      "id": "6XrpkEuQyfilUHMduKDeuB",
+      "nombre": "Amar Es Combatir",
+      "artista": "Maná",
+      "anio": "2006",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27306a335c72b44d0bcd4060fcc",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0206a335c72b44d0bcd4060fcc",
+      "url": "https://open.spotify.com/album/6XrpkEuQyfilUHMduKDeuB",
+      "temas": [
+        "Labios Compartidos",
+        "Bendita Tu Luz",
+        "Labios Compartidos",
+        "Bendita Tu Luz"
+      ],
+      "puntos": 15.1,
+      "genero": "Pop"
+    },
+    {
+      "id": "68CATT5x7h27zl3KKnLM3g",
+      "nombre": "Barrilete",
+      "artista": "Los Cafres",
+      "anio": "2007",
+      "tipo": "album",
+      "portada": "https://i.scdn.co/image/ab67616d0000b27393a8b3c84c9e8ea1998cda1b",
+      "portadaChica": "https://i.scdn.co/image/ab67616d00001e0293a8b3c84c9e8ea1998cda1b",
+      "url": "https://open.spotify.com/album/68CATT5x7h27zl3KKnLM3g",
+      "temas": [
+        "Bastará",
+        "Momento",
+        "Loco"
+      ],
+      "puntos": 7.6,
+      "genero": "Reggae"
     }
   ]
 }

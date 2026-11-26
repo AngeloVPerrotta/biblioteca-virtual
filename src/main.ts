@@ -537,7 +537,12 @@ async function iniciar() {
     window.addEventListener('pointerdown', () => camara.escucharGiroscopio(), { once: true });
   }
 
+  // Tamaño aplicado: si la página se abrió en una pestaña todavía sin tamaño (0×0) y nunca llega
+  // un evento «resize», el bucle lo detecta y acomoda el lienzo igual
+  let tamAplicado = `${innerWidth}x${innerHeight}`;
   const redimensionar = () => {
+    tamAplicado = `${innerWidth}x${innerHeight}`;
+    if (!innerWidth || !innerHeight) return;
     renderer.setSize(innerWidth, innerHeight, false);
     post.setSize(innerWidth, innerHeight);
     camara.encuadrar(innerWidth / innerHeight, W);
@@ -615,6 +620,7 @@ async function iniciar() {
       return;
     }
     ultimoCuadro = ahora;
+    if (`${innerWidth}x${innerHeight}` !== tamAplicado) redimensionar();
     reloj.update(ahora);
     const dt = Math.min(reloj.getDelta(), 0.05);
     animador.tick(performance.now());

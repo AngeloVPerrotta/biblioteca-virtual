@@ -4,3 +4,7 @@ dist
 *.log
 .wrangler
 .claude/
+# Datos personales de Spotify: nunca al repo
+Spotify Extended Streaming History/
+my_spotify_data*
+Streaming_History_*.json
