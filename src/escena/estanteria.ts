@@ -75,15 +75,15 @@ function notaPrestamo(libroTitulo: string, a: string, desde?: string) {
   ctx.fillRect(0, 0, 256, 256);
   ctx.fillStyle = 'rgba(0,0,0,0.05)';
   ctx.fillRect(0, 0, 256, 34);
-  ctx.fillStyle = '#2c3a6b';
+  ctx.fillStyle = '#23252b';
   ctx.textAlign = 'center';
-  ctx.font = '700 46px Caveat, cursive';
+  ctx.font = '400 32px "Special Elite", monospace';
   ctx.fillText('Prestado a', 128, 92);
-  ctx.font = '700 58px Caveat, cursive';
+  ctx.font = '400 40px "Special Elite", monospace';
   ctx.fillText(a, 128, 156, 230);
   if (desde) {
     const [y, m, d] = desde.split('-');
-    ctx.font = '500 38px Caveat, cursive';
+    ctx.font = '400 26px "Special Elite", monospace';
     ctx.fillText(`desde el ${d}/${m}/${y.slice(2)}`, 128, 214);
   }
   const mat = new THREE.MeshStandardMaterial({ map: aTextura(c), roughness: 0.85, side: THREE.DoubleSide, emissive: 0xffffff, emissiveIntensity: 0 });

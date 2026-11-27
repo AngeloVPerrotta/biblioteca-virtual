@@ -44,7 +44,22 @@ Todo está en [`src/datos/biblioteca.json`](src/datos/biblioteca.json):
 - `tapa`: ruta a una foto real de la tapa dentro de `public/` (opcional).
 - `cuadro`: ruta a una imagen para el cuadro (opcional).
 
+Las tapas se dibujan copiando la edición real de cada libro (colores, tipografía, dónde va cada texto y una ilustración simple): están en [`src/datos/tapas.json`](src/datos/tapas.json). La `letra` de cada tapa es también la que usa el título del libro en los paneles. Se dibujan recién al mirar el libro de cerca, así que no suman a la carga.
+
 El perfil de cada libro para el «¿Qué leo?» está en `src/datos/perfiles.json` (tonos como `intriga`, `liviano`, `pensar`, temas, momentos de la vida para los que es especialmente bueno —`perdido`, `ruptura`, `duelo`, `empezar`…— y una frase; en antologías, `obras` con cada cuento o novela de adentro). Las sugerencias de la agenda están en `src/datos/sugerencias.json`. Al sumar un libro, pedile a Claude que le arme el perfil.
+
+## Variantes de diseño para probar
+
+Se eligen desde la dirección de la página, sin tocar el código (ver [`src/variantes.ts`](src/variantes.ts)):
+
+- `?paleta=carton`, `grafito`, `verde` o `minimal`: colores de los paneles.
+- `?formas=chicas` o `rectas`: esquinas de botones y paneles.
+- `?agenda=libreta`: la agenda como libreta negra.
+- `?paneles=derechos`: paneles sin la leve inclinación.
+- `?papelito=ficha`: ficha de cartón en vez del post-it.
+- `?alfombra=sobria`: alfombra en azul y óxido.
+
+Se pueden combinar: `?paleta=grafito&formas=chicas`.
 
 ## Actualizar los discos de Spotify
 

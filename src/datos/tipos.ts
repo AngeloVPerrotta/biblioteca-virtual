@@ -11,7 +11,10 @@ export type Fuente =
   | 'sans'
   | 'condensada'
   | 'display'
-  | 'mano';
+  | 'mano'
+  | 'maquina'
+  | 'mono'
+  | 'deco';
 
 export type Logo = 'circulo' | 'cuadro' | 'pluma' | 'triangulo' | 'casa' | 'letra' | 'texto';
 

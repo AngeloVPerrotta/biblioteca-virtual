@@ -9,7 +9,7 @@ import { grano, lienzo, rgba } from './texturas';
 /** Resolución del lomo: píxeles por centímetro. */
 const PX_LOMO = 30;
 /** Resolución de tapas (se ven de cerca en el foco). */
-const PX_TAPA = 36;
+export const PX_TAPA = 36;
 
 const FAMILIAS: Record<Fuente, { familia: string; estilo: string; peso: number }> = {
   serif: { familia: '"Playfair Display", Georgia, serif', estilo: 'normal', peso: 600 },
@@ -19,7 +19,15 @@ const FAMILIAS: Record<Fuente, { familia: string; estilo: string; peso: number }
   condensada: { familia: 'Oswald, "Arial Narrow", sans-serif', estilo: 'normal', peso: 500 },
   display: { familia: '"Bebas Neue", Impact, sans-serif', estilo: 'normal', peso: 400 },
   mano: { familia: 'Caveat, cursive', estilo: 'normal', peso: 700 },
+  maquina: { familia: '"Special Elite", "Courier New", monospace', estilo: 'normal', peso: 400 },
+  mono: { familia: '"IBM Plex Mono", monospace', estilo: 'normal', peso: 500 },
+  deco: { familia: 'Limelight, Georgia, serif', estilo: 'normal', peso: 400 },
 };
+
+/** La familia CSS de cada fuente, para usarla también en la interfaz. */
+export function familiaDe(f: Fuente) {
+  return FAMILIAS[f];
+}
 
 /** Fuentes que hay que tener cargadas antes de dibujar en canvas. */
 export const FUENTES_CANVAS = [
@@ -31,6 +39,7 @@ export const FUENTES_CANVAS = [
   '500 20px Oswald',
   '400 20px "Bebas Neue"',
   '700 20px Caveat',
+  '400 20px "Special Elite"',
 ];
 
 export function fuenteCSS(f: Fuente, px: number, peso?: number) {
@@ -38,9 +47,9 @@ export function fuenteCSS(f: Fuente, px: number, peso?: number) {
   return `${d.estilo} ${peso ?? d.peso} ${Math.max(4, px).toFixed(1)}px ${d.familia}`;
 }
 
-type Ctx = CanvasRenderingContext2D & { letterSpacing: string };
+export type Ctx = CanvasRenderingContext2D & { letterSpacing: string };
 
-function espaciado(ctx: Ctx, px: number) {
+export function espaciado(ctx: Ctx, px: number) {
   if ('letterSpacing' in ctx) ctx.letterSpacing = `${px.toFixed(2)}px`;
 }
 
@@ -112,7 +121,7 @@ function textoVertical(ctx: Ctx, texto: string, cx: number, y0: number, y1: numb
   ctx.restore();
 }
 
-function envolver(ctx: Ctx, texto: string, anchoMax: number): string[] {
+export function envolver(ctx: Ctx, texto: string, anchoMax: number): string[] {
   const palabras = texto.split(/\s+/).filter(Boolean);
   const lineas: string[] = [];
   let actual = '';
@@ -158,7 +167,7 @@ function textoHorizontal(
   return total;
 }
 
-function dibujarLogo(ctx: Ctx, L: Lomo, cx: number, cy: number, tam: number, anchoLomo: number) {
+export function dibujarLogo(ctx: Ctx, L: Lomo, cx: number, cy: number, tam: number, anchoLomo: number) {
   const color = L.colorLogo ?? L.texto;
   ctx.save();
   ctx.strokeStyle = color;
@@ -311,7 +320,7 @@ function dibujarPatron(ctx: Ctx, L: Lomo, w: number, h: number, r: () => number)
 }
 
 /** Toque final: volumen del lomo, bordes, pliegues de lectura, desgaste y grano. */
-function terminar(ctx: Ctx, w: number, h: number, L: Lomo, semilla: number, esLomo: boolean) {
+export function terminar(ctx: Ctx, w: number, h: number, L: Lomo, semilla: number, esLomo: boolean) {
   const r = rng(semilla + 7);
   if (esLomo) {
     const g = ctx.createLinearGradient(0, 0, w, 0);

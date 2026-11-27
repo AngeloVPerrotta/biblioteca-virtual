@@ -1,10 +1,41 @@
 :root {
-  --panel: rgba(27, 20, 16, 0.8);
+  /* Paneles oscuros (sobre la escena) */
+  --panel-rgb: 27, 20, 16;
+  --panel: rgba(var(--panel-rgb), 0.8);
   --panel-claro: rgba(48, 36, 28, 0.6);
-  --borde: rgba(255, 226, 186, 0.14);
-  --texto: #f5ebdc;
-  --texto-suave: rgba(245, 235, 220, 0.68);
-  --acento: #e8b46a;
+  --panel-hover: rgba(60, 44, 32, 0.9);
+  --claro-rgb: 255, 236, 205;
+  --borde-rgb: 255, 226, 186;
+  --borde: rgba(var(--borde-rgb), 0.14);
+  --texto-rgb: 245, 235, 220;
+  --texto: rgb(var(--texto-rgb));
+  --texto-suave: rgba(var(--texto-rgb), 0.68);
+  --texto-nota: #f0dcc0;
+  --marca: #f6e3c4;
+  --acento-rgb: 232, 180, 106;
+  --acento: rgb(var(--acento-rgb));
+  /* Papel: agenda y «¿Qué leo?» */
+  --papel: #f5ecd8;
+  --papel-agenda: #f4ecd9;
+  --tinta-rgb: 40, 54, 98;
+  --tinta: rgb(var(--tinta-rgb));
+  --sobre-tinta: #f5ecd8;
+  --subrayado-rgb: 181, 82, 59;
+  --subrayado: rgb(var(--subrayado-rgb));
+  --renglon: rgba(70, 100, 160, 0.18);
+  --margen: rgba(200, 80, 80, 0.35);
+  /* Formas */
+  --radio-boton: 999px;
+  --radio-redondo: 50%;
+  --radio-chico: 10px;
+  --radio-agenda: 6px 12px 12px 6px;
+  --radio-papel: 4px;
+  --giro-agenda: -1.2deg;
+  --giro-quelee: -0.8deg;
+  /* Letras */
+  --letra-titulo: 'EB Garamond', Georgia, serif;
+  --letra-maquina: 'Special Elite', 'Courier New', monospace;
+  --letra-ficha: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
   --leido: #9cc58a;
   --empezado: #e8b46a;
   --sin-leer: #c9b8a6;
@@ -125,11 +156,11 @@ button {
 }
 
 .marca {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 22px;
-  letter-spacing: 0.01em;
-  color: #f6e3c4;
+  font-family: var(--letra-titulo);
+  font-weight: 600;
+  font-size: 21px;
+  letter-spacing: 0.04em;
+  color: var(--marca);
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
 }
 
@@ -144,7 +175,7 @@ button {
   align-items: center;
   gap: 8px;
   padding: 9px 14px;
-  border-radius: 999px;
+  border-radius: var(--radio-boton);
   border: 1px solid var(--borde);
   background: var(--panel);
   backdrop-filter: blur(14px);
@@ -162,7 +193,7 @@ button {
 }
 
 .boton:hover {
-  background: rgba(60, 44, 32, 0.9);
+  background: var(--panel-hover);
 }
 
 .boton:active {
@@ -187,9 +218,9 @@ button {
   min-width: 120px;
   max-width: 280px;
   padding: 9px 13px 10px;
-  border-radius: 10px;
+  border-radius: var(--radio-chico);
   border: 1px solid var(--borde);
-  background: rgba(24, 17, 13, 0.86);
+  background: rgba(var(--panel-rgb), 0.88);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
@@ -215,9 +246,9 @@ button {
 
 .etiqueta strong {
   display: block;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: var(--letra-titulo);
   font-weight: 700;
-  font-size: 18px;
+  font-size: calc(18px * var(--escala-letra, 1));
   line-height: 1.15;
 }
 
@@ -237,7 +268,7 @@ button {
   right: 12px;
   width: 34px;
   height: 34px;
-  border-radius: 50%;
+  border-radius: var(--radio-redondo);
   border: 1px solid var(--borde);
   background: rgba(255, 255, 255, 0.04);
   font-size: 22px;
@@ -280,7 +311,7 @@ button {
 
 .hub__cabecera h2 {
   margin: 0 44px 14px 0;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: var(--letra-titulo);
   font-weight: 600;
   font-size: 26px;
 }
@@ -297,7 +328,7 @@ button {
 .hub__buscar {
   width: 100%;
   padding: 11px 14px;
-  border-radius: 10px;
+  border-radius: var(--radio-chico);
   border: 1px solid var(--borde);
   background: rgba(0, 0, 0, 0.25);
   color: var(--texto);
@@ -307,7 +338,7 @@ button {
 }
 
 .hub__buscar:focus {
-  border-color: rgba(232, 180, 106, 0.6);
+  border-color: rgba(var(--acento-rgb), 0.6);
 }
 
 .hub__filtros {
@@ -319,7 +350,7 @@ button {
 
 .chip {
   padding: 6px 11px;
-  border-radius: 999px;
+  border-radius: var(--radio-boton);
   border: 1px solid var(--borde);
   background: transparent;
   font-size: 13px;
@@ -328,8 +359,8 @@ button {
 }
 
 .chip[aria-pressed='true'] {
-  background: rgba(232, 180, 106, 0.16);
-  border-color: rgba(232, 180, 106, 0.55);
+  background: rgba(var(--acento-rgb), 0.16);
+  border-color: rgba(var(--acento-rgb), 0.55);
   color: var(--texto);
 }
 
@@ -345,7 +376,7 @@ button {
 
 .hub__orden select {
   padding: 7px 10px;
-  border-radius: 8px;
+  border-radius: var(--radio-chico);
   border: 1px solid var(--borde);
   background: rgba(0, 0, 0, 0.3);
   color: var(--texto);
@@ -370,7 +401,7 @@ button {
   gap: 12px;
   padding: 10px 8px;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--radio-chico);
   background: transparent;
   text-align: left;
   cursor: pointer;
@@ -378,7 +409,7 @@ button {
 
 .hub__lista li button:hover,
 .hub__lista li button:focus-visible {
-  background: rgba(255, 236, 205, 0.06);
+  background: rgba(var(--claro-rgb), 0.06);
   outline: none;
 }
 
@@ -391,9 +422,9 @@ button {
 
 .hub__libro-titulo {
   display: block;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: var(--letra-titulo);
   font-weight: 700;
-  font-size: 17px;
+  font-size: calc(17px * var(--escala-letra, 1));
   line-height: 1.2;
 }
 
@@ -409,7 +440,7 @@ button {
   font-weight: 600;
   letter-spacing: 0.02em;
   padding: 3px 8px;
-  border-radius: 999px;
+  border-radius: var(--radio-boton);
   white-space: nowrap;
 }
 
@@ -420,7 +451,7 @@ button {
 
 .insignia--empezado {
   color: var(--empezado);
-  background: rgba(232, 180, 106, 0.12);
+  background: rgba(var(--acento-rgb), 0.12);
 }
 
 .insignia--sin-leer {
@@ -493,7 +524,7 @@ button {
   width: 100%;
   height: 152px;
   border: 0;
-  border-radius: 12px;
+  border-radius: var(--radio-chico);
 }
 
 .ayuda {
@@ -505,7 +536,7 @@ button {
   align-items: center;
   gap: 12px;
   padding: 8px 8px 8px 16px;
-  border-radius: 999px;
+  border-radius: var(--radio-boton);
   border: 1px solid var(--borde);
   background: var(--panel);
   backdrop-filter: blur(14px);
@@ -527,9 +558,9 @@ button {
 
 .ayuda__volver {
   padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(232, 180, 106, 0.5);
-  background: rgba(232, 180, 106, 0.14);
+  border-radius: var(--radio-boton);
+  border: 1px solid rgba(var(--acento-rgb), 0.5);
+  background: rgba(var(--acento-rgb), 0.14);
   color: var(--texto);
   font-size: 13px;
   cursor: pointer;
@@ -554,10 +585,10 @@ button {
   display: flex;
   flex-direction: column;
   border-radius: var(--radio);
-  border: 1px solid rgba(255, 226, 186, 0.08);
+  border: 1px solid rgba(var(--borde-rgb), 0.08);
   /* Sin desenfoque en reposo: el panel queda sobre la escena que se redibuja todo el tiempo,
      y desenfocar ese pedazo en cada cuadro le cuesta a la placa de video */
-  background: rgba(27, 20, 16, 0.55);
+  background: rgba(var(--panel-rgb), 0.55);
   opacity: 0;
   visibility: hidden;
   transform: translateX(14px);
@@ -574,7 +605,7 @@ button {
 .discos-lista.visible:hover,
 .discos-lista.visible:focus-within {
   opacity: 1;
-  background: rgba(27, 20, 16, 0.66);
+  background: rgba(var(--panel-rgb), 0.66);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -582,9 +613,9 @@ button {
 .discos-lista__titulo {
   margin: 0;
   padding: 12px 14px 6px;
-  font-family: Caveat, cursive;
-  font-size: 20px;
-  font-weight: 700;
+  font-family: var(--letra-maquina);
+  font-size: 15px;
+  font-weight: 400;
   color: var(--texto);
 }
 
@@ -595,14 +626,14 @@ button {
   list-style: none;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 226, 186, 0.2) transparent;
+  scrollbar-color: rgba(var(--borde-rgb), 0.2) transparent;
 }
 
 .discos-lista__genero {
   padding: 8px 8px 2px;
-  font-family: Caveat, cursive;
-  font-size: 16px;
-  font-weight: 700;
+  font-family: var(--letra-maquina);
+  font-size: 12.5px;
+  font-weight: 400;
   color: var(--acento);
 }
 
@@ -613,7 +644,7 @@ button {
   gap: 9px;
   padding: 5px 8px;
   border: 0;
-  border-radius: 9px;
+  border-radius: var(--radio-chico);
   background: transparent;
   text-align: left;
   cursor: pointer;
@@ -622,7 +653,7 @@ button {
 
 .discos-lista__items button:hover,
 .discos-lista__items button:focus-visible {
-  background: rgba(255, 236, 205, 0.1);
+  background: rgba(var(--claro-rgb), 0.1);
   outline: none;
 }
 
@@ -632,7 +663,7 @@ button {
   height: 40px;
   border-radius: 3px;
   object-fit: cover;
-  background: rgba(255, 236, 205, 0.08);
+  background: rgba(var(--claro-rgb), 0.08);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
@@ -678,7 +709,7 @@ button {
 
   .discos-lista.visible {
     opacity: 1;
-    background: rgba(27, 20, 16, 0.62);
+    background: rgba(var(--panel-rgb), 0.62);
   }
 
   .discos-lista__titulo {
@@ -756,9 +787,9 @@ button {
 
 .tarjeta h2 {
   margin: 4px 40px 4px 0;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: var(--letra-titulo);
   font-weight: 700;
-  font-size: 28px;
+  font-size: calc(28px * var(--escala-letra, 1));
   line-height: 1.1;
 }
 
@@ -784,11 +815,10 @@ button {
 
 .tarjeta__notas {
   margin: 14px 0 0;
-  font-family: 'EB Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 17px;
-  line-height: 1.4;
-  color: #f0dcc0;
+  font-family: var(--letra-ficha);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--texto-nota);
 }
 
 .tarjeta__notas:empty,
@@ -799,7 +829,7 @@ button {
 .tarjeta__ayuda {
   margin: 16px 0 0;
   font-size: 12px;
-  color: rgba(245, 235, 220, 0.45);
+  color: rgba(var(--texto-rgb), 0.45);
 }
 
 /* ---------------------------------------------------------------- agenda */
@@ -813,38 +843,38 @@ button {
   max-height: 76vh;
   overflow-y: auto;
   padding: 34px 30px 28px 46px;
-  border-radius: 6px 12px 12px 6px;
-  color: #283662;
+  border-radius: var(--radio-agenda);
+  color: var(--tinta);
   background:
-    linear-gradient(90deg, transparent 32px, rgba(200, 80, 80, 0.35) 32px, rgba(200, 80, 80, 0.35) 33px, transparent 33px),
-    repeating-linear-gradient(transparent 0 31px, rgba(70, 100, 160, 0.18) 31px 32px),
-    #f4ecd9;
+    linear-gradient(90deg, transparent 32px, var(--margen) 32px, var(--margen) 33px, transparent 33px),
+    repeating-linear-gradient(transparent 0 31px, var(--renglon) 31px 32px),
+    var(--papel-agenda);
   background-attachment: local;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), inset 10px 0 18px -12px rgba(0, 0, 0, 0.35);
-  font-family: Caveat, cursive;
+  font-family: var(--letra-maquina);
   scrollbar-width: thin;
-  scrollbar-color: rgba(40, 54, 98, 0.3) transparent;
+  scrollbar-color: rgba(var(--tinta-rgb), 0.3) transparent;
   opacity: 0;
   visibility: hidden;
-  transform: translate(-50%, -46%) rotate(-1.2deg) scale(0.96);
+  transform: translate(-50%, -46%) rotate(var(--giro-agenda)) scale(0.96);
   transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.4s;
 }
 
 .agenda.abierta {
   opacity: 1;
   visibility: visible;
-  transform: translate(-50%, -50%) rotate(-1.2deg);
+  transform: translate(-50%, -50%) rotate(var(--giro-agenda));
 }
 
 .agenda .cerrar {
-  border-color: rgba(40, 54, 98, 0.2);
-  color: #283662;
+  border-color: rgba(var(--tinta-rgb), 0.2);
+  color: var(--tinta);
 }
 
 .agenda h2 {
   margin: 0 30px 10px 0;
-  font-weight: 700;
-  font-size: 34px;
+  font-weight: 400;
+  font-size: 24px;
   line-height: 32px;
 }
 
@@ -852,26 +882,26 @@ button {
   margin: 0;
   padding: 0 0 0 4px;
   list-style: none;
-  font-size: 24px;
+  font-size: 17px;
   line-height: 32px;
 }
 
 .agenda__lista li.conseguido {
   text-decoration: line-through;
   text-decoration-thickness: 2px;
-  color: rgba(40, 54, 98, 0.5);
+  color: rgba(var(--tinta-rgb), 0.5);
 }
 
 .agenda__lista small {
-  font-size: 19px;
+  font-size: 13.5px;
   opacity: 0.75;
 }
 
 .agenda__vacia {
   margin: 0;
-  font-size: 24px;
+  font-size: 17px;
   line-height: 32px;
-  color: rgba(40, 54, 98, 0.75);
+  color: rgba(var(--tinta-rgb), 0.75);
 }
 
 .agenda__vacia[hidden] {
@@ -890,21 +920,21 @@ button {
   border: 0;
   border-bottom: 2px solid transparent;
   background: none;
-  font-family: Caveat, cursive;
-  font-size: 21px;
-  font-weight: 700;
-  color: rgba(40, 54, 98, 0.45);
+  font-family: var(--letra-maquina);
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(var(--tinta-rgb), 0.45);
   cursor: pointer;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .agenda__pestanas button:hover {
-  color: rgba(40, 54, 98, 0.75);
+  color: rgba(var(--tinta-rgb), 0.75);
 }
 
 .agenda__pestanas button[aria-selected='true'] {
-  color: #283662;
-  border-bottom-color: #b5523b;
+  color: var(--tinta);
+  border-bottom-color: var(--subrayado);
 }
 
 .agenda__hoja[hidden] {
@@ -923,38 +953,38 @@ button {
 
 .agenda__sugerencias small {
   display: block;
-  font-size: 19px;
-  line-height: 24px;
-  color: #b5523b;
+  font-size: 13.5px;
+  line-height: 22px;
+  color: var(--subrayado);
 }
 
 .agenda__sugerencias strong {
-  font-size: 27px;
-  line-height: 30px;
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 26px;
 }
 
 .agenda__autor {
-  font-size: 20px;
+  font-size: 14px;
   opacity: 0.75;
 }
 
 .agenda__sugerencias p {
-  margin: 2px 0 0;
-  font-family: 'EB Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 16.5px;
-  line-height: 1.35;
-  color: rgba(40, 54, 98, 0.88);
+  margin: 4px 0 0;
+  font-family: var(--letra-ficha);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(var(--tinta-rgb), 0.88);
 }
 
 .agenda__otras {
   padding: 2px 0;
   border: 0;
   background: none;
-  font-family: Caveat, cursive;
-  font-size: 22px;
-  font-weight: 700;
-  color: #b5523b;
+  font-family: var(--letra-maquina);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--subrayado);
   cursor: pointer;
 }
 
@@ -970,16 +1000,16 @@ button {
   padding: 2px 0;
   border: 0;
   background: none;
-  font-family: Caveat, cursive;
-  font-size: 21px;
-  font-weight: 700;
+  font-family: var(--letra-maquina);
+  font-size: 15px;
+  font-weight: 400;
   color: var(--acento);
   cursor: pointer;
   text-align: left;
 }
 
 .hub__quelee span {
-  font-weight: 500;
+  font-weight: 400;
   color: var(--texto-suave);
 }
 
@@ -1000,57 +1030,57 @@ button {
   max-height: 84vh;
   overflow-y: auto;
   padding: 26px 26px 22px;
-  border-radius: 4px;
-  color: #283662;
+  border-radius: var(--radio-papel);
+  color: var(--tinta);
   background:
     radial-gradient(120% 80% at 0% 0%, rgba(255, 255, 255, 0.35), transparent 60%),
     linear-gradient(180deg, rgba(120, 90, 30, 0.06), transparent 18%),
-    #f5ecd8;
+    var(--papel);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 2px 0 rgba(255, 255, 255, 0.4) inset;
   font-family: Inter, system-ui, sans-serif;
   scrollbar-width: thin;
-  scrollbar-color: rgba(40, 54, 98, 0.3) transparent;
+  scrollbar-color: rgba(var(--tinta-rgb), 0.3) transparent;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-46%) rotate(-0.8deg) scale(0.97);
+  transform: translateY(-46%) rotate(var(--giro-quelee)) scale(0.97);
   transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.4s;
 }
 
 .quelee.abierto {
   opacity: 1;
   visibility: visible;
-  transform: translateY(-50%) rotate(-0.8deg);
+  transform: translateY(-50%) rotate(var(--giro-quelee));
 }
 
 .quelee .cerrar {
-  border-color: rgba(40, 54, 98, 0.2);
-  color: #283662;
+  border-color: rgba(var(--tinta-rgb), 0.2);
+  color: var(--tinta);
 }
 
 .quelee h2 {
-  margin: 0 36px 2px 0;
-  font-family: Caveat, cursive;
-  font-weight: 700;
-  font-size: 38px;
-  line-height: 1;
+  margin: 0 36px 8px 0;
+  font-family: var(--letra-maquina);
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.1;
 }
 
 .quelee__form label {
   display: block;
   margin-bottom: 8px;
   font-size: 13px;
-  color: rgba(40, 54, 98, 0.72);
+  color: rgba(var(--tinta-rgb), 0.72);
 }
 
 .quelee__fila {
   display: flex;
   align-items: center;
   gap: 8px;
-  border-bottom: 2px dashed rgba(40, 54, 98, 0.35);
+  border-bottom: 2px dashed rgba(var(--tinta-rgb), 0.35);
 }
 
 .quelee__fila:focus-within {
-  border-bottom-color: #b5523b;
+  border-bottom-color: var(--subrayado);
 }
 
 .quelee__fila input {
@@ -1060,14 +1090,14 @@ button {
   border: 0;
   outline: none;
   background: transparent;
-  font-family: Caveat, cursive;
-  font-size: 25px;
-  font-weight: 500;
-  color: #283662;
+  font-family: var(--letra-maquina);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--tinta);
 }
 
 .quelee__fila input::placeholder {
-  color: rgba(40, 54, 98, 0.38);
+  color: rgba(var(--tinta-rgb), 0.38);
 }
 
 .quelee__ir {
@@ -1077,15 +1107,15 @@ button {
   width: 34px;
   height: 34px;
   border: 0;
-  border-radius: 50%;
-  background: #283662;
-  color: #f5ecd8;
+  border-radius: var(--radio-redondo);
+  background: var(--tinta);
+  color: var(--sobre-tinta);
   cursor: pointer;
   transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .quelee__ir:hover {
-  background: #b5523b;
+  background: var(--subrayado);
   transform: translateX(2px);
 }
 
@@ -1107,14 +1137,14 @@ button {
 }
 
 .idea {
-  padding: 2px 10px 3px;
-  border: 1px solid rgba(40, 54, 98, 0.25);
-  border-radius: 999px;
+  padding: 4px 10px;
+  border: 1px solid rgba(var(--tinta-rgb), 0.25);
+  border-radius: var(--radio-boton);
   background: rgba(255, 255, 255, 0.35);
-  font-family: Caveat, cursive;
-  font-size: 19px;
-  font-weight: 500;
-  color: #283662;
+  font-family: var(--letra-maquina);
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--tinta);
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
@@ -1126,13 +1156,13 @@ button {
 
 .idea:hover {
   background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(40, 54, 98, 0.45);
+  border-color: rgba(var(--tinta-rgb), 0.45);
 }
 
 .quelee__resultado {
   margin-top: 18px;
   padding-top: 14px;
-  border-top: 1px solid rgba(40, 54, 98, 0.15);
+  border-top: 1px solid rgba(var(--tinta-rgb), 0.15);
 }
 
 .quelee__resultado[hidden] {
@@ -1158,7 +1188,7 @@ button {
   gap: 4px 6px;
   margin-top: 12px;
   font-size: 12.5px;
-  color: rgba(40, 54, 98, 0.65);
+  color: rgba(var(--tinta-rgb), 0.65);
 }
 
 .quelee__cuales span {
@@ -1167,40 +1197,35 @@ button {
 
 .quelee__cuales button {
   padding: 3px 9px 4px;
-  border: 1px solid rgba(40, 54, 98, 0.2);
-  border-radius: 999px;
+  border: 1px solid rgba(var(--tinta-rgb), 0.2);
+  border-radius: var(--radio-boton);
   background: transparent;
   font-size: 12.5px;
   font-weight: 500;
-  color: rgba(40, 54, 98, 0.8);
+  color: rgba(var(--tinta-rgb), 0.8);
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .quelee__cuales button:hover {
-  border-color: rgba(40, 54, 98, 0.45);
+  border-color: rgba(var(--tinta-rgb), 0.45);
 }
 
 .quelee__cuales button[aria-checked='true'] {
-  border-color: #283662;
-  background: #283662;
-  color: #f5ecd8;
+  border-color: var(--tinta);
+  background: var(--tinta);
+  color: var(--sobre-tinta);
 }
 
 /* El momento en que la biblioteca busca */
 .quelee__buscando {
   margin: 18px 0 2px;
   padding-top: 14px;
-  border-top: 1px solid rgba(40, 54, 98, 0.15);
-  font-family: Caveat, cursive;
-  font-size: 23px;
-  font-weight: 700;
-  color: transparent;
-  background: linear-gradient(100deg, #b5523b 0%, #b5523b 35%, #f0b54e 50%, #b5523b 65%, #b5523b 100%);
-  background-size: 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: quelee-brillo 1.1s linear infinite;
+  border-top: 1px solid rgba(var(--tinta-rgb), 0.15);
+  font-family: var(--letra-maquina);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--subrayado);
 }
 
 .quelee__buscando[hidden] {
@@ -1208,26 +1233,16 @@ button {
 }
 
 .quelee__buscando span {
-  display: inline-block;
-  animation: quelee-estrella 1.1s ease-in-out infinite;
+  animation: quelee-cursor 0.8s steps(1) infinite;
 }
 
-@keyframes quelee-brillo {
-  from {
-    background-position: 100% 0;
-  }
-  to {
-    background-position: -50% 0;
-  }
-}
-
-@keyframes quelee-estrella {
+@keyframes quelee-cursor {
   50% {
-    transform: scale(1.35) rotate(45deg);
+    opacity: 0;
   }
 }
 
-/* La frase de la biblioteca se escribe sola, como a mano */
+/* La frase de la biblioteca se escribe sola, como a máquina */
 .quelee__resultado.nuevo .quelee__intro {
   animation: quelee-escribir 0.9s steps(28, end) both;
 }
@@ -1243,10 +1258,10 @@ button {
 
 .quelee__donde {
   margin: 10px 0 0;
-  font-family: Caveat, cursive;
-  font-size: 19px;
-  font-weight: 500;
-  color: rgba(40, 54, 98, 0.85);
+  font-family: var(--letra-maquina);
+  font-size: 13.5px;
+  font-weight: 400;
+  color: rgba(var(--tinta-rgb), 0.85);
 }
 
 .quelee__donde:empty {
@@ -1254,8 +1269,8 @@ button {
 }
 
 .quelee__donde::before {
-  content: '✦ ';
-  color: #e0a33c;
+  content: '→ ';
+  color: var(--subrayado);
 }
 
 .quelee__resultado.vacio .quelee__acciones {
@@ -1264,32 +1279,31 @@ button {
 
 .quelee__intro {
   margin: 0;
-  font-family: Caveat, cursive;
-  font-size: 22px;
-  font-weight: 700;
-  color: #b5523b;
+  font-family: var(--letra-maquina);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--subrayado);
 }
 
 .quelee__titulo {
   margin: 2px 0 0;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: var(--letra-titulo);
   font-weight: 700;
-  font-size: 27px;
+  font-size: calc(27px * var(--escala-letra, 1));
   line-height: 1.08;
 }
 
 .quelee__autor {
   margin: 3px 0 0;
   font-size: 14px;
-  color: rgba(40, 54, 98, 0.8);
+  color: rgba(var(--tinta-rgb), 0.8);
 }
 
 .quelee__porque {
   margin: 10px 0 0;
-  font-family: 'EB Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 17px;
-  line-height: 1.4;
+  font-family: var(--letra-ficha);
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .quelee__acciones {
@@ -1301,7 +1315,7 @@ button {
 .quelee__mostrar,
 .quelee__otro {
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--radio-boton);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -1310,18 +1324,18 @@ button {
 
 .quelee__mostrar {
   border: 0;
-  background: #283662;
-  color: #f5ecd8;
+  background: var(--tinta);
+  color: var(--sobre-tinta);
 }
 
 .quelee__mostrar:hover {
-  background: #b5523b;
+  background: var(--subrayado);
 }
 
 .quelee__otro {
-  border: 1px solid rgba(40, 54, 98, 0.3);
+  border: 1px solid rgba(var(--tinta-rgb), 0.3);
   background: transparent;
-  color: #283662;
+  color: var(--tinta);
 }
 
 .quelee__otro:hover {
@@ -1331,7 +1345,7 @@ button {
 .quelee__tambien {
   margin: 12px 0 0;
   font-size: 13px;
-  color: rgba(40, 54, 98, 0.65);
+  color: rgba(var(--tinta-rgb), 0.65);
 }
 
 .quelee__tambien:empty {
@@ -1342,22 +1356,21 @@ button {
   padding: 0;
   border: 0;
   background: none;
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 15px;
-  font-style: italic;
-  color: #283662;
+  font-family: var(--letra-ficha);
+  font-size: 12.5px;
+  color: var(--tinta);
   text-decoration: underline;
-  text-decoration-color: rgba(181, 82, 59, 0.45);
+  text-decoration-color: rgba(var(--subrayado-rgb), 0.45);
   text-underline-offset: 3px;
   cursor: pointer;
 }
 
 .quelee__tambien button:hover {
-  text-decoration-color: #b5523b;
+  text-decoration-color: var(--subrayado);
 }
 
 .quelee :focus-visible {
-  outline: 2px solid #b5523b;
+  outline: 2px solid var(--subrayado);
   outline-offset: 2px;
 }
 
@@ -1379,11 +1392,11 @@ button {
   }
 
   .quelee h2 {
-    font-size: 34px;
+    font-size: 25px;
   }
 
   .quelee__titulo {
-    font-size: 24px;
+    font-size: calc(24px * var(--escala-letra, 1));
   }
 }
 
@@ -1396,7 +1409,7 @@ button {
   z-index: 30;
   max-width: min(420px, 90vw);
   padding: 11px 16px;
-  border-radius: 12px;
+  border-radius: var(--radio-chico);
   border: 1px solid var(--borde);
   background: var(--panel);
   backdrop-filter: blur(14px);
@@ -1433,7 +1446,7 @@ button {
     height: 86dvh;
     border-left: 0;
     border-top: 1px solid var(--borde);
-    border-radius: 18px 18px 0 0;
+    border-radius: var(--radio) var(--radio) 0 0;
     padding-top: 10px;
     transform: translateY(105%);
   }
@@ -1444,7 +1457,7 @@ button {
     height: 4px;
     margin: 0 auto 12px;
     border-radius: 4px;
-    background: rgba(255, 236, 205, 0.25);
+    background: rgba(var(--claro-rgb), 0.25);
   }
 
   .hub .cerrar {
@@ -1471,7 +1484,7 @@ button {
   }
 
   .tarjeta h2 {
-    font-size: 23px;
+    font-size: calc(23px * var(--escala-letra, 1));
   }
 
 }
@@ -1505,8 +1518,131 @@ button {
   left: 0;
   right: 0;
   text-align: center;
-  font-family: 'EB Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 18px;
+  font-family: var(--letra-ficha);
+  font-size: 14px;
   color: #f3dcb7;
+}
+
+/* ---------------------------------------------------------------- variantes para probar (ver variantes.ts) */
+
+/* Cartón y negro */
+:root[data-paleta='carton'] {
+  --panel-rgb: 22, 20, 18;
+  --panel-claro: rgba(40, 36, 31, 0.6);
+  --panel-hover: rgba(46, 41, 35, 0.92);
+  --claro-rgb: 230, 214, 186;
+  --borde-rgb: 201, 167, 124;
+  --texto-rgb: 238, 230, 216;
+  --texto-nota: #e1cba6;
+  --marca: #eadcc2;
+  --acento-rgb: 205, 168, 118;
+  --papel: #c9a77c;
+  --papel-agenda: #cdac82;
+  --tinta-rgb: 28, 26, 23;
+  --sobre-tinta: #dcc29c;
+  --subrayado-rgb: 132, 52, 28;
+  --renglon: rgba(28, 26, 23, 0.16);
+  --margen: rgba(132, 52, 28, 0.42);
+}
+
+/* Grafito y ámbar */
+:root[data-paleta='grafito'] {
+  --panel-rgb: 33, 33, 32;
+  --panel-claro: rgba(52, 52, 50, 0.6);
+  --panel-hover: rgba(58, 57, 55, 0.92);
+  --claro-rgb: 232, 229, 222;
+  --borde-rgb: 220, 214, 204;
+  --texto-rgb: 234, 231, 225;
+  --texto-nota: #dad5cb;
+  --marca: #ece8e0;
+  --acento-rgb: 214, 150, 60;
+  --papel: #dcd8cf;
+  --papel-agenda: #e0dcd3;
+  --tinta-rgb: 43, 42, 40;
+  --sobre-tinta: #ece8e0;
+  --subrayado-rgb: 176, 108, 28;
+  --renglon: rgba(43, 42, 40, 0.14);
+  --margen: rgba(176, 108, 28, 0.42);
+}
+
+/* Verde inglés y bronce */
+:root[data-paleta='verde'] {
+  --panel-rgb: 19, 37, 30;
+  --panel-claro: rgba(30, 56, 46, 0.6);
+  --panel-hover: rgba(34, 60, 49, 0.92);
+  --claro-rgb: 232, 224, 207;
+  --borde-rgb: 196, 160, 94;
+  --texto-rgb: 239, 233, 218;
+  --texto-nota: #e2d5b4;
+  --marca: #eee3c7;
+  --acento-rgb: 200, 158, 86;
+  --papel: #ebe4d3;
+  --papel-agenda: #ece5d4;
+  --tinta-rgb: 28, 54, 44;
+  --sobre-tinta: #ebe4d3;
+  --subrayado-rgb: 146, 108, 40;
+  --renglon: rgba(28, 54, 44, 0.16);
+  --margen: rgba(146, 108, 40, 0.42);
+}
+
+/* Negro, hueso y un rojo */
+:root[data-paleta='minimal'] {
+  --panel-rgb: 14, 14, 14;
+  --panel-claro: rgba(34, 34, 34, 0.6);
+  --panel-hover: rgba(38, 38, 38, 0.92);
+  --claro-rgb: 239, 235, 227;
+  --borde-rgb: 239, 235, 227;
+  --texto-rgb: 239, 235, 227;
+  --texto-nota: #d9d4cb;
+  --marca: #f3f0ea;
+  --acento-rgb: 222, 74, 56;
+  --papel: #efebe3;
+  --papel-agenda: #f1ede6;
+  --tinta-rgb: 17, 17, 17;
+  --sobre-tinta: #efebe3;
+  --subrayado-rgb: 192, 57, 43;
+  --renglon: rgba(17, 17, 17, 0.1);
+  --margen: rgba(192, 57, 43, 0.35);
+}
+
+/* Esquinas chicas o rectas */
+:root[data-formas='chicas'] {
+  --radio: 6px;
+  --radio-boton: 5px;
+  --radio-redondo: 5px;
+  --radio-chico: 4px;
+  --radio-agenda: 3px;
+  --radio-papel: 2px;
+}
+
+:root[data-formas='rectas'] {
+  --radio: 0;
+  --radio-boton: 0;
+  --radio-redondo: 0;
+  --radio-chico: 0;
+  --radio-agenda: 0;
+  --radio-papel: 0;
+}
+
+/* Paneles derechos */
+:root[data-paneles='derechos'] {
+  --giro-agenda: 0deg;
+  --giro-quelee: 0deg;
+}
+
+/* La agenda como libreta negra, con elástico */
+:root[data-agenda='libreta'] .agenda {
+  --tinta-rgb: 236, 228, 212;
+  --tinta: rgb(var(--tinta-rgb));
+  --subrayado-rgb: var(--acento-rgb);
+  --subrayado: rgb(var(--subrayado-rgb));
+  padding-right: 44px;
+  padding-left: 30px;
+  background:
+    linear-gradient(90deg, transparent calc(100% - 24px), #0b0b0a calc(100% - 24px), #0b0b0a calc(100% - 15px), transparent calc(100% - 15px)),
+    repeating-linear-gradient(transparent 0 31px, rgba(255, 255, 255, 0.06) 31px 32px),
+    #1c1b19;
+  background-attachment: scroll, local, local;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }

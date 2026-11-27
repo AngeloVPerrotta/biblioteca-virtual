@@ -6,6 +6,8 @@ import perfilesJson from './datos/perfiles.json';
 import sugerenciasJson from './datos/sugerencias.json';
 import type { DatosBiblioteca, EstadoLectura, Libro } from './datos/tipos';
 import type { Orden } from './escena/estanteria';
+import { familiaDe } from './escena/lomos';
+import { letraDe } from './escena/tapas';
 import type { Disco } from './escena/tocadiscos';
 import { Recomendador, type ContextoLectura, type Cuales, type Perfil, type Recomendacion } from './recomendador';
 
@@ -54,8 +56,8 @@ interface Sugerencia {
 
 const EJEMPLOS = [
   'cansado, algo liviano para el bondi…',
-  'me siento sin rumbo, en una etapa de cambios…',
-  'corté con alguien y quiero algo que me abrace…',
+  'me siento perdido, en una etapa de cambios…',
+  'corté con alguien y quiero algo que me levante…',
   'tengo la cabeza a mil, necesito calma…',
   'algo que me atrape hasta tarde…',
   'me pregunto por el sentido de todo…',
@@ -63,6 +65,29 @@ const EJEMPLOS = [
 ];
 
 type Filtro = 'todos' | EstadoLectura | 'prestado';
+
+/** Cuánto agrandar o achicar cada tipografía para que todas se lean del mismo tamaño. */
+const ESCALA_LETRA: Partial<Record<string, number>> = { display: 1.18, condensada: 0.98, deco: 0.86, maquina: 0.86, mano: 1.28, serif: 0.94, sans: 0.88 };
+
+/** El título de un libro con la letra de su tapa real, como estilo en línea. */
+function estiloLetra(libro: Libro) {
+  const l = letraDe(libro);
+  const f = familiaDe(l.fuente);
+  const escala = (ESCALA_LETRA[l.fuente] ?? 1) * (l.mayus ? 0.84 : 1);
+  return [
+    `font-family:${f.familia.replace(/"/g, "'")}`,
+    `font-style:${f.estilo}`,
+    `font-weight:${l.peso ?? f.peso}`,
+    `text-transform:${l.mayus ? 'uppercase' : 'none'}`,
+    `letter-spacing:${l.espaciado ?? (l.mayus ? 0.03 : 0)}em`,
+    `--escala-letra:${escala.toFixed(2)}`,
+  ].join(';');
+}
+
+function ponerLetra(el: HTMLElement, libro?: Libro | null) {
+  if (libro) el.setAttribute('style', estiloLetra(libro));
+  else el.removeAttribute('style');
+}
 
 export class Interfaz {
   private readonly etiqueta = $('etiqueta');
@@ -154,9 +179,10 @@ export class Interfaz {
 
   /* ------------------------------------------------------------ etiqueta */
 
-  mostrarEtiqueta(titulo: string, subtitulo: string, x: number, y: number) {
+  mostrarEtiqueta(titulo: string, subtitulo: string, x: number, y: number, libroId?: string) {
     const [strong, span] = [this.etiqueta.querySelector('strong')!, this.etiqueta.querySelector('span')!];
     strong.textContent = titulo;
+    ponerLetra(strong, libroId ? this.datos.libros.find((l) => l.id === libroId) : null);
     span.textContent = subtitulo;
     span.hidden = !subtitulo;
     const margen = 150;
@@ -209,7 +235,7 @@ export class Interfaz {
       .map(
         (l) => `<li><button type="button" data-id="${escapar(l.id)}">
           <span class="lomito" style="background:${escapar(l.lomo.fondo)}"></span>
-          <span><span class="hub__libro-titulo">${escapar(l.titulo)}</span><span class="hub__libro-autor">${escapar(l.autor || 'Autor sin cargar')}</span></span>
+          <span><span class="hub__libro-titulo" style="${estiloLetra(l)}">${escapar(l.titulo)}</span><span class="hub__libro-autor">${escapar(l.autor || 'Autor sin cargar')}</span></span>
           ${this.insignias(l)}
         </button></li>`,
       )
@@ -220,6 +246,7 @@ export class Interfaz {
 
   mostrarTarjeta(libro: Libro) {
     $('tarjeta-titulo').textContent = libro.titulo;
+    ponerLetra($('tarjeta-titulo'), libro);
     $('tarjeta-autor').textContent = libro.autor;
     $('tarjeta-editorial').textContent = libro.editorial ?? '';
     const notas: string[] = [];
@@ -358,7 +385,7 @@ export class Interfaz {
       const r = this.recomendaciones[this.recomendacionActual];
       if (!r) return;
       this.cerrarQueLeo(true);
-      this.paraLeer = r.obra ? { id: r.libro.id, texto: `✦ Para leer: «${r.obra.titulo}» (${r.obra.tipo}).` } : null;
+      this.paraLeer = r.obra ? { id: r.libro.id, texto: `Para leer: «${r.obra.titulo}» (${r.obra.tipo}).` } : null;
       this.acciones.elegirLibro(r.libro.id);
     });
     this.quelee.querySelector('.quelee__tambien')!.addEventListener('click', (e) => {
@@ -432,18 +459,20 @@ export class Interfaz {
     this.quelee.classList.add('con-resultado');
     caja.classList.toggle('vacio', !r);
     if (!r) {
-      caja.querySelector('.quelee__intro')!.textContent = 'Hmm…';
+      caja.querySelector('.quelee__intro')!.textContent = 'Sin resultados';
       caja.querySelector('.quelee__titulo')!.textContent = 'No encontré ninguno así';
+      ponerLetra(caja.querySelector<HTMLElement>('.quelee__titulo')!, null);
       caja.querySelector('.quelee__autor')!.textContent = '';
       caja.querySelector('.quelee__porque')!.textContent = 'Probá buscando entre todos los libros, o contame otra cosa.';
       caja.querySelector('.quelee__donde')!.textContent = '';
       caja.querySelector('.quelee__tambien')!.innerHTML = '';
       return;
     }
-    caja.querySelector('.quelee__donde')!.textContent = this.ubicacion ? `Te está esperando ${this.ubicacion}.` : '';
+    caja.querySelector('.quelee__donde')!.textContent = this.ubicacion ? `Está ${this.ubicacion}.` : '';
     caja.querySelector('.quelee__intro')!.textContent = `${r.intro}…`;
     // En una antología, la obra concreta: «Relato de un náufrago», novela corta en «Narrativa completa I»
     caja.querySelector('.quelee__titulo')!.textContent = r.obra?.titulo ?? r.libro.titulo;
+    ponerLetra(caja.querySelector<HTMLElement>('.quelee__titulo')!, r.libro);
     caja.querySelector('.quelee__autor')!.textContent = r.obra ? `${r.libro.autor} · ${r.obra.tipo} en «${r.libro.titulo}»` : r.libro.autor;
     caja.querySelector('.quelee__porque')!.textContent = r.porque;
     const otros = [1, 2]

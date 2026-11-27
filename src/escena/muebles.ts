@@ -304,14 +304,14 @@ export function mesaTocadiscos(madera: THREE.Texture, items: { portada?: string 
   for (let i = 0; i < cantidad; i++) {
     const item = items[i];
     if (item.separador) {
-      // Separador de cartón con una pestaña escrita a mano
+      // Separador de cartón con una pestaña escrita a máquina
       const sep = new THREE.Group();
       sep.add(caja(0.33, 0.29, 0.003, carton, 0, 0.162, 0));
       const { c, ctx } = lienzo(256, 96);
       ctx.fillStyle = '#ead9b8';
       ctx.fillRect(0, 0, 256, 96);
-      ctx.fillStyle = '#2c3550';
-      ctx.font = '700 44px Caveat, cursive';
+      ctx.fillStyle = '#23252b';
+      ctx.font = '400 30px "Special Elite", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(item.separador, 128, 50, 240);

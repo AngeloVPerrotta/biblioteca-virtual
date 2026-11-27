@@ -92,27 +92,27 @@ interface Efecto {
  * «saben» de eso (campo `momentos` en perfiles.json) y una frase con la que la biblioteca responde.
  */
 const INTRO_MOMENTO: Record<string, string> = {
-  perdido: 'Para cuando uno se siente sin rumbo',
-  empezar: 'Para una etapa que empieza',
-  ruptura: 'Para curar el corazón',
-  enamorado: 'Para cuando hay mariposas',
-  duelo: 'Para acompañar una pérdida',
-  cabeza: 'Para calmar la cabeza',
-  estancado: 'Para salir del pozo y moverse',
-  soledad: 'Para que la soledad pese menos',
-  nostalgia: 'Para mirar atrás con cariño',
-  existencial: 'Para las preguntas grandes',
-  camino: 'Para buscar tu propio camino',
-  agotado: 'Para descansar el alma',
-  feliz: 'Para acompañar la buena racha',
-  bronca: 'Para canalizar la bronca',
-  examenes: 'Para un recreo entre apuntes',
+  perdido: 'Si te sentís un poco perdido',
+  empezar: 'Si estás arrancando una etapa nueva',
+  ruptura: 'Si estás saliendo de una relación',
+  enamorado: 'Si estás enamorado',
+  duelo: 'Si estás pasando por una pérdida',
+  cabeza: 'Si tenés la cabeza a mil',
+  estancado: 'Si te sentís estancado',
+  soledad: 'Si te sentís solo',
+  nostalgia: 'Si andás nostálgico',
+  existencial: 'Si andás con preguntas grandes',
+  camino: 'Si estás buscando tu camino',
+  agotado: 'Si estás agotado',
+  feliz: 'Si estás en una buena racha',
+  bronca: 'Si tenés bronca',
+  examenes: 'Para cortar un rato con el estudio',
   viaje: 'Para llevar de viaje',
-  trabajo: 'Para olvidarte del laburo un rato',
-  familia: 'Para pensar en los tuyos',
-  raro: 'Para los días raros',
-  envion: 'Para aprovechar el envión',
-  bajon: 'Para acompañar el bajón',
+  trabajo: 'Para despejarte del trabajo',
+  familia: 'Si estás pensando en tu familia',
+  raro: 'Si tuviste un día raro',
+  envion: 'Si tenés ganas de arrancar algo',
+  bajon: 'Si estás bajoneado',
 };
 
 /**
@@ -261,43 +261,43 @@ const COMUNES = new Set([
 
 const INTRO_TONO: Record<Tono, (c: { lluvia: boolean; noche: boolean }) => string> = {
   pensar: () => 'Para pensar un rato',
-  emocion: () => 'Para dejarte conmover',
-  melancolia: (c) => (c.lluvia ? 'Para una tarde gris' : 'Para acompañar el bajón'),
-  liviano: () => 'Liviano, sin esfuerzo',
+  emocion: () => 'Algo que emociona',
+  melancolia: (c) => (c.lluvia ? 'Para un día gris' : 'Si estás bajoneado'),
+  liviano: () => 'Algo liviano',
   humor: () => 'Para reírte un poco',
-  intriga: () => 'Para no poder soltarlo',
-  aventura: () => 'Para escaparte un rato',
-  oscuro: (c) => (c.noche ? 'Para un escalofrío nocturno' : 'Para un buen escalofrío'),
-  amor: () => 'Para el corazón',
+  intriga: () => 'Algo que atrapa',
+  aventura: () => 'Algo de aventura',
+  oscuro: (c) => (c.noche ? 'Algo oscuro para la noche' : 'Algo oscuro'),
+  amor: () => 'Una historia de amor',
   aprender: () => 'Para aprender algo',
   impulso: () => 'Para arrancar con ganas',
   poesia: () => 'Por cómo está escrito',
-  calma: (c) => (c.noche ? 'Para antes de dormir' : c.lluvia ? 'Para escuchar la lluvia y bajar un cambio' : 'Para bajar un cambio'),
+  calma: (c) => (c.noche ? 'Para antes de dormir' : c.lluvia ? 'Algo tranquilo para un día de lluvia' : 'Algo tranquilo'),
 };
 
 const INTRO_TEMA: Record<string, string> = {
-  ajedrez: 'Para tu lado ajedrecista',
-  futbol: 'Para los futboleros',
+  ajedrez: 'Sobre ajedrez',
+  futbol: 'Sobre fútbol',
   dinero: 'Para ordenar la plata',
   programacion: 'Para programar mejor',
-  ciencia: 'Para tu lado científico',
-  historia: 'Para viajar al pasado',
-  argentina: 'Bien de acá',
-  memoria: 'Para la memoria',
-  espiritual: 'Para el alma',
-  psicologia: 'Para entender la cabeza',
-  filosofia: 'Para filosofar un rato',
-  futuro: 'Para pensar el futuro',
+  ciencia: 'Sobre ciencia',
+  historia: 'Sobre historia',
+  argentina: 'De acá',
+  memoria: 'Sobre la memoria',
+  espiritual: 'Algo espiritual',
+  psicologia: 'Sobre psicología',
+  filosofia: 'Sobre filosofía',
+  futuro: 'Sobre el futuro',
   poder: 'Sobre el poder',
   habitos: 'Para ordenar la rutina',
   facultad: 'Para la facu',
-  cuentos: 'En cuentos cortos',
+  cuentos: 'Cuentos cortos',
   clasico: 'Un clásico',
-  terror: 'Para un buen escalofrío',
-  policial: 'Un buen misterio',
-  romance: 'Para el corazón',
-  juvenil: 'Juvenil y tierno',
-  lupin: 'Para seguir con Lupin',
+  terror: 'De terror',
+  policial: 'Un policial',
+  romance: 'Una historia de amor',
+  juvenil: 'Juvenil',
+  lupin: 'Más de Lupin',
   guerra: 'Sobre la guerra',
   familia: 'Sobre la familia',
   social: 'Para la gente que te rodea',
@@ -557,25 +557,24 @@ export class Recomendador {
       else if (pedido.estado === 'releer') intro = 'Para volver a leer';
       else if (pedido.estado === 'retomar') intro = 'Para terminar lo que empezaste';
       else if (pedido.estado === 'nuevo') intro = 'Algo que todavía no leíste';
-      else if (pedido.largo === 'corto') intro = 'Cortito, para leer de a ratos';
-      else if (pedido.largo === 'largo') intro = 'Para tomarte tu tiempo';
-      else if (!entendio && texto.trim()) intro = 'No te entendí del todo, así que elegí yo';
-      else intro = noche ? 'Para esta hora de la noche' : lluvia ? 'Para este día de lluvia' : 'Elegido para vos';
+      else if (pedido.largo === 'corto') intro = 'Corto, para leer de a ratos';
+      else if (pedido.largo === 'largo') intro = 'Uno largo';
+      else if (!entendio && texto.trim()) intro = 'No te entendí del todo, así que elegí uno';
+      else intro = noche ? 'Para esta hora' : lluvia ? 'Para un día de lluvia' : 'Una recomendación';
 
       const partes = [c.perfil.frase];
       const e = c.libro.estado;
-      const volver = pedido.estado === 'releer' || cuales === 'leido';
       if (c.obra) {
         // Dónde está la obra y cómo va ese libro
         const libro = `«${c.libro.titulo}»`;
         if (e === 'empezado') partes.push(`Está en tu ${libro}, que dejaste por la mitad.`);
         else if (e === 'sin-leer') partes.push(`Está en tu ${libro}, que todavía no empezaste.`);
-        else if (e === 'leido') partes.push(`Está en tu ${libro}: ya lo leíste, pero ${volver ? 'es ideal para volver' : 'da para volver'}.`);
+        else if (e === 'leido') partes.push(`Está en tu ${libro}, que ya leíste.`);
         else partes.push(`Está en tu ${libro}.`);
-      } else if (e === 'empezado') partes.push('Lo dejaste por la mitad: buen momento para retomarlo.');
+      } else if (e === 'empezado') partes.push('Lo dejaste por la mitad, es un buen momento para retomarlo.');
       else if (e === 'sin-leer') partes.push('Todavía no lo leíste.');
-      else if (e === 'leido') partes.push(volver ? 'Ya lo leíste: ideal para volver.' : 'Ya lo leíste, pero da para volver.');
-      if (pedido.largo === 'corto' && c.grosor <= 1.5) partes.push('Es cortito.');
+      else if (e === 'leido') partes.push('Ya lo leíste, pero da para releerlo.');
+      if (pedido.largo === 'corto' && c.grosor <= 1.5) partes.push('Es corto.');
       if (pedido.largo === 'largo' && c.grosor >= 2.4) partes.push('Da para rato.');
       return {
         libro: c.libro,

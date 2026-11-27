@@ -1,0 +1,612 @@
+{
+  "_ayuda": "Tapas dibujadas a partir de la edición real de cada libro. Medidas en fracción de la tapa: x, y, w, h sobre el ancho/alto; 'tam' y 'r' sobre el ancho. 'letra' es la tipografía del título, que también usa la interfaz. Los textos van de arriba hacia abajo desde 'y'.",
+  "libros": {
+    "metodo-briones": {
+      "letra": { "fuente": "serif", "mayus": true },
+      "fondo": "#1f3b52", "degrade": "#14283a",
+      "textos": [
+        { "texto": "EL\nMÉTODO\nBRIONES", "fuente": "serif", "color": "#efe6d2", "y": 0.11, "tam": 0.16, "interlineado": 0.98 },
+        { "texto": "BELTRÁN\nBRIONES", "fuente": "serif", "color": "#efe6d2", "y": 0.64, "tam": 0.1, "interlineado": 1 }
+      ],
+      "dibujos": [{ "tipo": "rect", "x": 0.4, "y": 0.58, "w": 0.2, "h": 0.003, "color": "#efe6d2" }]
+    },
+    "frankl-efimero": {
+      "letra": { "fuente": "sans", "peso": 700 },
+      "fondo": "#d2d1cc", "degrade": "#7d7c78",
+      "dibujos": [
+        { "tipo": "camino", "color": "#ecebe6" },
+        { "tipo": "persona", "cx": 0.47, "base": 0.6, "alto": 0.075, "color": "#3b3a37" }
+      ],
+      "textos": [
+        { "texto": "VIKTOR FRANKL", "fuente": "sans", "peso": 500, "color": "#6b6964", "x": 0.1, "y": 0.06, "tam": 0.05, "alinear": "izq", "espaciado": 0.1, "recuadro": true },
+        { "texto": "Asumir lo efímero\nde la existencia", "fuente": "sans", "peso": 700, "color": "#c9772e", "x": 0.1, "y": 0.15, "tam": 0.062, "alinear": "izq" },
+        { "texto": "Herder", "fuente": "garamond", "color": "#3d3c38", "y": 0.93, "tam": 0.04 }
+      ]
+    },
+    "principe": {
+      "letra": { "fuente": "garamond", "mayus": true },
+      "fondo": "#e7e5df",
+      "dibujos": [
+        { "tipo": "rect", "x": 0, "y": 0, "w": 1, "h": 0.32, "color": "#1f1f1f" },
+        { "tipo": "rect", "x": 0, "y": 0.86, "w": 1, "h": 0.14, "color": "#2c3e5e" }
+      ],
+      "textos": [
+        { "texto": "NICOLÁS\nMAQUIAVELO", "fuente": "garamond", "peso": 600, "color": "#f1efe9", "y": 0.1, "tam": 0.08, "espaciado": 0.1 },
+        { "texto": "EL\nPRÍNCIPE", "fuente": "garamond", "peso": 600, "color": "#2b2b2b", "y": 0.42, "tam": 0.15, "espaciado": 0.04 }
+      ]
+    },
+    "frankl-sentido": {
+      "letra": { "fuente": "condensada", "peso": 700, "mayus": true },
+      "fondo": "#f4f3ef",
+      "dibujos": [{ "tipo": "pajaro", "cx": 0.55, "cy": 0.62, "tam": 0.95, "color": "#151515" }],
+      "textos": [
+        { "texto": "VIKTOR\nFRANKL", "fuente": "condensada", "peso": 700, "color": "#1c1c1c", "x": 0.08, "y": 0.07, "tam": 0.085, "alinear": "izq", "interlineado": 0.98, "ancho": 0.3 },
+        { "texto": "EL HOMBRE\nEN BUSCA\nDE SENTIDO", "fuente": "condensada", "peso": 700, "color": "#3aa0d6", "x": 0.42, "y": 0.07, "tam": 0.085, "alinear": "izq", "interlineado": 0.98, "ancho": 0.52 },
+        { "texto": "Herder", "fuente": "garamond", "color": "#4a4a4a", "y": 0.93, "tam": 0.04 }
+      ]
+    },
+    "habitos-atomicos": {
+      "letra": { "fuente": "garamond", "mayus": true, "espaciado": 0.08 },
+      "fondo": "#efe7d6",
+      "dibujos": [
+        { "tipo": "circulos", "cx": 0.5, "cy": 0.46, "r": 0.7, "color": "#b88a4a", "n": 26 },
+        { "tipo": "sol", "cx": 0.5, "cy": 0.46, "r": 0.2, "color": "#efe7d6" }
+      ],
+      "textos": [
+        { "texto": "JAMES CLEAR", "fuente": "sans", "peso": 600, "color": "#2d3f72", "y": 0.05, "tam": 0.04, "espaciado": 0.22 },
+        { "texto": "HÁBITOS\nATÓMICOS", "fuente": "garamond", "peso": 600, "color": "#5b3a24", "y": 0.42, "tam": 0.065, "espaciado": 0.14, "interlineado": 1.15 }
+      ]
+    },
+    "monje-ferrari": {
+      "letra": { "fuente": "condensada", "peso": 600, "mayus": true },
+      "fondo": "#efe7d3",
+      "dibujos": [
+        { "tipo": "sol", "cx": 0.5, "cy": 0.86, "r": 0.3, "color": "#e58a2f" },
+        { "tipo": "rect", "x": 0, "y": 0.86, "w": 1, "h": 0.14, "color": "#3a2a20" },
+        { "tipo": "arbol", "cx": 0.78, "base": 0.87, "alto": 0.22, "color": "#b8382b" },
+        { "tipo": "persona", "cx": 0.42, "base": 0.87, "alto": 0.13, "color": "#241c17" }
+      ],
+      "textos": [
+        { "texto": "ROBIN\nSHARMA", "fuente": "sans", "peso": 700, "color": "#1f1f1f", "y": 0.05, "tam": 0.14, "interlineado": 0.95 },
+        { "texto": "EL MONJE\nQUE VENDIÓ\nSU FERRARI", "fuente": "condensada", "peso": 600, "color": "#b8382b", "y": 0.33, "tam": 0.1, "interlineado": 1 }
+      ]
+    },
+    "el-tunel": {
+      "letra": { "fuente": "condensada", "peso": 700, "mayus": true },
+      "fondo": "#4278ab", "degrade": "#22446a",
+      "dibujos": [{ "tipo": "persona", "cx": 0.64, "base": 1.02, "alto": 0.56, "color": "#0f1c2b" }],
+      "textos": [
+        { "texto": "ERNESTO\nSABATO", "fuente": "condensada", "peso": 700, "color": "#f0cf4a", "x": 0.09, "y": 0.06, "tam": 0.1, "alinear": "izq", "interlineado": 1 },
+        { "texto": "EL\nTÚNEL", "fuente": "condensada", "peso": 700, "color": "#f0cf4a", "x": 0.09, "y": 0.56, "tam": 0.16, "alinear": "izq", "interlineado": 0.95 }
+      ]
+    },
+    "rayuela": {
+      "letra": { "fuente": "garamond" },
+      "fondo": "#dccaa5",
+      "dibujos": [{ "tipo": "firma", "cx": 0.52, "cy": 0.56, "w": 0.66, "color": "#2e241b" }],
+      "textos": [
+        { "texto": "Biblioteca Breve", "fuente": "garamond", "color": "#5a4a36", "x": 0.12, "y": 0.06, "tam": 0.042, "alinear": "izq" },
+        { "texto": "Julio\nCortázar\nRayuela", "fuente": "garamond", "color": "#2a2018", "x": 0.12, "y": 0.13, "tam": 0.085, "alinear": "izq", "interlineado": 1.05 },
+        { "texto": "Seix Barral", "fuente": "garamond", "color": "#5a4a36", "y": 0.92, "tam": 0.04 }
+      ]
+    },
+    "el-banquete": {
+      "letra": { "fuente": "sans", "peso": 700, "mayus": true },
+      "fondo": "#191919",
+      "dibujos": [{ "tipo": "foto", "x": 0, "y": 0.3, "w": 1, "h": 0.34, "color": "#76756f", "color2": "#3b3a37", "relieve": true }],
+      "textos": [
+        { "texto": "PLATÓN", "fuente": "sans", "peso": 600, "color": "#f1f1ee", "y": 0.08, "tam": 0.05, "espaciado": 0.25 },
+        { "texto": "EL BANQUETE", "fuente": "sans", "peso": 700, "color": "#f1f1ee", "y": 0.15, "tam": 0.1, "espaciado": 0.04 }
+      ]
+    },
+    "summa-ggm": {
+      "letra": { "fuente": "serif" }
+    },
+    "ajedrez-neuronas": {
+      "letra": { "fuente": "sans", "peso": 700, "mayus": true },
+      "fondo": "#232a3d",
+      "dibujos": [
+        { "tipo": "marco", "x": 0.07, "y": 0.04, "w": 0.86, "h": 0.2, "color": "#d8dce6" },
+        { "tipo": "tablero", "x": 0.14, "y": 0.29, "w": 0.72, "h": 0.25, "color": "#d9cfb8", "color2": "#6b4f35" },
+        { "tipo": "foto", "x": 0.14, "y": 0.57, "w": 0.72, "h": 0.2, "color": "#2c5bb8", "color2": "#0b1530" },
+        { "tipo": "bokeh", "n": 40, "x": 0.14, "y": 0.57, "w": 0.72, "h": 0.2, "color": "#9fd0ff" }
+      ],
+      "textos": [
+        { "texto": "INICIACIÓN Y PERMANENCIA\nEN EL GIMNASIO DE\nLAS NEURONAS:\nEL AJEDREZ", "fuente": "sans", "peso": 700, "color": "#ececec", "y": 0.065, "tam": 0.048, "interlineado": 1.15 },
+        { "texto": "M.I. Rodolfo Garbarino\nLic. Maximiliano Preuss", "fuente": "sans", "peso": 500, "color": "#ececec", "x": 0.14, "y": 0.81, "tam": 0.036, "alinear": "izq", "interlineado": 1.3 }
+      ]
+    },
+    "mundo-feliz": {
+      "letra": { "fuente": "sans", "peso": 500 },
+      "fondo": "#f3f1ec",
+      "dibujos": [{ "tipo": "embrion", "cx": 0.56, "cy": 0.62, "r": 0.24, "color": "#9b2a2c" }],
+      "textos": [
+        { "texto": "ALDOUS\nHUXLEY", "fuente": "sans", "peso": 600, "color": "#1f1f1f", "x": 0.1, "y": 0.07, "tam": 0.07, "alinear": "izq", "espaciado": 0.08 },
+        { "texto": "Un mundo feliz", "fuente": "sans", "peso": 500, "color": "#9b2a2c", "x": 0.1, "y": 0.22, "tam": 0.08, "alinear": "izq" }
+      ]
+    },
+    "arte-de-amar": {
+      "letra": { "fuente": "garamond" },
+      "fondo": "#cfe6cf",
+      "dibujos": [{ "tipo": "boceto", "x": 0.12, "y": 0.46, "w": 0.76, "h": 0.38, "color": "#7a5a3c" }],
+      "textos": [
+        { "texto": "Ovidio", "fuente": "garamond-cursiva", "color": "#3b3b3b", "x": 0.1, "y": 0.06, "tam": 0.065, "alinear": "izq" },
+        { "texto": "El arte de amar", "fuente": "garamond", "color": "#b8322b", "x": 0.1, "y": 0.14, "tam": 0.09, "alinear": "izq" },
+        { "texto": "El remedio\ndel amor", "fuente": "garamond", "color": "#b8322b", "x": 0.1, "y": 0.24, "tam": 0.09, "alinear": "izq", "interlineado": 1 },
+        { "texto": "Biblioteca Edaf", "fuente": "garamond", "color": "#3b3b3b", "y": 0.92, "tam": 0.042 }
+      ]
+    },
+    "arte-de-la-guerra": {
+      "letra": { "fuente": "garamond", "mayus": true },
+      "fondo": "#2c49a9", "degrade": "#1b2f72",
+      "dibujos": [{ "tipo": "sello", "cx": 0.5, "cy": 0.56, "r": 0.17, "color": "#c8352c" }],
+      "textos": [
+        { "texto": "EL ARTE\nDE LA GUERRA", "fuente": "garamond", "peso": 600, "color": "#f3efe3", "y": 0.08, "tam": 0.11, "espaciado": 0.05, "interlineado": 1.05 },
+        { "texto": "SUN TZU", "fuente": "garamond", "peso": 600, "color": "#f3efe3", "y": 0.84, "tam": 0.065, "espaciado": 0.25 }
+      ]
+    },
+    "campana-de-cristal": {
+      "letra": { "fuente": "garamond-cursiva" },
+      "fondo": "#1c1c1c",
+      "dibujos": [
+        { "tipo": "foto", "x": 0, "y": 0.34, "w": 1, "h": 0.66, "color": "#6b2222", "color2": "#1c1c1c" },
+        { "tipo": "retrato", "cx": 0.5, "base": 1, "alto": 0.5, "color": "#141010" }
+      ],
+      "textos": [
+        { "texto": "SYLVIA PLATH", "fuente": "condensada", "peso": 700, "color": "#f4efe8", "x": 0.08, "y": 0.06, "tam": 0.11, "alinear": "izq" },
+        { "texto": "La campana de cristal", "fuente": "garamond-cursiva", "color": "#f4efe8", "x": 0.08, "y": 0.2, "tam": 0.08, "alinear": "izq" }
+      ]
+    },
+    "uba-te-espera": {
+      "letra": { "fuente": "sans", "peso": 700 },
+      "fondo": "#f2a891",
+      "textos": [
+        { "texto": "La UBA\nte espera", "fuente": "sans", "peso": 700, "color": "#ffffff", "x": 0.1, "y": 0.12, "tam": 0.14, "alinear": "izq", "interlineado": 1 },
+        { "texto": "2026", "fuente": "sans", "peso": 700, "color": "#2b2b2b", "x": 0.1, "y": 0.43, "tam": 0.12, "alinear": "izq" },
+        { "texto": "Universidad de Buenos Aires · CBC", "fuente": "sans", "peso": 500, "color": "#2b2b2b", "x": 0.1, "y": 0.9, "tam": 0.036, "alinear": "izq" }
+      ]
+    },
+    "homo-deus": {
+      "letra": { "fuente": "garamond" },
+      "fondo": "#2a2c2b",
+      "dibujos": [{ "tipo": "huella", "cx": 0.5, "cy": 0.56, "r": 0.36, "color": "#4fae4a" }],
+      "textos": [
+        { "texto": "Yuval Noah Harari", "fuente": "garamond", "color": "#e9e6df", "y": 0.07, "tam": 0.06 },
+        { "texto": "Homo\nDeus", "fuente": "garamond", "color": "#f4f2ec", "y": 0.36, "tam": 0.18, "interlineado": 0.92, "sombra": true },
+        { "texto": "Breve historia del mañana", "fuente": "garamond", "color": "#e9e6df", "y": 0.85, "tam": 0.05 },
+        { "texto": "DEBATE", "fuente": "sans", "peso": 600, "color": "#e9e6df", "y": 0.93, "tam": 0.03, "espaciado": 0.25 }
+      ]
+    },
+    "ganar-amigos": {
+      "letra": { "fuente": "serif", "mayus": true },
+      "fondo": "#2f64cb",
+      "textos": [
+        { "texto": "DALE CARNEGIE", "fuente": "sans", "peso": 600, "color": "#c3df3c", "y": 0.06, "tam": 0.045, "espaciado": 0.14 },
+        { "texto": "CÓMO\nGANAR\nAMIGOS", "fuente": "serif", "color": "#c3df3c", "y": 0.13, "tam": 0.2, "interlineado": 0.9, "estrecho": 0.78 },
+        { "texto": "E INFLUIR\nSOBRE LAS\nPERSONAS", "fuente": "serif", "color": "#c3df3c", "y": 0.62, "tam": 0.115, "interlineado": 0.95, "estrecho": 0.78 }
+      ]
+    },
+    "meditaciones": {
+      "letra": { "fuente": "garamond", "mayus": true, "espaciado": 0.08 },
+      "fondo": "#151515",
+      "dibujos": [{ "tipo": "marco", "x": 0.06, "y": 0.05, "w": 0.88, "h": 0.9, "color": "#b9b9b9", "doble": true }],
+      "textos": [
+        { "texto": "MARCO AURELIO", "fuente": "garamond", "peso": 500, "color": "#cfcfcf", "y": 0.22, "tam": 0.045, "espaciado": 0.22 },
+        { "texto": "MEDITACIONES", "fuente": "garamond", "peso": 600, "color": "#f1f1f1", "y": 0.45, "tam": 0.085, "espaciado": 0.12 }
+      ]
+    },
+    "dorian-gray": {
+      "letra": { "fuente": "garamond", "mayus": true },
+      "fondo": "#404c60",
+      "dibujos": [
+        { "tipo": "rect", "x": 0.1, "y": 0.07, "w": 0.8, "h": 0.22, "color": "#1e5b3b", "borde": "#b3272b" },
+        { "tipo": "persona", "cx": 0.36, "base": 0.97, "alto": 0.44, "color": "#1d2330", "galera": true },
+        { "tipo": "persona", "cx": 0.64, "base": 0.97, "alto": 0.4, "color": "#252c3b", "vestido": true }
+      ],
+      "textos": [
+        { "texto": "EL RETRATO DE\nDORIAN GRAY", "fuente": "garamond", "peso": 600, "color": "#f5f1e6", "y": 0.11, "tam": 0.08, "espaciado": 0.04, "interlineado": 1.05 },
+        { "texto": "OSCAR WILDE", "fuente": "garamond", "peso": 600, "color": "#f5f1e6", "y": 0.35, "tam": 0.05, "espaciado": 0.22 }
+      ]
+    },
+    "sapiens": {
+      "letra": { "fuente": "garamond" },
+      "fondo": "#efe6d6",
+      "dibujos": [{ "tipo": "huella", "cx": 0.5, "cy": 0.5, "r": 0.43, "color": "#d9c7aa" }],
+      "textos": [
+        { "texto": "Yuval Noah Harari", "fuente": "garamond", "color": "#3a3530", "y": 0.08, "tam": 0.055 },
+        { "texto": "Sapiens", "fuente": "garamond", "color": "#c23b2e", "y": 0.35, "tam": 0.18 },
+        { "texto": "De animales\na dioses", "fuente": "garamond", "color": "#8e2a22", "y": 0.56, "tam": 0.068, "interlineado": 1 },
+        { "texto": "Breve historia de la humanidad", "fuente": "garamond", "color": "#3a3530", "y": 0.84, "tam": 0.045 },
+        { "texto": "DEBATE", "fuente": "sans", "peso": 600, "color": "#3a3530", "y": 0.93, "tam": 0.03, "espaciado": 0.25 }
+      ]
+    },
+    "1984": {
+      "letra": { "fuente": "condensada", "peso": 700 },
+      "fondo": "#141f3b",
+      "dibujos": [{ "tipo": "ojo", "cx": 0.5, "cy": 0.58, "r": 0.33, "color": "#dfe3ea", "iris": "#3a5f9e" }],
+      "textos": [
+        { "texto": "1984", "fuente": "condensada", "peso": 700, "color": "#f2f2f2", "y": 0.05, "tam": 0.3 },
+        { "texto": "George Orwell", "fuente": "condensada", "peso": 500, "color": "#f2f2f2", "y": 0.85, "tam": 0.075 }
+      ]
+    },
+    "babilonia": {
+      "letra": { "fuente": "garamond", "mayus": true },
+      "fondo": "#e7dda4",
+      "dibujos": [{ "tipo": "zigurat", "cx": 0.5, "base": 0.88, "w": 0.66, "h": 0.32, "color": "#8a6a2c" }],
+      "textos": [
+        { "texto": "EL HOMBRE\nMÁS RICO\nDE BABILONIA", "fuente": "garamond", "peso": 600, "color": "#7a2418", "y": 0.08, "tam": 0.1, "espaciado": 0.04, "interlineado": 1.05 },
+        { "texto": "George S. Clason", "fuente": "garamond", "color": "#3e2f1a", "y": 0.45, "tam": 0.06 }
+      ]
+    },
+    "call-center": {
+      "letra": { "fuente": "display", "mayus": true },
+      "fondo": "#2f6b53",
+      "textos": [
+        { "texto": "EL", "fuente": "display", "color": "#f3ead2", "y": 0.06, "tam": 0.09 },
+        { "texto": "HOMBRE", "fuente": "display", "color": "#f3ead2", "y": 0.12, "tam": 0.24 },
+        { "texto": "QUE DABA", "fuente": "display", "color": "#f3ead2", "y": 0.33, "tam": 0.08 },
+        { "texto": "CHARLA", "fuente": "display", "color": "#f3ead2", "y": 0.39, "tam": 0.24 },
+        { "texto": "A LOS", "fuente": "display", "color": "#f3ead2", "y": 0.6, "tam": 0.08 },
+        { "texto": "CALL CENTER", "fuente": "display", "color": "#f3ead2", "y": 0.66, "tam": 0.17 },
+        { "texto": "Germán Beder", "fuente": "sans", "peso": 600, "color": "#f3ead2", "y": 0.89, "tam": 0.045 }
+      ]
+    },
+    "el-alquimista": {
+      "letra": { "fuente": "condensada", "peso": 700, "mayus": true },
+      "fondo": "#ecc52c",
+      "dibujos": [
+        { "tipo": "sol", "cx": 0.5, "cy": 0.72, "r": 0.11, "color": "#d9701f" },
+        { "tipo": "zigurat", "cx": 0.5, "base": 0.86, "w": 0.4, "h": 0.1, "color": "#8a2a1a", "piramide": true }
+      ],
+      "textos": [
+        { "texto": "PAULO\nCOELHO", "fuente": "condensada", "peso": 700, "color": "#8a2a1a", "y": 0.07, "tam": 0.18, "interlineado": 0.95 },
+        { "texto": "EL ALQUIMISTA", "fuente": "condensada", "peso": 600, "color": "#8a2a1a", "y": 0.47, "tam": 0.085, "espaciado": 0.06 }
+      ]
+    },
+    "intermezzo": {
+      "letra": { "fuente": "garamond-cursiva" },
+      "fondo": "#2333c8", "degrade": "#0f1866",
+      "dibujos": [
+        { "tipo": "cortinas", "color": "#0a0d22" },
+        { "tipo": "persona", "cx": 0.5, "base": 0.8, "alto": 0.17, "color": "#04060f" }
+      ],
+      "textos": [
+        { "texto": "SALLY ROONEY", "fuente": "condensada", "peso": 700, "color": "#f4f4f4", "x": 0.08, "y": 0.06, "tam": 0.085, "alinear": "izq" },
+        { "texto": "Intermezzo", "fuente": "garamond-cursiva", "color": "#f4f4f4", "x": 0.08, "y": 0.15, "tam": 0.1, "alinear": "izq" }
+      ]
+    },
+    "cosas-fuego": {
+      "letra": { "fuente": "garamond-cursiva" },
+      "fondo": "#f4f0e7",
+      "dibujos": [
+        { "tipo": "foto", "x": 0.2, "y": 0.36, "w": 0.6, "h": 0.44, "color": "#3b2a22", "color2": "#120e0c" },
+        { "tipo": "persona", "cx": 0.48, "base": 0.76, "alto": 0.24, "color": "#a8231f", "vestido": true }
+      ],
+      "textos": [
+        { "texto": "MARIANA ENRIQUEZ", "fuente": "sans", "peso": 500, "color": "#2b2b2b", "x": 0.08, "y": 0.05, "tam": 0.036, "alinear": "izq", "espaciado": 0.12 },
+        { "texto": "Las cosas que\nperdimos en el fuego", "fuente": "garamond-cursiva", "color": "#1b1b1b", "x": 0.08, "y": 0.11, "tam": 0.085, "alinear": "izq", "interlineado": 1.05 },
+        { "texto": "ANAGRAMA", "fuente": "sans", "peso": 600, "color": "#2b2b2b", "y": 0.91, "tam": 0.03, "espaciado": 0.28 }
+      ]
+    },
+    "santa-biblia": {
+      "letra": { "fuente": "garamond" },
+      "fondo": "#37aeb7",
+      "cuero": true,
+      "dibujos": [{ "tipo": "rect", "x": 0, "y": 0, "w": 0.34, "h": 1, "color": "#2a9098", "textura": true }],
+      "textos": [
+        { "texto": "SANTA", "fuente": "garamond", "peso": 600, "color": "#f0e7cf", "x": 0.67, "y": 0.28, "tam": 0.055, "espaciado": 0.35 },
+        { "texto": "Biblia", "fuente": "garamond", "color": "#f0e7cf", "x": 0.67, "y": 0.33, "tam": 0.15 },
+        { "texto": "REINA-VALERA 1960", "fuente": "sans", "peso": 500, "color": "#f0e7cf", "x": 0.67, "y": 0.58, "tam": 0.032, "espaciado": 0.12, "ancho": 0.56 }
+      ]
+    },
+    "diario-ana-frank": {
+      "letra": { "fuente": "serif" },
+      "fondo": "#e3bd3d",
+      "dibujos": [
+        { "tipo": "foto", "x": 0.24, "y": 0.42, "w": 0.52, "h": 0.44, "color": "#9a9a96", "color2": "#3a3a38", "borde": 0.03 },
+        { "tipo": "retrato", "cx": 0.5, "base": 0.83, "alto": 0.3, "color": "#262626" }
+      ],
+      "textos": [
+        { "texto": "Diario de\nAna Frank", "fuente": "serif", "color": "#1d1d1d", "y": 0.08, "tam": 0.14, "interlineado": 1 }
+      ]
+    },
+    "biologia-curtis": {
+      "letra": { "fuente": "garamond" },
+      "fondo": "#eef2f5", "degrade": "#93a7b8",
+      "dibujos": [{ "tipo": "pinguinos", "base": 0.97, "color": "#151a20" }],
+      "textos": [
+        { "texto": "Curtis", "fuente": "garamond-cursiva", "color": "#26425e", "y": 0.1, "tam": 0.085 },
+        { "texto": "Biología", "fuente": "garamond", "color": "#26425e", "y": 0.17, "tam": 0.17 },
+        { "texto": "7.ª edición", "fuente": "garamond", "color": "#26425e", "y": 0.35, "tam": 0.045 },
+        { "texto": "PANAMERICANA", "fuente": "sans", "peso": 600, "color": "#f2f2f2", "y": 0.94, "tam": 0.028, "espaciado": 0.2 }
+      ]
+    },
+    "fundamentos-ajedrez": {
+      "letra": { "fuente": "condensada", "peso": 700, "mayus": true },
+      "fondo": "#f4f2ee",
+      "dibujos": [
+        { "tipo": "foto", "x": 0, "y": 0.36, "w": 1, "h": 0.64, "color": "#8a7a66", "color2": "#2d2620" },
+        { "tipo": "retrato", "cx": 0.46, "base": 0.82, "alto": 0.4, "color": "#1d1916" },
+        { "tipo": "tablero", "x": 0.1, "y": 0.8, "w": 0.8, "h": 0.2, "color": "#cbbd9f", "color2": "#4a3a2c" }
+      ],
+      "textos": [
+        { "texto": "JOSÉ RAÚL CAPABLANCA", "fuente": "sans", "peso": 700, "color": "#3a3aa0", "y": 0.05, "tam": 0.048, "espaciado": 0.06 },
+        { "texto": "FUNDAMENTOS\nDEL AJEDREZ", "fuente": "condensada", "peso": 700, "color": "#3a3aa0", "y": 0.11, "tam": 0.12, "interlineado": 1 }
+      ]
+    },
+    "encuentros-rolon": {
+      "letra": { "fuente": "garamond" },
+      "fondo": "#ebeae8",
+      "dibujos": [
+        { "tipo": "pieza", "cx": 0.42, "base": 0.46, "alto": 0.22, "color": "#1b1b1b", "rey": true },
+        { "tipo": "pieza", "cx": 0.58, "base": 0.46, "alto": 0.19, "color": "#fbfbfa", "contorno": "#9a9a9a" }
+      ],
+      "textos": [
+        { "texto": "Gabriel Rolón", "fuente": "garamond", "color": "#222222", "y": 0.07, "tam": 0.075 },
+        { "texto": "Encuentros", "fuente": "garamond", "color": "#555555", "y": 0.51, "tam": 0.048 },
+        { "texto": "EL LADO B\nDEL AMOR", "fuente": "garamond", "color": "#1b1b1b", "y": 0.57, "tam": 0.105, "espaciado": 0.05, "interlineado": 1.05 },
+        { "texto": "Planeta", "fuente": "sans", "peso": 600, "color": "#2a2a2a", "y": 0.92, "tam": 0.032 }
+      ]
+    },
+    "lluvia-sabe": {
+      "letra": { "fuente": "condensada", "peso": 700 },
+      "fondo": "#7f8d99", "degrade": "#46525d",
+      "dibujos": [
+        { "tipo": "persona", "cx": 0.32, "base": 0.6, "alto": 0.2, "color": "#2b3238", "paraguas": true },
+        { "tipo": "persona", "cx": 0.7, "base": 0.58, "alto": 0.15, "color": "#323a41", "paraguas": true },
+        { "tipo": "lluvia", "n": 160, "color": "#dbe4ec" }
+      ],
+      "textos": [
+        { "texto": "La lluvia\nsabe por qué", "fuente": "condensada", "peso": 700, "color": "#e3302b", "y": 0.64, "tam": 0.14, "interlineado": 0.95, "sombra": true },
+        { "texto": "María Fernanda Heredia", "fuente": "sans", "peso": 500, "color": "#f2f2f2", "y": 0.89, "tam": 0.042 }
+      ]
+    },
+    "carrie": {
+      "letra": { "fuente": "garamond", "peso": 600, "mayus": true },
+      "fondo": "#efe9df",
+      "dibujos": [
+        { "tipo": "foto", "x": 0, "y": 0.47, "w": 1, "h": 0.53, "color": "#e9b47c", "color2": "#8a4a2a" },
+        { "tipo": "retrato", "cx": 0.55, "base": 1, "alto": 0.44, "color": "#5a2e1a" }
+      ],
+      "textos": [
+        { "texto": "STEPHEN\nKING", "fuente": "garamond", "peso": 600, "color": "#56677f", "y": 0.04, "tam": 0.21, "interlineado": 0.88, "espaciado": 0.02 },
+        { "texto": "CARRIE", "fuente": "garamond", "peso": 600, "color": "#56677f", "y": 0.41, "tam": 0.05, "espaciado": 0.35 }
+      ]
+    },
+    "los-padecientes": {
+      "letra": { "fuente": "condensada", "peso": 700, "mayus": true },
+      "fondo": "#22383a", "degrade": "#0b1213",
+      "dibujos": [
+        { "tipo": "pasillo", "color": "#5f7a78" },
+        { "tipo": "persona", "cx": 0.5, "base": 0.9, "alto": 0.44, "color": "#060909", "vestido": true }
+      ],
+      "textos": [
+        { "texto": "GABRIEL\nROLÓN", "fuente": "condensada", "peso": 700, "color": "#f2f2f2", "y": 0.05, "tam": 0.18, "interlineado": 0.92 },
+        { "texto": "LOS PADECIENTES", "fuente": "condensada", "peso": 400, "color": "#e8e8e8", "y": 0.76, "tam": 0.085, "espaciado": 0.08 }
+      ]
+    },
+    "historia-ajedrez": {
+      "letra": { "fuente": "garamond", "peso": 700, "mayus": true },
+      "fondo": "#f1ebdd",
+      "dibujos": [
+        { "tipo": "foto", "x": 0, "y": 0.56, "w": 1, "h": 0.44, "color": "#7a5634", "color2": "#2c2017" },
+        { "tipo": "retrato", "cx": 0.3, "base": 1, "alto": 0.34, "color": "#b8452e" },
+        { "tipo": "retrato", "cx": 0.72, "base": 1, "alto": 0.3, "color": "#1f1a16" },
+        { "tipo": "tablero", "x": 0.38, "y": 0.86, "w": 0.24, "h": 0.1, "color": "#d8c9a8", "color2": "#3b2b1e" }
+      ],
+      "textos": [
+        { "texto": "Eso NO ESTABA\nen mi LIBRO de", "fuente": "garamond-cursiva", "peso": 600, "color": "#2a2a2a", "y": 0.05, "tam": 0.075, "interlineado": 1 },
+        { "texto": "HISTORIA\ndel AJEDREZ", "fuente": "garamond", "peso": 700, "color": "#b5302a", "y": 0.18, "tam": 0.13, "interlineado": 0.95 },
+        { "texto": "ANTONIO GUDE", "fuente": "garamond", "peso": 600, "color": "#2a2a2a", "y": 0.49, "tam": 0.045, "espaciado": 0.15 }
+      ]
+    },
+    "medianoche": {
+      "letra": { "fuente": "maquina", "mayus": true },
+      "fondo": "#1b2244",
+      "dibujos": [
+        { "tipo": "ventanas", "x": 0.06, "y": 0.03, "w": 0.88, "h": 0.86, "color": "#33508f", "luz": "#e8b84a", "cols": 5, "filas": 9 },
+        { "tipo": "rect", "x": 0.08, "y": 0.08, "w": 0.84, "h": 0.07, "color": "#1b2244" },
+        { "tipo": "rect", "x": 0.08, "y": 0.33, "w": 0.84, "h": 0.09, "color": "#1b2244" },
+        { "tipo": "rect", "x": 0.08, "y": 0.57, "w": 0.84, "h": 0.09, "color": "#1b2244" }
+      ],
+      "textos": [
+        { "texto": "MATT HAIG", "fuente": "maquina", "color": "#f3ead6", "y": 0.09, "tam": 0.07, "espaciado": 0.14 },
+        { "texto": "LA BIBLIOTECA", "fuente": "maquina", "color": "#f3ead6", "y": 0.345, "tam": 0.1 },
+        { "texto": "DE LA MEDIANOCHE", "fuente": "maquina", "color": "#f3ead6", "y": 0.59, "tam": 0.082 }
+      ]
+    },
+    "cabalas-futbol": {
+      "letra": { "fuente": "garamond-cursiva", "peso": 700 },
+      "fondo": "#46683a", "degrade": "#22361a",
+      "dibujos": [
+        { "tipo": "pasto", "color": "#6f9a4f" },
+        { "tipo": "pelota", "cx": 0.2, "cy": 0.13, "r": 0.11 },
+        { "tipo": "pelota", "cx": 0.42, "cy": 0.09, "r": 0.08 }
+      ],
+      "textos": [
+        { "texto": "RICARDO\nGOTTA", "fuente": "sans", "peso": 700, "color": "#ffffff", "x": 0.92, "y": 0.07, "tam": 0.055, "alinear": "der", "interlineado": 1 },
+        { "texto": "Cábalas\ndel fútbol", "fuente": "garamond-cursiva", "peso": 700, "color": "#ffffff", "y": 0.36, "tam": 0.16, "interlineado": 0.95, "sombra": true }
+      ]
+    },
+    "gente-normal": {
+      "letra": { "fuente": "garamond-cursiva" },
+      "fondo": "#bdb52e",
+      "dibujos": [{ "tipo": "lata", "cx": 0.5, "cy": 0.62, "w": 0.56, "color": "#1d2b5a" }],
+      "textos": [
+        { "texto": "SALLY ROONEY", "fuente": "condensada", "peso": 700, "color": "#1b1b1b", "x": 0.1, "y": 0.07, "tam": 0.09, "alinear": "izq" },
+        { "texto": "Gente normal", "fuente": "garamond-cursiva", "color": "#1b1b1b", "x": 0.1, "y": 0.18, "tam": 0.08, "alinear": "izq" }
+      ]
+    },
+    "paciente-silenciosa": {
+      "letra": { "fuente": "garamond" },
+      "fondo": "#1b1b1b",
+      "dibujos": [
+        { "tipo": "foto", "x": 0, "y": 0.25, "w": 1, "h": 0.75, "color": "#e4d9ca", "color2": "#a88f76" },
+        { "tipo": "raja", "y": 0.62, "color": "#1a0f0c" }
+      ],
+      "textos": [
+        { "texto": "ALFAGUARA", "fuente": "sans", "peso": 600, "color": "#cfc9bf", "y": 0.025, "tam": 0.026, "espaciado": 0.3 },
+        { "texto": "Alex Michaelides", "fuente": "garamond", "color": "#f1ede6", "y": 0.07, "tam": 0.075 },
+        { "texto": "La paciente silenciosa", "fuente": "garamond", "color": "#f1ede6", "y": 0.155, "tam": 0.062 }
+      ]
+    },
+    "despues-king": {
+      "letra": { "fuente": "display", "mayus": true },
+      "fondo": "#ebebee",
+      "dibujos": [{ "tipo": "persona", "cx": 0.5, "base": 0.86, "alto": 0.48, "color": "#25406b" }],
+      "textos": [
+        { "texto": "STEPHEN\nKING", "fuente": "garamond", "peso": 700, "color": "#2b2d33", "y": 0.04, "tam": 0.21, "interlineado": 0.88 },
+        { "texto": "DESPUÉS", "fuente": "display", "color": "#c4262d", "y": 0.8, "tam": 0.19, "espaciado": 0.03 }
+      ]
+    },
+    "chica-de-nieve": {
+      "letra": { "fuente": "sans", "peso": 700, "mayus": true, "espaciado": 0.06 },
+      "fondo": "#1a2840", "degrade": "#0b1220",
+      "dibujos": [
+        { "tipo": "bokeh", "n": 140, "x": 0, "y": 0, "w": 1, "h": 1, "color": "#e9563b" },
+        { "tipo": "persona", "cx": 0.5, "base": 1.02, "alto": 0.3, "color": "#b52a1f", "vestido": true }
+      ],
+      "textos": [
+        { "texto": "JAVIER\nCASTILLO", "fuente": "sans", "peso": 700, "color": "#ffffff", "y": 0.07, "tam": 0.13, "interlineado": 1, "espaciado": 0.03 },
+        { "texto": "LA\nCHICA\nDE\nNIEVE", "fuente": "sans", "peso": 600, "color": "#ffffff", "y": 0.37, "tam": 0.08, "espaciado": 0.28, "interlineado": 1.05 }
+      ]
+    },
+    "cuco-de-cristal": {
+      "letra": { "fuente": "sans", "peso": 700, "mayus": true, "espaciado": 0.06 },
+      "fondo": "#efebe3", "degrade": "#bdb6ab",
+      "dibujos": [
+        { "tipo": "rect", "x": 0, "y": 0.8, "w": 1, "h": 0.2, "color": "#2d2a28" },
+        { "tipo": "persona", "cx": 0.5, "base": 0.86, "alto": 0.28, "color": "#141211", "vestido": true },
+        { "tipo": "pajaro", "cx": 0.3, "cy": 0.62, "tam": 0.09, "color": "#141211", "vuela": true }
+      ],
+      "textos": [
+        { "texto": "JAVIER\nCASTILLO", "fuente": "sans", "peso": 700, "color": "#1f1f1f", "y": 0.07, "tam": 0.13, "interlineado": 1, "espaciado": 0.03 },
+        { "texto": "EL\nCUCO\nDE\nCRISTAL", "fuente": "sans", "peso": 600, "color": "#1f1f1f", "y": 0.37, "tam": 0.08, "espaciado": 0.28, "interlineado": 1.05 }
+      ]
+    },
+    "volver-a-empezar": {
+      "letra": { "fuente": "condensada", "peso": 700, "mayus": true },
+      "fondo": "#4ec2d2", "degrade": "#2b98ab",
+      "dibujos": [{ "tipo": "flores", "n": 9, "color": "#fbfbf7", "centro": "#f2c23a" }],
+      "textos": [
+        { "texto": "VOLVER A\nEMPEZAR", "fuente": "condensada", "peso": 700, "color": "#1d2a4a", "y": 0.1, "tam": 0.17, "interlineado": 0.92 },
+        { "texto": "COLLEEN\nHOOVER", "fuente": "condensada", "peso": 700, "color": "#ffffff", "y": 0.66, "tam": 0.15, "interlineado": 0.92 }
+      ]
+    },
+    "cartas-princesa": {
+      "letra": { "fuente": "garamond-cursiva" },
+      "fondo": "#a29daa", "degrade": "#6e6a78",
+      "dibujos": [
+        { "tipo": "retrato", "cx": 0.48, "base": 1.02, "alto": 0.66, "color": "#2b2622", "calvo": true },
+        { "tipo": "sol", "cx": 0.7, "cy": 0.62, "r": 0.06, "color": "#c42a24" }
+      ],
+      "textos": [
+        { "texto": "MARIO LEVRERO", "fuente": "condensada", "peso": 700, "color": "#ffffff", "x": 0.08, "y": 0.05, "tam": 0.095, "alinear": "izq" },
+        { "texto": "Cartas a la princesa", "fuente": "garamond-cursiva", "color": "#ffffff", "x": 0.08, "y": 0.155, "tam": 0.075, "alinear": "izq" }
+      ]
+    },
+    "viento-nombre": {
+      "letra": { "fuente": "sans", "peso": 600, "mayus": true },
+      "fondo": "#e2682c", "degrade": "#b23a1c",
+      "dibujos": [
+        { "tipo": "retrato", "cx": 0.56, "base": 0.84, "alto": 0.5, "color": "#2a1a14", "perfil": true },
+        { "tipo": "hojas", "color": "#6aa64a" }
+      ],
+      "textos": [
+        { "texto": "ISABEL\nALLENDE", "fuente": "garamond", "peso": 600, "color": "#f6d34a", "y": 0.05, "tam": 0.16, "espaciado": 0.06, "interlineado": 0.95 },
+        { "texto": "EL VIENTO\nCONOCE MI\nNOMBRE", "fuente": "sans", "peso": 600, "color": "#fbf3dc", "y": 0.62, "tam": 0.085, "espaciado": 0.06, "interlineado": 1.05, "sombra": true }
+      ]
+    },
+    "mercado-capitales": {
+      "letra": { "fuente": "sans", "peso": 600 },
+      "fondo": "#8a2b2b",
+      "dibujos": [
+        { "tipo": "rect", "x": 0.06, "y": 0.07, "w": 0.88, "h": 0.36, "color": "#cfd6e3" },
+        { "tipo": "rect", "x": 0.06, "y": 0.43, "w": 0.88, "h": 0.07, "color": "#a63a37" }
+      ],
+      "textos": [
+        { "texto": "Mercado de\nCapitales", "fuente": "sans", "peso": 600, "color": "#2b3140", "x": 0.12, "y": 0.14, "tam": 0.12, "alinear": "izq", "interlineado": 1.05 },
+        { "texto": "Manual para no especialistas", "fuente": "sans", "peso": 500, "color": "#ffffff", "x": 0.12, "y": 0.447, "tam": 0.045, "alinear": "izq" },
+        { "texto": "IAMC", "fuente": "sans", "peso": 700, "color": "#ffffff", "x": 0.08, "y": 0.87, "tam": 0.06, "alinear": "izq" }
+      ]
+    },
+    "vida-imita-ajedrez": {
+      "letra": { "fuente": "condensada", "peso": 700, "mayus": true },
+      "fondo": "#f2f1ee", "degrade": "#d6d4cf",
+      "dibujos": [{ "tipo": "pieza", "cx": 0.5, "base": 0.93, "alto": 0.38, "color": "#262626", "rey": true }],
+      "textos": [
+        { "texto": "GARRY\nKASPAROV", "fuente": "condensada", "peso": 700, "color": "#3b3b3b", "y": 0.05, "tam": 0.17, "interlineado": 0.92 },
+        { "texto": "CÓMO LA VIDA\nIMITA AL AJEDREZ", "fuente": "condensada", "peso": 600, "color": "#3b3b3b", "y": 0.38, "tam": 0.085, "interlineado": 1.05 },
+        { "texto": "DEBATE", "fuente": "sans", "peso": 600, "color": "#3b3b3b", "y": 0.955, "tam": 0.026, "espaciado": 0.25 }
+      ]
+    },
+    "nunca-mas": {
+      "letra": { "fuente": "mano", "mayus": true },
+      "fondo": "#c41f2a",
+      "textos": [
+        { "texto": "Informe de la Comisión Nacional\nsobre la Desaparición de Personas", "fuente": "sans", "peso": 600, "color": "#1b1b1b", "x": 0.08, "y": 0.05, "tam": 0.034, "alinear": "izq", "interlineado": 1.3 },
+        { "texto": "NUNCA\nMÁS", "fuente": "mano", "color": "#ffffff", "x": 0.1, "y": 0.2, "tam": 0.27, "alinear": "izq", "interlineado": 0.92 },
+        { "texto": "EUDEBA", "fuente": "sans", "peso": 700, "color": "#ffffff", "y": 0.92, "tam": 0.032, "espaciado": 0.25 }
+      ]
+    },
+    "21-lecciones": {
+      "letra": { "fuente": "garamond" },
+      "fondo": "#f4f2ee",
+      "dibujos": [{ "tipo": "ojo", "cx": 0.5, "cy": 0.74, "r": 0.17, "color": "#f4f2ee", "iris": "#c8742a", "soloIris": true }],
+      "textos": [
+        { "texto": "Yuval Noah Harari", "fuente": "garamond", "color": "#2a2a2a", "y": 0.07, "tam": 0.06 },
+        { "texto": "21 lecciones\npara\nel siglo XXI", "fuente": "garamond", "color": "#1b1b1b", "y": 0.16, "tam": 0.13, "interlineado": 1 },
+        { "texto": "DEBATE", "fuente": "sans", "peso": 600, "color": "#2a2a2a", "y": 0.94, "tam": 0.028, "espaciado": 0.25 }
+      ]
+    },
+    "codigo-limpio": {
+      "letra": { "fuente": "sans", "peso": 700 },
+      "fondo": "#0c0c12",
+      "dibujos": [{ "tipo": "galaxia", "cx": 0.5, "cy": 0.6, "r": 0.44, "color": "#8a6ad0" }],
+      "textos": [
+        { "texto": "Robert C. Martin", "fuente": "sans", "peso": 500, "color": "#e6e6e6", "x": 0.92, "y": 0.04, "tam": 0.036, "alinear": "der" },
+        { "texto": "Código limpio", "fuente": "sans", "peso": 700, "color": "#ffffff", "x": 0.08, "y": 0.11, "tam": 0.115, "alinear": "izq" },
+        { "texto": "Manual de estilo para el desarrollo\nágil de software", "fuente": "sans", "peso": 500, "color": "#d8d8d8", "x": 0.08, "y": 0.23, "tam": 0.037, "alinear": "izq", "interlineado": 1.3 },
+        { "texto": "ANAYA", "fuente": "sans", "peso": 700, "color": "#ffffff", "x": 0.08, "y": 0.92, "tam": 0.038, "alinear": "izq", "espaciado": 0.1 }
+      ]
+    },
+    "arquimedes": {
+      "letra": { "fuente": "condensada", "peso": 700, "mayus": true },
+      "fondo": "#151515",
+      "dibujos": [{ "tipo": "bombillas", "cy": 0.64, "color": "#fff4d6" }],
+      "textos": [
+        { "texto": "ARQUÍMEDES", "fuente": "condensada", "peso": 700, "color": "#f2b632", "x": 0.08, "y": 0.05, "tam": 0.14, "alinear": "izq" },
+        { "texto": "El principio de Arquímedes", "fuente": "sans", "peso": 500, "color": "#f2f2f2", "x": 0.08, "y": 0.2, "tam": 0.046, "alinear": "izq" },
+        { "texto": "¡Eureka! El placer\nde la invención", "fuente": "sans", "peso": 700, "color": "#f2f2f2", "x": 0.08, "y": 0.27, "tam": 0.072, "alinear": "izq", "interlineado": 1.1 }
+      ]
+    },
+    "nuestra-parte-de-noche": {
+      "letra": { "fuente": "garamond-cursiva" },
+      "fondo": "#ece8df",
+      "dibujos": [
+        { "tipo": "foto", "x": 0.14, "y": 0.34, "w": 0.72, "h": 0.46, "color": "#8a5a3e", "color2": "#2e1c14" },
+        { "tipo": "retrato", "cx": 0.5, "base": 0.8, "alto": 0.4, "color": "#c08a68" }
+      ],
+      "textos": [
+        { "texto": "MARIANA ENRIQUEZ", "fuente": "sans", "peso": 500, "color": "#2b2b2b", "y": 0.06, "tam": 0.036, "espaciado": 0.12 },
+        { "texto": "Nuestra parte\nde noche", "fuente": "garamond-cursiva", "color": "#1b1b1b", "y": 0.12, "tam": 0.1, "interlineado": 1 },
+        { "texto": "ANAGRAMA", "fuente": "sans", "peso": 600, "color": "#2b2b2b", "y": 0.91, "tam": 0.03, "espaciado": 0.28 }
+      ]
+    },
+    "disfruta-tu-ocio": {
+      "letra": { "fuente": "sans", "peso": 700 },
+      "fondo": "#bcd8ee", "degrade": "#eef3f4",
+      "dibujos": [
+        { "tipo": "rect", "x": 0, "y": 0.62, "w": 1, "h": 0.08, "color": "#5d8fb8" },
+        { "tipo": "rect", "x": 0, "y": 0.7, "w": 1, "h": 0.3, "color": "#6b8f3a" },
+        { "tipo": "arbol", "cx": 0.2, "base": 0.74, "alto": 0.3, "color": "#2e3b22", "pino": true },
+        { "tipo": "banco", "cx": 0.62, "base": 0.82, "w": 0.4, "color": "#2a2520" }
+      ],
+      "textos": [
+        { "texto": "Carlos G. Vallés", "fuente": "sans", "peso": 500, "color": "#2a3a4a", "x": 0.08, "y": 0.07, "tam": 0.048, "alinear": "izq" },
+        { "texto": "Disfruta\ntu ocio", "fuente": "sans", "peso": 700, "color": "#1f5fa8", "x": 0.08, "y": 0.13, "tam": 0.13, "alinear": "izq", "interlineado": 1 },
+        { "texto": "te lo mereces", "fuente": "sans", "peso": 500, "color": "#2a3a4a", "x": 0.08, "y": 0.35, "tam": 0.045, "alinear": "izq" }
+      ]
+    }
+  }
+}

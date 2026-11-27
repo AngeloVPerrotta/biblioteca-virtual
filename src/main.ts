@@ -1,17 +1,26 @@
 import './estilos.css';
-import '@fontsource/inter/400.css';
-import '@fontsource/inter/500.css';
-import '@fontsource/inter/600.css';
-import '@fontsource/eb-garamond/500.css';
-import '@fontsource/eb-garamond/600.css';
-import '@fontsource/eb-garamond/700.css';
-import '@fontsource/eb-garamond/400-italic.css';
-import '@fontsource/eb-garamond/500-italic.css';
-import '@fontsource/playfair-display/600.css';
-import '@fontsource/oswald/500.css';
-import '@fontsource/bebas-neue/400.css';
-import '@fontsource/caveat/500.css';
-import '@fontsource/caveat/700.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-700.css';
+import '@fontsource/eb-garamond/latin-500.css';
+import '@fontsource/eb-garamond/latin-600.css';
+import '@fontsource/eb-garamond/latin-700.css';
+import '@fontsource/eb-garamond/latin-400-italic.css';
+import '@fontsource/eb-garamond/latin-500-italic.css';
+import '@fontsource/eb-garamond/latin-600-italic.css';
+import '@fontsource/eb-garamond/latin-700-italic.css';
+import '@fontsource/playfair-display/latin-600.css';
+import '@fontsource/oswald/latin-400.css';
+import '@fontsource/oswald/latin-500.css';
+import '@fontsource/oswald/latin-600.css';
+import '@fontsource/oswald/latin-700.css';
+import '@fontsource/bebas-neue/latin-400.css';
+import '@fontsource/caveat/latin-700.css';
+import '@fontsource/special-elite/latin-400.css';
+import '@fontsource/limelight/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-500.css';
 
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -25,7 +34,6 @@ import { Camara } from './escena/camara';
 import { climaDePrueba, LluviaVisual, obtenerClima } from './escena/clima';
 import { HazDeSol, Polvo } from './escena/efectos';
 import { Estanteria, NIVELES, PROFUNDIDAD } from './escena/estanteria';
-import { Destellos } from './escena/destellos';
 import { fusionarEstaticos } from './escena/fusion';
 import { crearHabitacion, type Ventana } from './escena/habitacion';
 import { marcar, resaltadorDe, type Interactivo } from './escena/interactivos';
@@ -53,11 +61,13 @@ import { Interaccion } from './interaccion';
 import { crearCarga } from './carga';
 import { formatoHora, Interfaz } from './ui';
 import { Animador, cuadro, salidaSuave } from './util/animacion';
+import { aplicarVariantes, variantes } from './variantes';
 
 const datos = datosJson as unknown as DatosBiblioteca;
 const datosDiscos = discosJson as unknown as DatosDiscos;
 
 async function iniciar() {
+  aplicarVariantes();
   const canvas = document.getElementById('escena') as HTMLCanvasElement;
   const carga = crearCarga();
   performance.mark('carga-inicio');
@@ -157,28 +167,19 @@ async function iniciar() {
   unTermo.position.set(-W / 2 - 0.27, sup, 0.17);
   escena.add(mate, unTermo);
   // Post-it «¿qué leo?» pegado en el cajón de la mesa de luz
-  const papelito = papelitoQueLeo();
+  const papelito = papelitoQueLeo(variantes.papelito === 'ficha');
   papelito.mesh.position.copy(mesaLuz.grupo.position).add(new THREE.Vector3(0.12, 0.45, 0.1975));
   papelito.mesh.rotation.z = -0.07;
-  // Easter egg: de vez en cuando titila un brillito alrededor del post-it (y más al señalarlo)
-  const brilloPapelito = new Destellos({ cantidad: 4, tam: 0.1, visible: 0.3, periodo: [2.2, 4.2], brillo: 2.6 });
-  brilloPapelito.grupo.position.copy(papelito.mesh.position).add(new THREE.Vector3(0, 0, 0.035));
-  brilloPapelito.caja.set(0.058, 0.05, 0.004);
   let papelitoSenalado = 0;
   marcar(papelito.mesh, {
     tipo: 'quelee',
     titulo: '¿Qué leo?',
-    subtitulo: 'Contale a la biblioteca cómo venís',
+    subtitulo: 'Te recomiendo un libro según cómo estés',
     resaltar: (v) => {
       papelitoSenalado = v;
-      brilloPapelito.meta = 1 + v * 1.4;
     },
   });
-  escena.add(papelito.mesh, brilloPapelito.grupo);
-  // Brillitos dorados alrededor del libro que elige la biblioteca
-  const brilloElegido = new Destellos({ cantidad: 14, tam: 0.075, visible: 0.55, sube: 0.05, periodo: [1.3, 2.6], brillo: 2.6 });
-  brilloElegido.meta = 0;
-  escena.add(brilloElegido.grupo);
+  escena.add(papelito.mesh);
   if (leyendo) {
     leyendo.mesh.rotation.set(0, 0.35, Math.PI / 2);
     leyendo.mesh.position.set(-W / 2 - 0.36, sup + leyendo.grosor / 2, 0.3);
@@ -314,7 +315,7 @@ async function iniciar() {
 
   const camara = new Camara();
   camara.encuadrar(innerWidth / innerHeight, W);
-  const post = new Postproceso(renderer, escena, camara.cam, alta, [haz.grupo, polvo.puntos, brilloPapelito.grupo, brilloElegido.grupo]);
+  const post = new Postproceso(renderer, escena, camara.cam, alta, [haz.grupo, polvo.puntos]);
   const foco = new Foco(escena, camara, animador, ambiente, post);
 
   let ultimaElevacion = NaN;
@@ -368,7 +369,6 @@ async function iniciar() {
     if (!elegido) return;
     const { lv, base } = elegido;
     elegido = null;
-    brilloElegido.meta = 0;
     lv.resaltar(0);
     animador.cancelar(`asomar:${lv.libro.id}`);
     if (!basesAsomados.has(lv)) return;
@@ -408,9 +408,6 @@ async function iniciar() {
     if (asoma) destino.z += 0.035;
     elegido = { lv, base };
     pulso = 0;
-    const caja = new THREE.Box3().setFromObject(lv.mesh).translate(new THREE.Vector3(0, 0, destino.z - lv.mesh.position.z));
-    brilloElegido.rodear(caja);
-    brilloElegido.meta = 1;
     if (asoma) {
       basesAsomados.set(lv, base);
       const desde = lv.mesh.position.clone();
@@ -543,7 +540,7 @@ async function iniciar() {
     {
       alSenalar: (i, p) => {
         const e = i && !enCajon && i.tipo === 'disco' ? datosCajon : i;
-        if (e && p) ui.mostrarEtiqueta(e.titulo, e.subtitulo ?? '', p.x, p.y);
+        if (e && p) ui.mostrarEtiqueta(e.titulo, e.subtitulo ?? '', p.x, p.y, e.tipo === 'libro' ? e.id : undefined);
         else ui.ocultarEtiqueta();
       },
       alSeleccionar: seleccionar,
@@ -676,11 +673,9 @@ async function iniciar() {
     ambiente.tick(dt);
     actualizarSol();
     polvo.tick(dt);
-    brilloPapelito.tick(dt);
     // El post-it guiña: cada tanto se ilumina apenas, como si algo lo tocara
     const guino = Math.pow(Math.max(0, Math.sin(ahora * 0.0011)), 14) * 0.5;
     papelito.resaltar(Math.max(papelitoSenalado, guino));
-    brilloElegido.tick(dt);
     if (ola) {
       const o = ola;
       const k = (performance.now() - o.inicio) / 1150;
@@ -734,7 +729,6 @@ async function iniciar() {
       abrirLibro,
       cerrarFoco,
       senalarLibro,
-      destellos: { papelito: brilloPapelito, elegido: brilloElegido },
       probarHora: (h: number | null) => {
         ambiente.horaForzada = h;
         ambiente.actualizar(true);

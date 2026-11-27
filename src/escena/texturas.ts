@@ -280,20 +280,17 @@ export function texturaHoja(variante = 0) {
 
 /* ----------------------------------------------------------- alfombra persa */
 
-export function texturaAlfombra() {
+/** Colores de la alfombra: la persa bordó de siempre, o una más sobria en azul y óxido. */
+export const COLORES_ALFOMBRA = {
+  persa: { bordo: '#7f2025', bordoOsc: '#5c151a', azul: '#1f2a4a', crema: '#e6d3a8', oro: '#c38b3e', verde: '#2e5049', rosa: '#b5564f' },
+  sobria: { bordo: '#26324d', bordoOsc: '#1a2338', azul: '#6e3422', crema: '#d8c9ab', oro: '#a5733b', verde: '#3b4a42', rosa: '#8c4a33' },
+};
+
+export function texturaAlfombra(C = COLORES_ALFOMBRA.persa) {
   const W = 1536;
   const H = 1024;
   const { c, ctx } = lienzo(W, H);
   const r = rng(61);
-  const C = {
-    bordo: '#7f2025',
-    bordoOsc: '#5c151a',
-    azul: '#1f2a4a',
-    crema: '#e6d3a8',
-    oro: '#c38b3e',
-    verde: '#2e5049',
-    rosa: '#b5564f',
-  };
 
   const marco = (inset: number, ancho: number, color: string) => {
     ctx.fillStyle = color;

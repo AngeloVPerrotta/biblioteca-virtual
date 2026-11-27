@@ -4,6 +4,7 @@ import type { Libro } from '../datos/tipos';
 import { compactarGrupos } from './fusion';
 import { marcar } from './interactivos';
 import { dibujarContratapa, dibujarLomo, dibujarTapa } from './lomos';
+import { dibujarTapaReal } from './tapas';
 import { aTextura, texturaPaginas } from './texturas';
 
 /**
@@ -93,7 +94,8 @@ export class LibroVisual {
         ponerTapa(t);
       });
     } else {
-      ponerTapa(aTextura(dibujarTapa(this.libro)));
+      // La tapa de la edición real; si no está descripta, una genérica con los colores del lomo
+      void dibujarTapaReal(this.libro).then((c) => ponerTapa(aTextura(c ?? dibujarTapa(this.libro))));
     }
     const contra = aTextura(dibujarContratapa(this.libro));
     this.matContra.map = contra;
