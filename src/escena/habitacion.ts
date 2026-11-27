@@ -3,8 +3,7 @@
  * de lino, el exterior (cielo, ciudad, jacarandá) y la alfombra persa.
  */
 import * as THREE from 'three';
-import { variantes } from '../variantes';
-import { aTextura, COLORES_ALFOMBRA, texturaAlfombra, texturaCiudad, texturaFlecos, texturaJacaranda, texturaLino, texturaParquet, texturaYeso } from './texturas';
+import { aTextura, texturaAlfombra, texturaCiudad, texturaFlecos, texturaJacaranda, texturaLino, texturaParquet, texturaYeso } from './texturas';
 
 export const CUARTO = { ancho: 6.4, fondo: 5.4, alto: 2.8 };
 
@@ -218,11 +217,9 @@ export function crearHabitacion(ventana: Ventana) {
   const alfombra = new THREE.Group();
   const aw = 2.4;
   const ad = 1.6;
-  const sobria = variantes.alfombra === 'sobria';
-  const coloresAlfombra = sobria ? COLORES_ALFOMBRA.sobria : COLORES_ALFOMBRA.persa;
-  const matAlfombra = new THREE.MeshStandardMaterial({ map: aTextura(texturaAlfombra(coloresAlfombra)), roughness: 1, color: 0xffffff });
-  const canto = new THREE.MeshStandardMaterial({ color: sobria ? 0x1c2438 : 0x5c171b, roughness: 1 });
-  const debajo = new THREE.MeshStandardMaterial({ color: sobria ? 0x121828 : 0x3a1012, roughness: 1 });
+  const matAlfombra = new THREE.MeshStandardMaterial({ map: aTextura(texturaAlfombra()), roughness: 1, color: 0xffffff });
+  const canto = new THREE.MeshStandardMaterial({ color: 0x5c171b, roughness: 1 });
+  const debajo = new THREE.MeshStandardMaterial({ color: 0x3a1012, roughness: 1 });
   const pelo = new THREE.Mesh(new THREE.BoxGeometry(aw, 0.008, ad), [canto, canto, matAlfombra, debajo, canto, canto]);
   pelo.position.y = 0.004;
   pelo.receiveShadow = true;

@@ -1,35 +1,32 @@
 :root {
-  /* Paneles oscuros (sobre la escena) */
-  --panel-rgb: 27, 20, 16;
+  /* Cartón y negro. Paneles oscuros (sobre la escena) */
+  --panel-rgb: 22, 20, 18;
   --panel: rgba(var(--panel-rgb), 0.8);
-  --panel-claro: rgba(48, 36, 28, 0.6);
-  --panel-hover: rgba(60, 44, 32, 0.9);
-  --claro-rgb: 255, 236, 205;
-  --borde-rgb: 255, 226, 186;
+  --panel-claro: rgba(40, 36, 31, 0.6);
+  --panel-hover: rgba(46, 41, 35, 0.92);
+  --claro-rgb: 230, 214, 186;
+  --borde-rgb: 201, 167, 124;
   --borde: rgba(var(--borde-rgb), 0.14);
-  --texto-rgb: 245, 235, 220;
+  --texto-rgb: 238, 230, 216;
   --texto: rgb(var(--texto-rgb));
   --texto-suave: rgba(var(--texto-rgb), 0.68);
-  --texto-nota: #f0dcc0;
-  --marca: #f6e3c4;
-  --acento-rgb: 232, 180, 106;
+  --texto-nota: #e1cba6;
+  --marca: #eadcc2;
+  --acento-rgb: 205, 168, 118;
   --acento: rgb(var(--acento-rgb));
-  /* Papel: agenda y «¿Qué leo?» */
-  --papel: #f5ecd8;
-  --papel-agenda: #f4ecd9;
-  --tinta-rgb: 40, 54, 98;
+  /* Papel kraft del «¿Qué leo?», con tinta negra y óxido */
+  --papel: #c9a77c;
+  --tinta-rgb: 28, 26, 23;
   --tinta: rgb(var(--tinta-rgb));
-  --sobre-tinta: #f5ecd8;
-  --subrayado-rgb: 181, 82, 59;
+  --sobre-tinta: #dcc29c;
+  --subrayado-rgb: 132, 52, 28;
   --subrayado: rgb(var(--subrayado-rgb));
-  --renglon: rgba(70, 100, 160, 0.18);
-  --margen: rgba(200, 80, 80, 0.35);
-  /* Formas */
-  --radio-boton: 999px;
-  --radio-redondo: 50%;
-  --radio-chico: 10px;
-  --radio-agenda: 6px 12px 12px 6px;
-  --radio-papel: 4px;
+  /* Formas: esquinas chicas */
+  --radio-boton: 5px;
+  --radio-redondo: 5px;
+  --radio-chico: 4px;
+  --radio-agenda: 3px;
+  --radio-papel: 2px;
   --giro-agenda: -1.2deg;
   --giro-quelee: -0.8deg;
   /* Letras */
@@ -40,7 +37,7 @@
   --empezado: #e8b46a;
   --sin-leer: #c9b8a6;
   --prestado: #e98b7a;
-  --radio: 14px;
+  --radio: 6px;
   --sombra: 0 18px 50px rgba(0, 0, 0, 0.45);
   --seguro-arriba: env(safe-area-inset-top, 0px);
   --seguro-abajo: env(safe-area-inset-bottom, 0px);
@@ -842,18 +839,23 @@ button {
   width: min(420px, 90vw);
   max-height: 76vh;
   overflow-y: auto;
-  padding: 34px 30px 28px 46px;
+  padding: 34px 44px 28px 30px;
   border-radius: var(--radio-agenda);
+  /* Libreta negra: tinta clara y el acento del cartón para lo que se subraya */
+  --tinta-rgb: 236, 228, 212;
+  --tinta: rgb(var(--tinta-rgb));
+  --subrayado-rgb: var(--acento-rgb);
+  --subrayado: rgb(var(--subrayado-rgb));
   color: var(--tinta);
   background:
-    linear-gradient(90deg, transparent 32px, var(--margen) 32px, var(--margen) 33px, transparent 33px),
-    repeating-linear-gradient(transparent 0 31px, var(--renglon) 31px 32px),
-    var(--papel-agenda);
-  background-attachment: local;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), inset 10px 0 18px -12px rgba(0, 0, 0, 0.35);
+    linear-gradient(90deg, transparent calc(100% - 24px), #0b0b0a calc(100% - 24px), #0b0b0a calc(100% - 15px), transparent calc(100% - 15px)),
+    repeating-linear-gradient(transparent 0 31px, rgba(255, 255, 255, 0.06) 31px 32px),
+    #1c1b19;
+  background-attachment: scroll, local, local;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   font-family: var(--letra-maquina);
   scrollbar-width: thin;
-  scrollbar-color: rgba(var(--tinta-rgb), 0.3) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
   opacity: 0;
   visibility: hidden;
   transform: translate(-50%, -46%) rotate(var(--giro-agenda)) scale(0.96);
@@ -996,8 +998,9 @@ button {
 
 .hub__quelee {
   display: block;
-  margin: -4px 0 12px;
+  margin: 12px 0 4px;
   padding: 2px 0;
+  line-height: 1.35;
   border: 0;
   background: none;
   font-family: var(--letra-maquina);
@@ -1521,128 +1524,4 @@ button {
   font-family: var(--letra-ficha);
   font-size: 14px;
   color: #f3dcb7;
-}
-
-/* ---------------------------------------------------------------- variantes para probar (ver variantes.ts) */
-
-/* Cartón y negro */
-:root[data-paleta='carton'] {
-  --panel-rgb: 22, 20, 18;
-  --panel-claro: rgba(40, 36, 31, 0.6);
-  --panel-hover: rgba(46, 41, 35, 0.92);
-  --claro-rgb: 230, 214, 186;
-  --borde-rgb: 201, 167, 124;
-  --texto-rgb: 238, 230, 216;
-  --texto-nota: #e1cba6;
-  --marca: #eadcc2;
-  --acento-rgb: 205, 168, 118;
-  --papel: #c9a77c;
-  --papel-agenda: #cdac82;
-  --tinta-rgb: 28, 26, 23;
-  --sobre-tinta: #dcc29c;
-  --subrayado-rgb: 132, 52, 28;
-  --renglon: rgba(28, 26, 23, 0.16);
-  --margen: rgba(132, 52, 28, 0.42);
-}
-
-/* Grafito y ámbar */
-:root[data-paleta='grafito'] {
-  --panel-rgb: 33, 33, 32;
-  --panel-claro: rgba(52, 52, 50, 0.6);
-  --panel-hover: rgba(58, 57, 55, 0.92);
-  --claro-rgb: 232, 229, 222;
-  --borde-rgb: 220, 214, 204;
-  --texto-rgb: 234, 231, 225;
-  --texto-nota: #dad5cb;
-  --marca: #ece8e0;
-  --acento-rgb: 214, 150, 60;
-  --papel: #dcd8cf;
-  --papel-agenda: #e0dcd3;
-  --tinta-rgb: 43, 42, 40;
-  --sobre-tinta: #ece8e0;
-  --subrayado-rgb: 176, 108, 28;
-  --renglon: rgba(43, 42, 40, 0.14);
-  --margen: rgba(176, 108, 28, 0.42);
-}
-
-/* Verde inglés y bronce */
-:root[data-paleta='verde'] {
-  --panel-rgb: 19, 37, 30;
-  --panel-claro: rgba(30, 56, 46, 0.6);
-  --panel-hover: rgba(34, 60, 49, 0.92);
-  --claro-rgb: 232, 224, 207;
-  --borde-rgb: 196, 160, 94;
-  --texto-rgb: 239, 233, 218;
-  --texto-nota: #e2d5b4;
-  --marca: #eee3c7;
-  --acento-rgb: 200, 158, 86;
-  --papel: #ebe4d3;
-  --papel-agenda: #ece5d4;
-  --tinta-rgb: 28, 54, 44;
-  --sobre-tinta: #ebe4d3;
-  --subrayado-rgb: 146, 108, 40;
-  --renglon: rgba(28, 54, 44, 0.16);
-  --margen: rgba(146, 108, 40, 0.42);
-}
-
-/* Negro, hueso y un rojo */
-:root[data-paleta='minimal'] {
-  --panel-rgb: 14, 14, 14;
-  --panel-claro: rgba(34, 34, 34, 0.6);
-  --panel-hover: rgba(38, 38, 38, 0.92);
-  --claro-rgb: 239, 235, 227;
-  --borde-rgb: 239, 235, 227;
-  --texto-rgb: 239, 235, 227;
-  --texto-nota: #d9d4cb;
-  --marca: #f3f0ea;
-  --acento-rgb: 222, 74, 56;
-  --papel: #efebe3;
-  --papel-agenda: #f1ede6;
-  --tinta-rgb: 17, 17, 17;
-  --sobre-tinta: #efebe3;
-  --subrayado-rgb: 192, 57, 43;
-  --renglon: rgba(17, 17, 17, 0.1);
-  --margen: rgba(192, 57, 43, 0.35);
-}
-
-/* Esquinas chicas o rectas */
-:root[data-formas='chicas'] {
-  --radio: 6px;
-  --radio-boton: 5px;
-  --radio-redondo: 5px;
-  --radio-chico: 4px;
-  --radio-agenda: 3px;
-  --radio-papel: 2px;
-}
-
-:root[data-formas='rectas'] {
-  --radio: 0;
-  --radio-boton: 0;
-  --radio-redondo: 0;
-  --radio-chico: 0;
-  --radio-agenda: 0;
-  --radio-papel: 0;
-}
-
-/* Paneles derechos */
-:root[data-paneles='derechos'] {
-  --giro-agenda: 0deg;
-  --giro-quelee: 0deg;
-}
-
-/* La agenda como libreta negra, con elástico */
-:root[data-agenda='libreta'] .agenda {
-  --tinta-rgb: 236, 228, 212;
-  --tinta: rgb(var(--tinta-rgb));
-  --subrayado-rgb: var(--acento-rgb);
-  --subrayado: rgb(var(--subrayado-rgb));
-  padding-right: 44px;
-  padding-left: 30px;
-  background:
-    linear-gradient(90deg, transparent calc(100% - 24px), #0b0b0a calc(100% - 24px), #0b0b0a calc(100% - 15px), transparent calc(100% - 15px)),
-    repeating-linear-gradient(transparent 0 31px, rgba(255, 255, 255, 0.06) 31px 32px),
-    #1c1b19;
-  background-attachment: scroll, local, local;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }

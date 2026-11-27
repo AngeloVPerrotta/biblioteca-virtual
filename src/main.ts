@@ -61,13 +61,11 @@ import { Interaccion } from './interaccion';
 import { crearCarga } from './carga';
 import { formatoHora, Interfaz } from './ui';
 import { Animador, cuadro, salidaSuave } from './util/animacion';
-import { aplicarVariantes, variantes } from './variantes';
 
 const datos = datosJson as unknown as DatosBiblioteca;
 const datosDiscos = discosJson as unknown as DatosDiscos;
 
 async function iniciar() {
-  aplicarVariantes();
   const canvas = document.getElementById('escena') as HTMLCanvasElement;
   const carga = crearCarga();
   performance.mark('carga-inicio');
@@ -167,7 +165,7 @@ async function iniciar() {
   unTermo.position.set(-W / 2 - 0.27, sup, 0.17);
   escena.add(mate, unTermo);
   // Post-it «¿qué leo?» pegado en el cajón de la mesa de luz
-  const papelito = papelitoQueLeo(variantes.papelito === 'ficha');
+  const papelito = papelitoQueLeo();
   papelito.mesh.position.copy(mesaLuz.grupo.position).add(new THREE.Vector3(0.12, 0.45, 0.1975));
   papelito.mesh.rotation.z = -0.07;
   let papelitoSenalado = 0;
